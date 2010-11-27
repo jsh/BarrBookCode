@@ -1,4 +1,6 @@
 #!/usr/bin/perl
+#
+# create an AWSSDKforPHP configfile that pulls in the user's AWS keys.
 
 use warnings;
 use strict;
