@@ -25,6 +25,7 @@ $keys[1] = "define('AWS_SECRET_KEY', '$keys[1]');\n";
 
 # print the php secrets file
 print $out '
+<?php
 /*
  * This holds the values of your AWS_KEY and AWS_SECRET_KEY variables
  * It must be installed as ~/.awssecret.inc.php
