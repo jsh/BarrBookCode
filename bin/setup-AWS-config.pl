@@ -27,8 +27,9 @@ while (<$in>) {
         print $out q(
 
       // pull in the user's AWS keys
-      $home = "$_SERVER['HOME']/.awssecret.inc.php";
-      require_once($home);
+      $home = $_SERVER['HOME'];
+      $usersecrets = "$home/.awssecret.inc.php";
+      require_once($usersecrets);
 
     );
         $added_require_secretsfile = 1;
