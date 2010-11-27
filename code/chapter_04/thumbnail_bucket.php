@@ -39,7 +39,7 @@ require_once('include/book.inc.php');
 // Make sure that the right number of arguments were supplied
 if ($argc != 3)
 {
-  exit("Usage: " . $argv[0] . "in-bucket out-bucket\n");
+  exit("Usage: " . $argv[0] . " in-bucket out-bucket\n");
 }
 
 // Get arguments
