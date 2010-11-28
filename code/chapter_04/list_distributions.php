@@ -47,9 +47,10 @@ printf("%'=-16s %'=-32s %'=40s\n", "", "", "");
 // Display list of distributions
 foreach ($distributions as $distribution)
 {
+  //print_r($distribution);
   $id         = $distribution->Id;
   $domainName = $distribution->DomainName;
-  $origin     = $distribution->Origin;
+  $origin     = $distribution->S3Origin->DNSName;
 
   printf("%-16s %-32s %-40s\n", $id, $domainName, $origin);
 }
