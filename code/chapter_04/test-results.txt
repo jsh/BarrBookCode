@@ -5,6 +5,6 @@ list_bucket_objects.php PASS
 list_bucket_objects_raw.php FAIL
 list_buckets_page.php PASS
 list_buckets.php PASS
-list_distributions.php UNRESOLVED
+list_distributions.php FAIL -- does not show "Origin"
 thumbnail_bucket.php FAIL
-upload_file.php FAIL
+upload_file.php FAIL -- all uploaded files show up as 0-size object "Array"
