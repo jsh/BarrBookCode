@@ -33,7 +33,7 @@ $s3 = new AmazonS3();
 
 if ($argc != 2) 
 {
-  exit("Usage: " . $argv[0] . " bucket name\n");
+  exit("Usage: " . $argv[0] . " bucket_name\n");
 }
 $bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 
