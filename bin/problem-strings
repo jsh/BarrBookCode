@@ -1,0 +1,68 @@
+#!/bin/bash -eu
+#
+# check for various problems converting from CloudFusion to AWSSDKforPHP,
+#   discussed on this web page:
+#
+#   http://aws.amazon.com/articles/4263?_encoding=UTF8&jiveRedirect=1
+
+## General Changes
+
+# Including the SDK in your projects
+cloudfusion.class.php
+
+# Support for Amazon Associates/Product Advertising API
+AmazonPAS
+
+# Swapping base classes
+
+RequestCore
+ResponseCore
+SimpleXMLElement
+CloudFusion
+
+## Base/Runtime 
+
+# CFRuntime
+disable_ssl
+DATE_
+x-cloudfusion-
+x-tarzan-
+autoloader
+cache_response
+delete_cache_response
+
+# Config file
+AWS_ASSOC_ID
+AWS_DEFAULT_LOCALE
+
+## Service Classes
+
+# AmazonCloudFront
+CDN_
+
+# AmazonCloudWatch
+CW_DEFAULT_URL
+
+# AmazonEC2
+EC2_LOCATION_US
+EC2_LOCATION_EU
+set_locale
+
+# AmazonS3
+S3_
+store_remote_file
+copy_bucket
+replace_bucket
+duplicate_object
+move_object
+rename_object
+get_bucket\b
+create_object
+head_object
+delete_object
+get_object_acl
+get_object_url
+get_torrent_url
+list_objects
+get_bucket_locale
+cteate_bucket
