@@ -89,7 +89,7 @@ function getBucketObjects($s3, $bucket, $prefix = '')
  *  Return true on success, false on error.
  */
 function uploadObject($s3, $bucket, $key, $data,
-          $acl = S3_ACL_PRIVATE, $contentType = "text/plain")
+          $acl = 'AmazonS3::ACL_PRIVATE', $contentType = "text/plain")
 {
   $try = 1;
   $sleep = 1;
@@ -97,10 +97,10 @@ function uploadObject($s3, $bucket, $key, $data,
   {
   // Do the upload
     $res = $s3->create_object($bucket,
+	$key,
         array(
-          'filename'    => $key,
           'body'        => $data,
-          'acl'         => $acl,
+          //'acl'       => $acl,
           'contentType' => $contentType
         ));
 

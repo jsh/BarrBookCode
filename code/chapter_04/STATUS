@@ -7,4 +7,4 @@ list_buckets_page.php PASS
 list_buckets.php PASS
 list_distributions.php PASS
 thumbnail_bucket.php FAIL
-upload_file.php FAIL -- all uploaded files show up as 0-size object "Array"
+upload_file.php PASS
