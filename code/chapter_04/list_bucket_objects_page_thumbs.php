@@ -96,7 +96,7 @@ foreach ($objects as $object)
 }
 
 // create a page header and an explanatory message
-$output_title = "Chapter 3 Sample - List of S3 Objects in Bucket '${bucket}'";
+$output_title = "Chapter 4 Sample - List of S3 Objects in Bucket '${bucket}'";
 $output_message = "A simple HTML table displaying of all the objects in the '${bucket}' bucket with thumbnails.";
 
 // Output the HTML

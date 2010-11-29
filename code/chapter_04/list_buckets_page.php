@@ -33,7 +33,7 @@ $s3 = new AmazonS3();
 $buckets = $s3->get_bucket_list();
 
 // create a page header and an explanatory message
-$output_title = 'Chapter 3 Sample - List of S3 Buckets';
+$output_title = 'Chapter 4 Sample - List of S3 Buckets';
 $output_message = 'A simple HTML list of your S3 Buckets';
 
 // Output the HTML
