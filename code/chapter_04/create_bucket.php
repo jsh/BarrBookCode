@@ -39,7 +39,7 @@ $bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 $s3 = new AmazonS3();
 
 // Create an S3 bucket
-$res = $s3->create_bucket($bucket);
+$res = $s3->create_bucket($bucket, AmazonS3::REGION_US_E1);
 
 // Report on status
 if ($res->isOK())
