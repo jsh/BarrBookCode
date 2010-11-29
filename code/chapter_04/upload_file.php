@@ -50,7 +50,7 @@ for ($i = 2; $i < $argc; $i++)
   $data        = file_get_contents($file);
   $contentType = guessType($file);
  
-  if (uploadObject($s3, $bucket, $file, $data, 'AmazonS3::ACL_PUBLIC',
+  if (uploadObject($s3, $bucket, $file, $data, AmazonS3::ACL_PUBLIC,
        $contentType))
   {
     print("Uploaded file '${file}' " .

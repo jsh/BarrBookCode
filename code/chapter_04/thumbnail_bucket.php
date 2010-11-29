@@ -85,7 +85,7 @@ foreach ($objectsIn as $objectIn)
 
     $startTime = microtime(true);
     if (uploadObject($s3, $bucketOut, $key, $dataOut,
-         'AmazonS3::ACL_PUBLIC', $contentType))
+         AmazonS3::ACL_PUBLIC, $contentType))
     {
       $endTime = microtime(true);
       
