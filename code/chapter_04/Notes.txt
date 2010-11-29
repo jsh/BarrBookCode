@@ -1,17 +1,24 @@
 The code in this directory now works for me.
 
+You should be able to read chapter 4 of the Barr book and run these example programs from it without a hiccup.
+
+If you do have problems, please fix them and tell me how you did it.  Even better, just check in your fixes into GitHub.
+
 Most Scripts Run from Command Line
 -----------------------------------
 
-I've converted the scripts to work with the AWSSDKforPHP toolkit.  Most will now run correctly from the command line.
+I've converted the scripts to work with the AWSSDKforPHP toolkit.  Most will now run correctly from the command line. 
 
-Some scripts required minor bug fixes to run correctly.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is minimum change to maximize compatibility with the book.
+Some scripts required minor bug fixes to run correctly.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is to minimumize changes, and maximize compatibility with the book.
 
-It is not necessary to set BOOK_BUCKET, in include/book.inc.php: all scripts should allow you to specify a bucket on the command line.
+The book will tell you to set BOOK_BUCKET in include/book.inc.php.  Don't bother. All scripts let you specify a bucket on the command line.
 
-One conversion that does not yet work correctly is calls to create_object that set the acl. The documentation says to convert the global constants, S3_ACL_*, to class constants -- either AmazonS3::ACL_* or $s3::ACL_* depending on where you read. I couldn't get this to work because I don't know enough PHP, so I modified the call in book.inc.php to ignore that parameter and take the default, ACL_PRIVATE.
+One conversion that does not work correctly, yet, is calls to create_object() that try to set the acl.
+I couldn't get those to work. The documentation says to convert the global constants, S3_ACL_*, to class constants -- either AmazonS3::ACL_* or $s3::ACL_* depending on where you read. I tried, but probably just don't know enough PHP.
 
-If you can fix this, please do.
+I modified the call in book.inc.php to ignore that parameter and take the default, ACL_PRIVATE. Lazy? You bet.
+
+If you can fix this, and make it work the way it should, please do.
 
 Three Scripts Don't Work from the Command Line
 ----------------------------------------------
@@ -31,9 +38,9 @@ Making the "_page" Scripts Work
 
 sudo apt-get install apache2
 
-There's instructions on how to get this all set up hither and yon that I won't duplicate. Google's your friend.
+There's instructions, hither and yon, on how to get web servers all set up. I won't duplicate that effort. Google's your friend.
 
-+ put the files into /var/www
++ put the required files into /var/www
 
 cd code/chapter_04
 sudo cp -r include *_page* /var/www
