@@ -50,7 +50,6 @@ sudo cp -r include *_page* /var/www
 firefox http://localhost/list_buckets_page.php
 firefox http://localhost/list_bucket_objects_page.php?bucket=<your-bucket-name-here>
 
-
 Is there a better way to do all this? Show me how.
 
 Looking at What You've Done
@@ -58,13 +57,15 @@ Looking at What You've Done
 
 One of these scripts lets you create buckets. Another lets you upload files to them. The rest let you check whether you succeeded. What more could you want?
 
-I recommend looking at them in the Amazon Web Management Console and S3Fox, too.
+I recommend looking at them in the AWS Management Console and S3Fox, too.
 
 - Looking at other people's stuff will give you good ideas.
 - It's often useful to know what everyone else is using.
 - You only have to roll your own if it's fun.
-- Now you have a better idea what you're looking at -- AWMC and S3Fox look like, under the covers.
+- Now you have a better idea what you're looking at -- what AMC and S3Fox are doing under the covers.
 
-I will note that I've seen things that don't work in S3Fox but do in the AWMC.
+The AWMC is slower than molasses in winter. My browser regularly whines "A script on this page may be busy or is not responding." I just hit "Continue" -- it's not hung, it's slow. And I've seen things that don't work in S3Fox but do in the AMC. Both GUIs need manual refreshes whenever I do anything interesting.
 
-Yep, I'm not the only one whose codee has bugs. Whew, what a relief.
+But both give you far more info than the PHP scripts, as they stand.  Conversely, the PHP scripts are hackable to do what you want.. 
+
+It's all trade-offs.
