@@ -1,8 +1,11 @@
+Chapter 4: Storing Data with Amazon S3.
+
+
 The code in this directory now works for me.
 
-You should be able to read chapter 4 of the Barr book and run these example programs from it without a hiccup.
+You should be able to read chapter 4 of the Barr book and run these example programs from it without a hiccup; you should, however, read the chapter to learn how to run them and why they work.
 
-If you do have problems, please fix them and tell me how you did it.  Even better, just check in your fixes into GitHub.
+If you do have problems, please fix them and tell me how you did it.  You can even check your fixes into the GitHub repo, but you'll have to ask me for commit access. (Which I'll be delighted to give.)
 
 Most Scripts Run from Command Line
 -----------------------------------
@@ -12,13 +15,6 @@ I've converted the scripts to work with the AWSSDKforPHP toolkit.  Most will now
 Some scripts required minor bug fixes to run correctly.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is to minimumize changes, and maximize compatibility with the book.
 
 The book will tell you to set BOOK_BUCKET in include/book.inc.php.  Don't bother. All scripts let you specify a bucket on the command line.
-
-One conversion that does not work correctly, yet, is calls to create_object() that try to set the acl.
-I couldn't get those to work. The documentation says to convert the global constants, S3_ACL_*, to class constants -- either AmazonS3::ACL_* or $s3::ACL_* depending on where you read. I tried, but probably just don't know enough PHP.
-
-I modified the call in book.inc.php to ignore that parameter and take the default, ACL_PRIVATE. Lazy? You bet.
-
-If you can fix this, and make it work the way it should, please do.
 
 Three Scripts Don't Work from the Command Line
 ----------------------------------------------
