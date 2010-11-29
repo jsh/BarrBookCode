@@ -27,17 +27,19 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
 // Make sure that the right number of arguments were supplied
 if ($argc != 3)
 {
-  exit("Usage: " . $argv[0] . "in-bucket out-bucket\n");
+  exit("Usage: " . $argv[0] . " in-bucket out-bucket\n");
 }
 
 // Get arguments
@@ -83,7 +85,7 @@ foreach ($objectsIn as $objectIn)
 
     $startTime = microtime(true);
     if (uploadObject($s3, $bucketOut, $key, $dataOut,
-         S3_ACL_PUBLIC, $contentType))
+         AmazonS3::ACL_PUBLIC, $contentType))
     {
       $endTime = microtime(true);
       

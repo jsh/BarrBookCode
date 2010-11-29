@@ -1,0 +1,67 @@
+Chapter 4: Storing Data with Amazon S3.
+
+
+The code in this directory now works for me.
+
+You should be able to read chapter 4 of the Barr book and run these example programs from it without a hiccup; you should, however, read the chapter to learn how to run them and why they work.
+
+If you do have problems, please fix them and tell me how you did it.  You can even check your fixes into the GitHub repo, but you'll have to ask me for commit access. (Which I'll be delighted to give.)
+
+Most Scripts Run from Command Line
+-----------------------------------
+
+I've converted the scripts to work with the AWSSDKforPHP toolkit.  Most will now run correctly from the command line. 
+
+Some scripts required minor bug fixes to run correctly.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is to minimumize changes, and maximize compatibility with the book.
+
+The book will tell you to set BOOK_BUCKET in include/book.inc.php.  Don't bother. All scripts let you specify a bucket on the command line.
+
+Three Scripts Don't Work from the Command Line
+----------------------------------------------
+
+Some scripts in this directory aren't meant to be run from the command line.
+
+list_bucket_objects_page.php
+list_bucket_objects_page_thumbs.php
+list_buckets_page.php
+
+They have no shebang (#!) line, and their names all have "_page".  They generate web pages.
+
+Making the "_page" Scripts Work
+-------------------------------
+
++ install a web browser
+
+sudo apt-get install apache2
+
+There's instructions, hither and yon, on how to get web servers all set up. I won't duplicate that effort. Google's your friend.
+
++ put the required files into /var/www
+
+cd code/chapter_04
+sudo cp -r include *_page* /var/www
+
++ Once you have buckets, and objects in them, go visit these pages in your browser
+
+firefox http://localhost/list_buckets_page.php
+firefox http://localhost/list_bucket_objects_page.php?bucket=<your-bucket-name-here>
+
+Is there a better way to do all this? Show me how.
+
+Looking at What You've Done
+---------------------------
+
+One of these scripts lets you create buckets. Another lets you upload files to them. The rest let you check whether you succeeded. What more could you want?
+
+I recommend looking at them in the AWS Management Console and S3Fox, too.
+
+- Looking at other people's stuff will give you good ideas.
+- It's often useful to know what everyone else is using.
+- You only have to roll your own if it's fun.
+- Now you have a better idea what you're looking at -- what AMC and S3Fox are doing under the covers.
+
+The AWMC is slower than molasses in winter. My browser regularly whines "A script on this page may be busy or is not responding." I just hit "Continue" -- it's not hung, it's slow. And I've seen things that don't work in S3Fox but do in the AMC. Both GUIs need manual refreshes whenever I do anything interesting.
+
+But both give you far more info than the PHP scripts, as they stand.  Conversely, the PHP scripts are hackable to do what you want.. 
+
+It's all trade-offs.

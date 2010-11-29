@@ -19,11 +19,13 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
 // Create the CloudFront access object
@@ -45,9 +47,10 @@ printf("%'=-16s %'=-32s %'=40s\n", "", "", "");
 // Display list of distributions
 foreach ($distributions as $distribution)
 {
+  //print_r($distribution);
   $id         = $distribution->Id;
   $domainName = $distribution->DomainName;
-  $origin     = $distribution->Origin;
+  $origin     = $distribution->S3Origin->DNSName;
 
   printf("%-16s %-32s %-40s\n", $id, $domainName, $origin);
 }

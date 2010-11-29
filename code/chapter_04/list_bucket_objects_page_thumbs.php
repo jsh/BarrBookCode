@@ -27,11 +27,13 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
 // Get parameters
@@ -71,7 +73,7 @@ foreach ($objectThumbs as $objectThumb)
   }
   else
   {
-    $thumbs[$key] = $s3->get_object_url($bucketThumbs, $key);
+    $thumbs[$key] = $s3->get_object_url($bucketThumbs, $key, "60 seconds");
   }
 }
 
@@ -86,7 +88,7 @@ foreach ($objects as $object)
   }
   else
   {
-    $url = $s3->get_object_url($bucket, $key);
+    $url = $s3->get_object_url($bucket, $key, "60 seconds");
   }
 
   $thumbURL = isset($thumbs[$key]) ? $thumbs[$key] : '';
@@ -94,7 +96,7 @@ foreach ($objects as $object)
 }
 
 // create a page header and an explanatory message
-$output_title = "Chapter 3 Sample - List of S3 Objects in Bucket '${bucket}'";
+$output_title = "Chapter 4 Sample - List of S3 Objects in Bucket '${bucket}'";
 $output_message = "A simple HTML table displaying of all the objects in the '${bucket}' bucket with thumbnails.";
 
 // Output the HTML
