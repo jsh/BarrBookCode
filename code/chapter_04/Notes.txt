@@ -1,12 +1,22 @@
-Perhaps you're thinking, "But I don't know PHP." That's okay. I don't either. It's part of the great family of C-like languages. Modifying the code to change it a little, or even pasting a whole program together out of fragments of the code sample is easy enough. When it isn't, Google is your friend.
+The code in this directory now works for me.
 
-There's a command-line interpreter, /usr/bin/php, and a library installer and maintainer, /usr/bin/pear
+Most Scripts Run from Command Line
+-----------------------------------
 
-There is, however, a rub.
+I've converted the scripts to work with the AWSSDKforPHP toolkit.  Most will now run correctly from the command line.
 
-Some Scripts Don't Work
+Some scripts required minor bug fixes to run correctly.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is minimum change to maximize compatibility with the book.
 
-Three scripts in the chapter_04/ directory aren't meant to be run from the command line.
+It is not necessary to set BOOK_BUCKET, in include/book.inc.php: all scripts should allow you to specify a bucket on the command line.
+
+One conversion that does not yet work correctly is calls to create_object that set the acl. The documentation says to convert the global constants, S3_ACL_*, to class constants -- either AmazonS3::ACL_* or $s3::ACL_* depending on where you read. I couldn't get this to work because I don't know enough PHP, so I modified the call in book.inc.php to ignore that parameter and take the default, ACL_PRIVATE.
+
+If you can fix this, please do.
+
+Three Scripts Don't Work from the Command Line
+----------------------------------------------
+
+Some scripts in this directory aren't meant to be run from the command line.
 
 list_bucket_objects_page.php
 list_bucket_objects_page_thumbs.php
@@ -14,34 +24,24 @@ list_buckets_page.php
 
 They have no shebang (#!) line, and their names all have "_page".  They generate web pages.
 
-If you stick them in /var/www/ and point at them with your browser, they don't work because the "require_once()" statements fail. They can't find the files they need.
-
 Making the "_page" Scripts Work
+-------------------------------
 
-install a web browser
++ install a web browser
 
 sudo apt-get install apache2
 
 There's instructions on how to get this all set up hither and yon that I won't duplicate. Google's your friend.
 
-put the files into /var/www
++ put the files into /var/www
 
 cd code/chapter_04
 sudo cp -r include *_page* /var/www
 
-make a new /usr/share/php/config.inc.php
++ Once you have buckets, and objects in them, go visit these pages in your browser
 
-sudo su -
-# cd /var/www/AWSSDKforPHP/
-# cp config.inc.php config.inc.php.cli
-# cp config-sample.inc.php config.inc.php.gui
+firefox http://localhost/list_buckets_page.php
+firefox http://localhost/list_bucket_objects_page.php?bucket=<your-bucket-name-here>
 
-put your actual AWS_KEY and AWS_SECRET_KEY values into this config file
 
-# vi config.inc.php.gui
-
-# cp config.inc.php.gui config.inc.php
-
-Now, it'll work. Ugh.
-
-Is there a better way to do this? Show me how.
+Is there a better way to do all this? Show me how.
