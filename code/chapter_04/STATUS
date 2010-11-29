@@ -1,10 +1,10 @@
 create_bucket.php  PASS
 list_bucket_objects_page.php PASS
-list_bucket_objects_page_thumbs.php FAIL
+list_bucket_objects_page_thumbs.php PASS
 list_bucket_objects.php PASS
 list_bucket_objects_raw.php PASS
 list_buckets_page.php PASS
 list_buckets.php PASS
 list_distributions.php PASS
-thumbnail_bucket.php FAIL
+thumbnail_bucket.php PASS
 upload_file.php PASS

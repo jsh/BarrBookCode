@@ -47,7 +47,7 @@ $fileList = array();
 foreach ($objects as $object)
 {
   $key = $object->Key;
-  $url = $s3->get_object_url($bucket, $key);
+  $url = $s3->get_object_url($bucket, $key, "60 seconds");
   $fileList[] = array('url' => $url, 'name' => $key, 'size' => number_format((int)$object->Size));
 }
 

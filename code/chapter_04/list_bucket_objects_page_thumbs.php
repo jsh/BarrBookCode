@@ -73,7 +73,7 @@ foreach ($objectThumbs as $objectThumb)
   }
   else
   {
-    $thumbs[$key] = $s3->get_object_url($bucketThumbs, $key);
+    $thumbs[$key] = $s3->get_object_url($bucketThumbs, $key, "60 seconds");
   }
 }
 
@@ -88,7 +88,7 @@ foreach ($objects as $object)
   }
   else
   {
-    $url = $s3->get_object_url($bucket, $key);
+    $url = $s3->get_object_url($bucket, $key, "60 seconds");
   }
 
   $thumbURL = isset($thumbs[$key]) ? $thumbs[$key] : '';
