@@ -1,0 +1,46 @@
+The Barr book has good instructions. I'll tweak them in trivial ways because of the evolution of the service (like changes to the console) and other nits (https, etc.).
+
+Log in to the AWS console and go to EC2 services
+
+https://console.aws.amazon.com/ec2/home
+
+You can say many good things about the AWS console but it is both slow and butt-ugly.
+
+"Who," you're thinking, "are you to talk?"
+
+Click on Key Pairs, over on the left
+
+https://console.aws.amazon.com/ec2/home#s=KeyPairs
+
+Create a key pair and download it
+
+$ mkdir ~/.ssh
+$ mv Downloads/*.pem ~/.ssh
+$ chmod 700 ~/.ssh
+$ chmod 400 ~/.ssh/*.pem  # why, after all, would you want to write it?
+
+Go back to the EC2 Dashboard and choose "Launch Instance"
+
+Go to "Community AMIs" and search for "quickstart".  Select the AMI that matches the book's: ami-2cb05345 (now called "phpquickstart-1.5").
+
+Take the defaults (use your newly created key when it asks), and launch the sucker.
+
+Go to the Instances page (look down the lhs of the console), and you should see it running.
+
+Select the instance, then on the tab that says Instance Actions, and choose "Connect."
+
+Cut-and-paste the command it shows into a terminal window. (You'll need the full path to the .pem file). With luck, you'll connect.
+
+Usually, though, my next question's, "Okay, why won't it connect?" Read the error messages.
+
+One possibility you might not think of is the AWS box's firewall. Go back to the console, select "Security Groups" and look at your instance's security group to see what the rules are. You want a line that says
+ssh tcp 22 22 0.0.0.0/0
+If that's not there, add it with the "Custom" button on the bottom. You should have an entry for HTTP, too.
+
+Another, that's annoying, is some instances give the error message, "Don't connect as root, connect as ec2-user." Oh, okay, fine. Recall the ssh command and change "root@" to "ec2-user@" .
+
+Once you get logged in, you've figured it out and you're on a machine-in-the-cloud.
+
+Burning money. Go back to the AWS Console, pick "Instances->Instance Actions" and terminate it.
+
+Not too hard.
