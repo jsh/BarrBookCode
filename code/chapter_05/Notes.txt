@@ -44,3 +44,4 @@ Once you get logged in, you've figured it out and you're on a machine-in-the-clo
 Burning money. Go back to the AWS Console, pick "Instances->Instance Actions" and terminate it.
 
 Not too hard.
+
