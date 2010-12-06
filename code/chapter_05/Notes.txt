@@ -54,6 +54,7 @@ You're on a machine-in-the-cloud.  Burning money. Go back to the AWS Console, pi
 
 Not too hard.
 
+<<<<<<< HEAD
 Provisioning the Machine
 ------------------------
 
@@ -141,5 +142,3 @@ Not bad.
 
 What Would You Pay? But Wait. There's More
 ------------------------------------------
-
-
