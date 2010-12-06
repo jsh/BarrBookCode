@@ -21,7 +21,9 @@ $ chmod 400 ~/.ssh/*.pem  # why, after all, would you want to write it?
 
 Go back to the EC2 Dashboard and choose "Launch Instance"
 
-Go to "Community AMIs" and search for "quickstart".  Select the AMI that matches the book's: ami-2cb05345 (now called "phpquickstart-1.5").
+Go to "Community AMIs" and search for "quickstart". Notice that this is a lot more than the list under the "Quick Start" tab. If you know why, expand this paragraph. 
+
+Select the AMI that matches the book's: ami-2cb05345 (now called "phpquickstart-1.5").
 
 Take the defaults (use your newly created key when it asks), and launch the sucker.
 
@@ -39,8 +41,105 @@ If that's not there, add it with the "Custom" button on the bottom. You should h
 
 Another, that's annoying, is some instances give the error message, "Don't connect as root, connect as ec2-user." Oh, okay, fine. Recall the ssh command and change "root@" to "ec2-user@" .
 
-Once you get logged in, you've figured it out and you're on a machine-in-the-cloud.
+Once you get logged in, you've figured it out
 
-Burning money. Go back to the AWS Console, pick "Instances->Instance Actions" and terminate it.
+Make the screen with your instance easy to find. The Barr book uses PS1="<dev>: "  Me, I also create a terminal profile that's a different color .
+
+Edit->Profiles->New, call it "Cloud" and base it on Default.
+Go to the Colors tab, uncheck "Use colors from system theme", then click on "Background color."
+I use Hues of multiples of 60 because that provides six, evenly spaced, very distinct terminal-profile colors.
+Terminal->Change Profile->Cloud then turns your simulator window that color. If you're colorblind, like 1 in 12 Northern European males, this won't work as well for you.
+
+You're on a machine-in-the-cloud.  Burning money. Go back to the AWS Console, pick "Instances->Instance Actions" and terminate it.
 
 Not too hard.
+
+Provisioning the Machine
+------------------------
+
+Launch another instance and connect to it. It's good practice.
+
+Packages
+--------
+
+The Barr book suggests "yum list | install" . Install something on the box that isn't there.
+
+I installed xeyes but, even if I log in with ssh -XY, it won't launch it because it can't find the display. If you know how to fix this, expand this paragraph. If you know this is unfixable (or unfixable without a lot of hassle), suggest something else to install.
+
+IP Addresses
+------------
+
+In the management console, select "Elastic IPs" and allocate an IP address.
+Click the checkbox to select that address, then use the "Instance Actions" tab to associate it with your running instance.
+
+Use the IP address to log into the machine.
+$ ssh -i ~/.ssh/testkey.pem root@50.16.237.69
+
+Use the IP address to show the machine's default web page.
+$ firefox http://50.16.237.69
+(This instance comes with a LAMP stack installed and running.)
+
+The web page you see is /home/webuser/helloworld/htdocs/index.php,
+which you can modify.
+
+
+Disk Space
+----------
+
+In the management console, select your instance and see what region it's in (e.g., us-east-1b).
+On the left, select Volumes->Create Volume, and create a 10GiB volume in that region. (An EBS volume can only attach to an instance in the same region.)
+Attach it to your instance, and notice the device it's attaching it as (e.g., /dev/sdf). If it reports it as unavailable or "attaching" press "Refresh" until it's happy.
+
+In your Cloud terminal, verify that it's there.
+
+<dev>: ls -l /dev/sdf
+brw-r----- 1 root disk 8,  1 2010-12-05 19:57 /dev/sda1
+brw-r----- 1 root disk 8,  2 2010-12-05 19:55 /dev/sda2
+brw-r----- 1 root disk 8,  3 2010-12-05 19:55 /dev/sda3
+brw-r----- 1 root disk 8, 80 2010-12-05 21:06 /dev/sdf
+
+This new volume is just a block device. You can do whatever you want with it.  I don't know what /dev/sda3 is. If you do, please fill in this paragraph.
+
+Make a file system on the new volume and mount it.
+
+<dev>: mkfs -F /dev/sdf
+<dev>: mkdir /mnt/newdisk
+<dev>: mount /dev/sdf /mnt/newdisk
+<dev>: echo hello, world > /mnt/newdisk/Hello
+<dev>: ls /mnt/newdisk
+Hello   lost+found
+
+
+Pulling Ourselves Up by Our Bootstraps
+--------------------------------------
+
+Okay, watch this.
+
+<dev>: yum install git php-pear
+...
+<dev>: pear channel-discover pear.amazonwebservices.com
+<dev>: pear install aws/sdk
+
+On this distro, it gets installed in /usr/share/pear, so
+<dev>: ln -s /usr/share/pear/AWSSDKforPHP/ /usr/share/php  # Cheesy, but it'll work.
+<dev>: pushd /usr/share/php/A*
+<dev>: cp config-sample.inc.php config.inc.php
+<dev>: vi config.inc.php # now edit in your key and secret key, just as you did on your non-cloud box.
+<dev>: cd /mnt/newdisk
+<dev>: git clone git://github.com/jsh/BarrBookCode.git
+...
+<dev>: cd BarrBookCode/code/chapter_04
+<dev>: ./list_buckets.php
+
+You'll see a list of your s3 buckets.
+
+You've installed and configured the Amazon Web Services SDK for PHP on your box in the cloud, then grabbed some sample code that uses it and run one of the programs.
+
+Where'd you grab it from? GitHub, which is another site in the cloud.
+
+Not bad.
+
+What Would You Pay? But Wait. There's More
+------------------------------------------
+
+
