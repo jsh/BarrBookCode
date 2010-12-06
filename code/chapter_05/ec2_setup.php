@@ -33,7 +33,7 @@ require_once('AWSSDKforPHP/sdk.class.php');
 $ec2 = new AmazonEC2();
 
 // Run an instance
-$options = array('KeyName' => "Louis' Keys",
+$options = array('KeyName' => "testkey",
 		 'InstanceType' => "m1.small");
 
 $res = $ec2->run_instances("ami-48aa4921", 1, 1, $options);
