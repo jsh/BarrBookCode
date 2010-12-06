@@ -140,5 +140,16 @@ Where'd you grab it from? GitHub, which is another site in the cloud.
 
 Not bad.
 
+Permanence
+----------
+
+Terminate the instance and release the IP address.
+
+Almost everything you did is now gone. Permanently.
+
+The EBS volume you created is still there. Spin up a new EC2 instance (in us-east-1b) and you can mount it. Your files on that volume -- Hello and BarrBookCode/ -- will still be there. The toolkit won't.
+
 What Would You Pay? But Wait. There's More
 ------------------------------------------
+
+
