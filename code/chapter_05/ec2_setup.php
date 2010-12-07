@@ -99,11 +99,6 @@ $opt['Size'] = 1;
 $res1 = $ec2->create_volume($availabilityZone, $opt);
 $res2 = $ec2->create_volume($availabilityZone, $opt);
 
-//jsh
-print("res1 is ");
-print_r($res1);
-print("\n");
-
 if (!$res1->isOK() || !$res2->isOK())
 {
   exit("Could not create EBS volumes.\n");
