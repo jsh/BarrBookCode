@@ -27,14 +27,14 @@ for i in $removes; do
   [ -e $i ] || echo "no $i" 1>&2
 done
 
-for i in $truncates; do
-  [ -f $i ] || echo "$i not a file" 1>&2
-done
-
 ## remove the removes, truncate the truncates
 rm -rf $removes
 for i in $truncates; do
-  : > $i
+  if [ -f $i ]; then
+    : > $i
+  else
+    echo "$i not a file" 1>&2
+  fi
 done
 
 exit 0
