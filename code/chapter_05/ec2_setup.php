@@ -94,8 +94,15 @@ print("Associated IP address ${publicIP} " .
       "with instance ${instanceId}.\n");
 
 // Create two EBS volumes in the instance's availability zone
-$res1 = $ec2->create_volume(1, $availabilityZone);
-$res2 = $ec2->create_volume(1, $availabilityZone);
+$opt = array();
+$opt['Size'] = 1;
+$res1 = $ec2->create_volume($availabilityZone, $opt);
+$res2 = $ec2->create_volume($availabilityZone, $opt);
+
+//jsh
+print("res1 is ");
+print_r($res1);
+print("\n");
 
 if (!$res1->isOK() || !$res2->isOK())
 {
