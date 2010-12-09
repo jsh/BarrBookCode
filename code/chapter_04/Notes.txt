@@ -3,16 +3,16 @@ Chapter 4: Storing Data with Amazon S3.
 
 The code in this directory now works for me.
 
-You should be able to read chapter 4 of the Barr book and run these example programs from it without a hiccup; you should, however, read the chapter to learn how to run them and why they work.
+You should be able to read chapter 4 of the Barr book and run these example programs from it without a hiccup; you should also read the chapter to learn how to run them and why they work.
 
 If you do have problems, please fix them and tell me how you did it.  You can even check your fixes into the GitHub repo, but you'll have to ask me for commit access. (Which I'll be delighted to give.)
 
 Most Scripts Run from Command Line
 -----------------------------------
 
-I've converted the scripts to work with the AWSSDKforPHP toolkit.  Most will now run correctly from the command line. 
+I've converted the scripts to work with the AWSSDKforPHP toolkit.  All the ones that are supposed to work from the command line will now do so correctly.
 
-Some scripts required minor bug fixes to run correctly.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is to minimumize changes, and maximize compatibility with the book.
+A few scripts required minor bug fixes.  In other cases, there are now easier ways to do the programs, but I've avoided the temptation to fix them if the current versions work. My goal is to minimumize changes, and maximize compatibility with the book.
 
 The book will tell you to set BOOK_BUCKET in include/book.inc.php.  Don't bother. All scripts let you specify a bucket on the command line.
 
@@ -46,6 +46,11 @@ sudo cp -r include *_page* /var/www
 firefox http://localhost/list_buckets_page.php
 firefox http://localhost/list_bucket_objects_page.php?bucket=<your-bucket-name-here>
 
+The command-line script thumbnail_bucket.php uses a bucketful of images to creates a second, bucketful of thumbnails.
+
+You can look at these with your browser, too.
+firefox http://localhost/list_bucket_objects_thumbs_page.php?bucket=<your-bucket-name-here>
+
 Is there a better way to do all this? Show me how.
 
 Looking at What You've Done
@@ -60,7 +65,9 @@ I recommend looking at them in the AWS Management Console and S3Fox, too.
 - You only have to roll your own if it's fun.
 - Now you have a better idea what you're looking at -- what AMC and S3Fox are doing under the covers.
 
-The AWMC is slower than molasses in winter. My browser regularly whines "A script on this page may be busy or is not responding." I just hit "Continue" -- it's not hung, it's slow. And I've seen things that don't work in S3Fox but do in the AMC. Both GUIs need manual refreshes whenever I do anything interesting.
+Nothing is perfect.
+
+The AWMC is slower than molasses in winter. My browser regularly whines "A script on this page may be busy or is not responding." I just hit "Continue." It's not hung, it's slow. And I've seen things that don't work in S3Fox but do in the AMC. Both GUIs need manual refreshes whenever I do anything interesting.
 
 But both give you far more info than the PHP scripts, as they stand.  Conversely, the PHP scripts are hackable to do what you want.. 
 
