@@ -1,4 +1,4 @@
-The Barr book has good instructions. I'll tweak them in trivial ways because of the evolution of the service (like changes to the console) and other nits (https, etc.).
+The Barr book has good instructions. I'll tweak them in trivial ways because of the evolution of the service (like changes to the AWS Console) and other nits (https, etc.).
 
 Log in to the AWS console and go to EC2 services
 
@@ -14,14 +14,16 @@ https://console.aws.amazon.com/ec2/home#s=KeyPairs
 
 Create a key pair and download it
 
-$ mkdir ~/.ssh
+$ mkdir -p ~/.ssh
 $ mv Downloads/*.pem ~/.ssh
 $ chmod 700 ~/.ssh
 $ chmod 400 ~/.ssh/*.pem  # why, after all, would you want to write it?
 
 Go back to the EC2 Dashboard and choose "Launch Instance"
 
-Go to "Community AMIs" and search for "quickstart". Notice that this is a lot more than the list under the "Quick Start" tab. If you know why, expand this paragraph. 
+Go to "Community AMIs" and search for "quickstart". (AMI is "Amazon Machine Image" .)
+
+This list has a lot more than the list under the "Quick Start" tab. If you know why, expand this paragraph. 
 
 Select the AMI that matches the book's: ami-2cb05345 (now called "phpquickstart-1.5").
 
@@ -39,7 +41,9 @@ One possibility you might not think of is the AWS box's firewall. Go back to the
 ssh tcp 22 22 0.0.0.0/0
 If that's not there, add it with the "Custom" button on the bottom. You should have an entry for HTTP, too.
 
-Another, that's annoying, is some instances give the error message, "Don't connect as root, connect as ec2-user." Oh, okay, fine. Recall the ssh command and change "root@" to "ec2-user@" .
+The "Security Groups" section is useful to think about for a minute.  AWS is designed to let you launch a lot of servers, not just one. Folks who do that probably have groups of computers with the same firewall settings - web servers that have one, payroll servers that have another, and so on. This design lets you set up security for roles, instead of just for computers. 
+
+Even if the firewall is set up correctly, some instances give the annoying error message, "Don't connect as root, connect as ec2-user." Oh, okay, fine. Recall the ssh command and change "root@" to "ec2-user@" .
 
 Once you get logged in, you've figured it out
 
@@ -48,13 +52,14 @@ Make the screen with your instance easy to find. The Barr book uses PS1="<dev>: 
 Edit->Profiles->New, call it "Cloud" and base it on Default.
 Go to the Colors tab, uncheck "Use colors from system theme", then click on "Background color."
 I use Hues of multiples of 60 because that provides six, evenly spaced, very distinct terminal-profile colors.
-Terminal->Change Profile->Cloud then turns your simulator window that color. If you're colorblind, like 1 in 12 Northern European males, this won't work as well for you.
+Terminal->Change Profile->Cloud then turns your simulator window that color.
+
+If you're colorblind, like 1 in 12 Northern European males, the colored-terminal trick won't work as easily for you and you'll have to pick your colors more carefully. If you're in this pickle, and you find a good solution, please put your tips on choosing colors into this document.
 
 You're on a machine-in-the-cloud.  Burning money. Go back to the AWS Console, pick "Instances->Instance Actions" and terminate it.
 
 Not too hard.
 
-<<<<<<< HEAD
 Provisioning the Machine
 ------------------------
 
@@ -65,15 +70,22 @@ Packages
 
 The Barr book suggests "yum list | install" . Install something on the box that isn't there.
 
-I installed xeyes but, even if I log in with ssh -XY, it won't launch it because it can't find the display. If you know how to fix this, expand this paragraph. If you know this is unfixable (or unfixable without a lot of hassle), suggest something else to install.
+I installed xeyes but, even if I log in with ssh -XY, it won't launch it because it can't find the display. If you know how to fix this, expand this paragraph. If you know this is unfixable (or unfixable without a lot of hassle), suggest something else to install that has some "Ooooh!" to it.
 
 IP Addresses
 ------------
 
+Look in the management console or use ifconfig to get the machine's IP addresses. Notice that it has a couple.
+One's visible from the outside, and is also part of the DNS name you use to login.
+
+The other is a 10-dot address that you can use to connect from another AWS instance ins the same availability zone.
+
 In the management console, select "Elastic IPs" and allocate an IP address.
 Click the checkbox to select that address, then use the "Instance Actions" tab to associate it with your running instance.
 
-Use the IP address to log into the machine.
+Now look at the IP addresses again. The old one is no longer good.  The new IP address can be attached to any instance you like, but then you need to use a DNS hosting service to associate a name with it. Amazon has announced one, but it lacks an AWS Console interface and I haven't used it. If you do, please write up instructions.
+
+Use the new IP address to log into the machine.
 $ ssh -i ~/.ssh/testkey.pem root@50.16.237.69
 
 Use the IP address to show the machine's default web page.
@@ -88,8 +100,8 @@ Disk Space
 ----------
 
 In the management console, select your instance and see what region it's in (e.g., us-east-1b).
-On the left, select Volumes->Create Volume, and create a 10GiB volume in that region. (An EBS volume can only attach to an instance in the same region.)
-Attach it to your instance, and notice the device it's attaching it as (e.g., /dev/sdf). If it reports it as unavailable or "attaching" press "Refresh" until it's happy.
+On the left, select Volumes->Create Volume, and create a 10GiB volume in that region. (The volume can only attach to an instance in the same region.)
+Attach it to your instance, and take note of the device it's attaching it as (e.g., /dev/sdf). If it reports it as unavailable or "attaching" press "Refresh" until it reports it's done.
 
 In your Cloud terminal, verify that it's there.
 
@@ -99,7 +111,13 @@ brw-r----- 1 root disk 8,  2 2010-12-05 19:55 /dev/sda2
 brw-r----- 1 root disk 8,  3 2010-12-05 19:55 /dev/sda3
 brw-r----- 1 root disk 8, 80 2010-12-05 21:06 /dev/sdf
 
-This new volume is just a block device. You can do whatever you want with it.  I don't know what /dev/sda3 is. If you do, please fill in this paragraph.
+The new volume is just a block device. You can do whatever you want with it. 
+
+It's called EBS (Elastic Block Storage), and its life is independent of the instance, just like a physical hard disk. You can unmount it, attach it to a different instance, then mount that, and you've done sneakernet-in-the-cloud.
+
+And until you delete it, you get charged for it, not by how much is stored on it but by the size. If it were a physical disk, it would takes more space to store a giant disk, so it would cost more. Same here.
+
+(I don't know what /dev/sda3 is about. If you do, please fill in this paragraph.)
 
 Make a file system on the new volume and mount it.
 
@@ -109,7 +127,6 @@ Make a file system on the new volume and mount it.
 <dev>: echo hello, world > /mnt/newdisk/Hello
 <dev>: ls /mnt/newdisk
 Hello   lost+found
-
 
 Pulling Ourselves Up by Our Bootstraps
 --------------------------------------
@@ -124,8 +141,8 @@ Okay, watch this.
 On this distro, it gets installed in /usr/share/pear, so
 <dev>: ln -s /usr/share/pear/AWSSDKforPHP/ /usr/share/php  # Cheesy, but it'll work.
 <dev>: pushd /usr/share/php/A*
-<dev>: cp config-sample.inc.php config.inc.php
-<dev>: vi config.inc.php # now edit in your key and secret key, just as you did on your non-cloud box.
+<dev>: cp config-sample.inc.php ~/.aws/sdk/config.inc.php
+<dev>: vi ~/.aws/sdk/config.inc.php # now edit-in your key and secret key, just as you did on your non-cloud box.
 <dev>: cd /mnt/newdisk
 <dev>: git clone git://github.com/jsh/BarrBookCode.git
 ...
@@ -147,9 +164,31 @@ Terminate the instance and release the IP address.
 
 Almost everything you did is now gone. Permanently.
 
-The EBS volume you created is still there. Spin up a new EC2 instance (in us-east-1b) and you can mount it. Your files on that volume -- Hello and BarrBookCode/ -- will still be there. The toolkit won't.
+The EBS volume you created is still there. Spin up a new EC2 instance (in us-east-1b) and attach and mount the volume. Your files on that volume -- Hello and BarrBookCode/ -- will still be there. The toolkit won't.
 
-What Would You Pay? But Wait. There's More
-------------------------------------------
+The instance you created had a root file system that disappeared along with the instance.
+
+Some AMIs have persistent root filesystems. They're built on EBS volumes and called "EBS-backed images" . If you look through the list of AMI images, you'll find plenty.
+
+(An EBS-backed image can also be stopped and re-started.)
+
+Note: Not all AMI images are free to use. Companies build custom, EBS-backed AMIs that they'll let you use, for a price. I need a clear pointer to an example here.
+
+On the other hand, there are an awful lot of free AMIs, and if you don't like any of them, making your own, custom AMI is trivial. You could even charge folks for using them. Amazon will do all the billing for you.
 
 
+What Would You Pay? But Wait. There's More.
+-------------------------------------------
+
+There's only one code example in Chapter 5, but it says it all.
+
+The script creates a running instance, with an OS and apps installed, gives it an IP address, and then creates a couple of one-gig disks and attaches them to that instance.
+
+When it's done, in under a minute, you have a new server, running and on the internet. If you'd done it from your own custom AMI, it would have exactly the configuration you designed into it.  Puppet? Chef? Capistrano? Who needs 'em?
+Just change the AMI and re-launch the servers with a script.
+
+All this in 127 lines of PHP.  Half of that is comments or blank lines.
+
+Imagine what it would have cost you in time and dollars to get to the same place.
+
+Look at this and you start to get a glimmer of how much you can do with fancier code.
