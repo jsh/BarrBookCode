@@ -53,10 +53,10 @@ while (true)
 
     // Store the page in S3
     $key = 'page_' . md5($pageURL) . '.html';
-    if (uploadObject($s3, BOOK_BUCKET, $key, $html, S3_ACL_PUBLIC))
+    if (uploadObject($s3, BOOK_BUCKET, $key, $html, AmazonS3::ACL_PUBLIC))
     {
       // Get URL in S3
-      $s3URL = $s3->get_object_url(BOOK_BUCKET, $key);
+      $s3URL = $s3->get_object_url(BOOK_BUCKET, $key, "60 seconds");
       print("  Uploaded page to S3 as '${key}'\n");
 
       // Form message to pass page along to parser

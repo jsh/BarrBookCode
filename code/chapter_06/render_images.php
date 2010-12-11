@@ -126,7 +126,7 @@ while (true)
     $key = 'page_image_' . md5($pageTitle) . '.png';
 
     if (uploadObject($s3, BOOK_BUCKET, $key, $imageBitsOut,
-         S3_ACL_PUBLIC))
+         AmazonS3::ACL_PUBLIC))
     {
       print("  Stored final image in S3 using key '${key}'\n");
 
