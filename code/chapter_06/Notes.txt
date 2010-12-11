@@ -1,0 +1,22 @@
+Chapter 6 is code to use the AWS Simple Queueing Service.
+
+Try the code in this order:
+
+list_queues.php			# no queues
+create_queues.php q1 q2 q3	# three queues
+list_queues.php			# should see them
+
+(The list_all_queues.php script looks like an older version of list_queues.php, and is superfluous.)
+
+All the queue names are URLs, though your browser can't actually get to them. (Try it if you want to see for yourself.)
+
+The names are a bit long, so set a variable name to one.
+
+Q=$(list_queues.php | sed 1q)   # capture the name of one queue
+
+Now use it.
+
+post_queue.php $Q m1 m2 m3 m4
+pull_queue.php $Q
+
+The messages may not be pulled in the order you posted them, and pull_queue.php is an infinite loop.
