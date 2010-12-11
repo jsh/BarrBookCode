@@ -31,6 +31,8 @@ error_reporting(E_ALL);
 require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
+
 // Create the SQS and S3 access objects
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
@@ -67,7 +69,7 @@ while (true)
       // Store the image in S3
       $key  = 'image_' . md5($imageURL) . '.png';
 
-      if (uploadObject($s3, BOOK_BUCKET, $key, $imageThumb))
+      if (uploadObject($s3, $bucket, $key, $imageThumb))
       {
         print("  Stored image in S3 using key '${key}'\n");
         $s3ImageKeys[] = $key;

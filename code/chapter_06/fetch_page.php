@@ -29,6 +29,8 @@ error_reporting(E_ALL);
 require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
+
 // Create the SQS and S3 access objects
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
@@ -53,10 +55,10 @@ while (true)
 
     // Store the page in S3
     $key = 'page_' . md5($pageURL) . '.html';
-    if (uploadObject($s3, BOOK_BUCKET, $key, $html, AmazonS3::ACL_PUBLIC))
+    if (uploadObject($s3, $bucket, $key, $html, AmazonS3::ACL_PUBLIC))
     {
       // Get URL in S3
-      $s3URL = $s3->get_object_url(BOOK_BUCKET, $key, "60 seconds");
+      $s3URL = $s3->get_object_url($bucket, $key, "60 seconds");
       print("  Uploaded page to S3 as '${key}'\n");
 
       // Form message to pass page along to parser

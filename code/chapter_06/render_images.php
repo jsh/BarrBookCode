@@ -32,6 +32,8 @@ error_reporting(E_ALL);
 require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
+
 // Define image layout constants
 define('BORDER_LEFT', 12);
 define('BORDER_RIGHT', 12);
@@ -91,7 +93,7 @@ while (true)
     {
       // Fetch the image
       print("  Fetch image '${imageKey}'\n");
-      $image = $s3->get_object(BOOK_BUCKET, $imageKey);
+      $image = $s3->get_object($bucket, $imageKey);
 
       // Convert it to GD format
       $imageBits = ImageCreateFromString($image->body);
@@ -125,7 +127,7 @@ while (true)
     // Store the final image in S3
     $key = 'page_image_' . md5($pageTitle) . '.png';
 
-    if (uploadObject($s3, BOOK_BUCKET, $key, $imageBitsOut,
+    if (uploadObject($s3, $bucket, $key, $imageBitsOut,
          AmazonS3::ACL_PUBLIC))
     {
       print("  Stored final image in S3 using key '${key}'\n");
