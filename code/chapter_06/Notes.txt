@@ -16,7 +16,17 @@ Q=$(list_queues.php | sed 1q)   # capture the name of one queue
 
 Now use it.
 
-post_queue.php $Q m1 m2 m3 m4
+post_queue.php $Q Message{1..20}
 pull_queue.php $Q
 
 The messages may not be pulled in the order you posted them, and pull_queue.php is an infinite loop.
+
+The bad news is that this won't work:
+
+pull_queue.php $Q &> pull.OUT &
+post_queue.php $Q m{1..10}
+
+The pull blocks and the process stops. If you know why this shouldn't work (or doesn't, even if it should), expand this paragraph.
+
+The book encourages you to use a pair of terminals, launching the pull_queue.php in one, and posting from the other.
+
