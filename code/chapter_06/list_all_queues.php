@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?
 /*
- * ch5_list_queues.php
+ * ch6_list_queues.php
  *
  * List first 1000 SQS queues.
  *
@@ -25,8 +25,8 @@
 
 error_reporting(E_ALL);
 
-require_once('tarzan.class.php');
-require_once('book.php');
+require_once('AWSSDKforPHP/sdk.class.php');
+require_once('include/book.inc.php');
 
 // Create the SQS access object
 $sqs = new AmazonSQS();
