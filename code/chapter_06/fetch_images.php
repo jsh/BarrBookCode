@@ -37,11 +37,25 @@ $bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(IMAGE_QUEUE);
+if ($res->isOK())
+{
+  $imageQueueURL = urlFromQueueObject($res);
+}
+
+$res = $sqs->create_queue(RENDER_QUEUE);
+if ($res->isOK())
+{
+  $renderQueueURL = urlFromQueueObject($res);
+}
+
+
 // Pull, process, post
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, IMAGE_QUEUE);
+  $message = pullMessage($sqs, $imageQueueURL);
 
   if ($message != null)
   {
@@ -93,13 +107,13 @@ while (true)
            'PageTitle' => $pageTitle));
 
       // Pass the page along to the image renderer
-      $res = $sqs->send_message(RENDER_QUEUE, $message);
+      $res = $sqs->send_message($renderQueueURL, $message);
       print("  Sent page to image renderer\n");
 
       if ($res->isOK())
       {
         // Delete the message
-        $sqs->delete_message(IMAGE_QUEUE, $receiptHandle);
+        $sqs->delete_message($imageQueueURL, $receiptHandle);
         print("  Deleted message from fetch queue\n");
       }
 

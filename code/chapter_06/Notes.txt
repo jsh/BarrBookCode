@@ -47,3 +47,31 @@ The servers use S3 for interchange of large objects, in the same way you might u
 
 
 There's one general-purpose utility, crawl_queue_status.php, which you can use to monitor the current state of the queues.
+
+Here's the flow
+
+  load_crawl_urls.php
+	|
+	V
+    URL_QUEUE
+	|
+	V
+  fetch_page.php
+	|
+	V
+    PARSE_QUEUE
+	|
+	V
+  parse_page.php
+	|
+	V
+    IMAGE_QUEUE
+	|
+	V
+  fetch_images.php
+	|
+	V
+    RENDER_QUEUE
+	|
+	V
+  render_images.php

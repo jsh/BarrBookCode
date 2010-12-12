@@ -47,11 +47,18 @@ define('GAP_SIZE', 6);
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(RENDER_QUEUE);
+if ($res->isOK())
+{
+  $renderQueueURL = urlFromQueueObject($res);
+}
+
 // Pull, process
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, RENDER_QUEUE);
+  $message = pullMessage($sqs, $renderQueueURL);
 
   if ($message != null)
   {
@@ -135,7 +142,7 @@ while (true)
       print_r($messageDetail['History']);
 
       // Delete the message
-      $sqs->delete_message(RENDER_QUEUE, $receiptHandle);
+      $sqs->delete_message($renderQueueURL, $receiptHandle);
       print("  Deleted message from render queue\n");
     }
 
