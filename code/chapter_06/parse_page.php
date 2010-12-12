@@ -55,13 +55,15 @@ while (true)
 {
   // Pull the message from the queue
   $message = pullMessage($sqs, $parseQueueURL);
-  
+
   if ($message != null)
   {
     // Extract message detail
     $messageDetail = $message['MessageDetail'];
     $receiptHandle = (string)$message['ReceiptHandle'];
     $pageURL       = $messageDetail['Data'];
+
+    $pageURL = preg_replace('/\?.*$/', '', $pageURL); // jsh: very questionable hack
 
     // Fetch and parse the page
     print("Processing URL '${pageURL}':\n");
