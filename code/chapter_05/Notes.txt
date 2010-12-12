@@ -138,9 +138,8 @@ Okay, watch this.
 <dev>: pear channel-discover pear.amazonwebservices.com
 <dev>: pear install aws/sdk
 
-On this distro, it gets installed in /usr/share/pear, so
-<dev>: ln -s /usr/share/pear/AWSSDKforPHP/ /usr/share/php  # Cheesy, but it'll work.
-<dev>: pushd /usr/share/php/A*
+On this distro, it gets installed in /usr/share/pear.
+<dev>: pushd /usr/share/pear/A*
 <dev>: cp config-sample.inc.php ~/.aws/sdk/config.inc.php
 <dev>: vi ~/.aws/sdk/config.inc.php # now edit-in your key and secret key, just as you did on your non-cloud box.
 <dev>: cd /mnt/newdisk
