@@ -35,11 +35,25 @@ $bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(URL_QUEUE);
+if ($res->isOK())
+{
+  $urlQueueURL = urlFromQueueObject($res);
+}
+
+$res = $sqs->create_queue(PARSE_QUEUE);
+if ($res->isOK())
+{
+  $parseQueueURL = urlFromQueueObject($res);
+}
+
+
 // Pull, process, post
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, URL_QUEUE);
+  $message = pullMessage($sqs, $urlQueueURL);
   
   if ($message != null)
   {
@@ -73,13 +87,13 @@ while (true)
            'History' => $history));
 
       // Pass the page along to the parser
-      $res = $sqs->send_message(PARSE_QUEUE, $message);
+      $res = $sqs->send_message($parseQueueURL, $message);
       print("  Sent page to parser\n");
 
       if ($res->isOK())
       {
         // Delete the message
-        $sqs->delete_message(URL_QUEUE, $receiptHandle);
+        $sqs->delete_message($urlQueueURL, $receiptHandle);
         print("  Deleted message from URL queue\n");
       }
       print("\n");
@@ -92,3 +106,4 @@ while (true)
 }
 
 ?>
+
