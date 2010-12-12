@@ -37,6 +37,12 @@ if ($argc < 2)
 // Create the SQS access object
 $sqs = new AmazonSQS();
 
+$res = $sqs->create_queue(URL_QUEUE);
+if ($res->isOK())
+{
+  $queueURL = urlFromQueueObject($res);
+}
+
 // Load each URL
 for ($i = 1; $i < $argc; $i++)
 {
@@ -48,7 +54,7 @@ for ($i = 1; $i < $argc; $i++)
         'Data'   => $argv[$i],
         'History' => $histItem));
   // Post message
-  $res = $sqs->send_message(URL_QUEUE, $message);
+  $res = $sqs->send_message($queueURL, $message);
 
   if ($res->isOK())
   {

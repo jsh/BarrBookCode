@@ -1,11 +1,11 @@
 
-crawl_queue_status.php
+crawl_queue_status.php		works
 create_queues.php		works
 fetch_images.php
 fetch_page.php
-list_all_queues.php		works. Superfluous?
+list_all_queues.php		works. Superfluous? Deleted.
 list_queues.php			works.
-load_crawl_urls.php
+load_crawl_urls.php		works.
 parse_page.php
 post_queue.php			works
 pull_queue.php			works
