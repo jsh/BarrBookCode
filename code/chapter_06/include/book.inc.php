@@ -321,4 +321,20 @@ function pullMessage($sqs, $queue)
 }
 
 
+/*
+ * urlFromQueueObject -
+ *
+ *  Get an AWS (string) URL from a valid queue object
+ *  Assumes argument is a valid result from a successful create_queue call
+ *  Does no error checking.
+ *
+ */
+
+function urlFromQueueObject($queueObject)
+{
+  $queueNameString = $queueObject->body->CreateQueueResult->QueueUrl;
+  return $queueNameString;
+}
+
+
 ?>

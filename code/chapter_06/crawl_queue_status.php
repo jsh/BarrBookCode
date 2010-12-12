@@ -51,8 +51,8 @@ foreach ($queues as $queueName)
   $res = $sqs->create_queue($queueName);
   if ($res->isOK())
   {
-    $queueNameString = $res->body->CreateQueueResult->QueueUrl;
-    $size     = $sqs->get_queue_size($queueNameString);
+    $queueURL = urlFromQueueObject($res);
+    $size     = $sqs->get_queue_size($queueURL);
     printf("%-12s  ", number_format($size));
   }
 }
