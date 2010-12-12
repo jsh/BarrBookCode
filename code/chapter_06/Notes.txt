@@ -1,5 +1,8 @@
 Chapter 6 is code to use the AWS Simple Queueing Service.
 
+Basic SQS
+---------
+
 Try the code in this order:
 
 list_queues.php			# no queues
@@ -30,3 +33,17 @@ The pull blocks and the process stops. If you know why this shouldn't work (or d
 
 The book encourages you to use a pair of terminals, launching the pull_queue.php in one, and posting from the other.
 
+The Big Appl
+------------
+
+The rest of the chapter develops a multi-server application, in which five servers are coupled through four SQS queues.
+
+A useful analogy is to a pipeline of five processes connected, in a pipeline, with four pipes.
+Jobs traverse the servers, in order, the way they would in a Linux pipeline, but queues play the role of the pipes.
+The servers use S3 for interchange of large objects, in the same way you might use files for IPC between processes in a shell script.
+
+(Developers will resort to S3 objects more often than they would to files because queue messages have size limitations.)
+
+
+
+There's one general-purpose utility, crawl_queue_status.php, which you can use to monitor the current state of the queues.
