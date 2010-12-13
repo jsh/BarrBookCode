@@ -28,10 +28,22 @@ error_reporting(E_ALL);
 
 require_once('AWSSDKforPHP/sdk.class.php');
 
+// If called as "pull_queue.php --no-delete <queuename>"
+// show the queue contents but don't clear the queue.
+
+$delete = 'true';
+
+if ( ($argc > 1) && ($argv[1] == "--no-delete") )
+{
+	$delete = 'false';
+	array_splice($argv, 1, 1);
+	$argc--;
+}
+
 // Make sure that an argument was supplied
 if ($argc != 2)
 {
-  exit("Usage: " . $argv[0] . " QUEUE_NAME\n");
+  exit("Usage: " . $argv[0] . " [--no-delete] QUEUE_NAME\n");
 }
 
 // Create the SQS access object
@@ -53,7 +65,11 @@ while (true)
 
       print("Message: '${messageBody}'\n");
 
-      $sqs->delete_message($queueName, $receiptHandle);
+      if ($delete == 'true')
+      {
+        $sqs->delete_message($queueName, $receiptHandle);
+      }
+ 
     }
     else
     {
