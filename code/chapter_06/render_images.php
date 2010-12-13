@@ -32,6 +32,11 @@ error_reporting(E_ALL);
 require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
+if ($argc != 2)
+{
+  exit("Usage: " . $argv[0] . " bucket name\n");
+}
+
 $bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 
 // Define image layout constants
