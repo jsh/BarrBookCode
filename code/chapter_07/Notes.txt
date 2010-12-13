@@ -1,8 +1,8 @@
 Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
 
-We're shifting to Java, and need to install a bunch of Amazon toolkits before we go anywhere.  Also the JRE.
-
 Get the Tools
+
+You'll need to install a bunch of Amazon, CLI toolkits before we go anywhere.
 
 In general, you'll find AWS toolkits here:
 
@@ -18,4 +18,20 @@ Elastic Load Balancing API Tools
 The script BarrBookCode/bin/get-AWS-CLI-toolkits.sh downloaded the toolkits I needed for this chapter.
 You can use it, too, but it will go out-of-date as the toolkits get updated, which is often, so you'll need to update it as that happens. If you do that, please let me know so we can get it into the GitHub copy.
 
-You'll need a JRE. My Ubuntu box had it by default.
+We're also going to do a bunch of Java, so you'll need to install a bunch of Amazon toolkits before we go anywhere.  Also the JRE.
+
+"Oh, no! I don't know Java."
+
+Me neither. Get over it.
+
+You'll need a JRE. My Ubuntu box had it by default. You'll also need jmeter. On my Ubuntu box that's
+
+sudo apt-get install jmeter-java
+
+Once jmeter is installed, you have to do a bunch of clicky stuff to create a "test plan." It's in the book and I'm not going to re-type it here.
+
+Is it a complete PITA that you can only do it as point-and-click? Yes, indeedy. Do you know a better way? Excellent. Please use your knowledge to re-write this paragraph.
+
+The looong example at the end of the chapter, which shows off both Auto Scaling and Elastic Load Balancing, says that there is not yet PHP toolkit support for these two features.
+
+There is now.  Look in AWSSDKforPHP/services and you'll see as.class.php and elb.class.php.
