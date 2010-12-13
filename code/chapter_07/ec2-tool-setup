@@ -1,8 +1,6 @@
 # This needs to get pointed at and sourced
 
-PATH+=:$(dirname $(readlink -f $0))
-
-source gripe.sh
+source ../../bin/gripe.sh
 
 export EC2_HOME=<path_to_tools>
 export AWS_ELB_HOME=<path_to_tools>
