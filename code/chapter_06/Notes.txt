@@ -1,6 +1,7 @@
 Building a Scalable Architecture with Amazon SQS
 
-Chapter 6: Building a Scalable Architecture with Amazon SQS
+Chapter 6: Building a Scalable Architecture with Chapter 6: Building a Scalable
+Architecture with Amazon SQS
 
  
 
@@ -99,8 +100,9 @@ use files for IPC between processes in a shell script.
 
  
 
-(Developers will resort to S3 objects more often than they would to files
-because queue messages have size limitations.)
+You will find yourself using S3 objects more often than you would files because
+queue messages have size limitations, while pipes don’t.  Another way to say
+this is, “Unix/Linux pipes are an amazing design that we all take for granted.”
 
  
 
@@ -113,57 +115,48 @@ Here's the flow:
 
  
 
- load_crawl_urls.php
+load_crawl_urls.php
 
-        |
-
-        V
+|
 
    URL_QUEUE
 
-        |
-
-        V
+|
 
  fetch_page.php
 
-        |
-
-        V
+|
 
    PARSE_QUEUE
 
-        |
-
-        V
+|
 
  parse_page.php
 
-        |
-
-        V
+|
 
    IMAGE_QUEUE
 
-        |
-
-        V
+|
 
  fetch_images.php
 
-        |
-
-        V
+|
 
    RENDER_QUEUE
 
-        |
-
-        V
+|
 
  render_images.php
 
  
+
+I colored the queues blue because it rhymes. “Blue? Queue!”  Servers are orange
+for the same reason.
+
+Of these, fetch_images.php, fetch_page.php, and render_images.php require an
+S3-bucket name for an argument. Use one of your existing buckets, or make a new
+one with the utilities from Chapter 4.
 
  
 
