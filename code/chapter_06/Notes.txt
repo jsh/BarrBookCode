@@ -1,77 +1,171 @@
-Chapter 6 is code to use the AWS Simple Queueing Service.
+Building a Scalable Architecture with Amazon SQS
+
+Chapter 6: Building a Scalable Architecture with Amazon SQS
+
+ 
+
+SQS is the Simple Queueing Service.
+
+ 
 
 Basic SQS
----------
+
+ 
 
 Try the code in this order:
 
-list_queues.php			# no queues
-create_queues.php q1 q2 q3	# three queues
-list_queues.php			# should see them
+ 
 
-(The list_all_queues.php script looks like an older version of list_queues.php, and is superfluous.)
+list_queues.php                        # no queues
 
-All the queue names are URLs, though your browser can't actually get to them. (Try it if you want to see for yourself.)
+create_queues.php q1 q2 q3        # three queues
+
+list_queues.php                        # should see them
+
+ 
+
+(There was also a list_all_queues.php script, but it was just a superfluous,
+older version of list_queues.php, so I removed it to cut down on confusion.)
+
+ 
+
+All the queue names are URLs, though your browser can't actually get to them.
+(Try it if you want to see for yourself.)
+
+ 
 
 The names are a bit long, so set a variable name to one.
 
-Q=$(list_queues.php | sed 1q)   # capture the name of one queue
+ 
+
+Q=$(list_queues.php | sed 1q)   # capture the name of one queue
+
+ 
 
 Now use it.
 
+ 
+
 post_queue.php $Q Message{1..20}
+
 pull_queue.php $Q
 
-The messages may not be pulled in the order you posted them, and pull_queue.php is an infinite loop.
+ 
+
+The messages may not be pulled in the order you posted them, and pull_queue.php
+is an infinite loop.
+
+ 
 
 The bad news is that this won't work:
 
+ 
+
 pull_queue.php $Q &> pull.OUT &
+
 post_queue.php $Q m{1..10}
 
-The pull blocks and the process stops. If you know why this shouldn't work (or doesn't, even if it should), expand this paragraph.
+ 
 
-The book encourages you to use a pair of terminals, launching the pull_queue.php in one, and posting from the other.
+The pull blocks and the process stops. If you know why this shouldn't work (or
+doesn't, even if it should), expand this paragraph.
+
+ 
+
+The book encourages you to use a pair of terminals, launching the
+pull_queue.php in one, and posting from the other.
+
+ 
 
 The Big Appl
-------------
 
-The rest of the chapter develops a multi-server application, in which five servers are coupled through four SQS queues.
+ 
 
-A useful analogy is to a pipeline of five processes connected, in a pipeline, with four pipes.
-Jobs traverse the servers, in order, the way they would in a Linux pipeline, but queues play the role of the pipes.
-The servers use S3 for interchange of large objects, in the same way you might use files for IPC between processes in a shell script.
+The rest of the chapter develops a multi-server application, in which five
+servers are coupled through four SQS queues.
 
-(Developers will resort to S3 objects more often than they would to files because queue messages have size limitations.)
+ 
 
+A useful analogy is to a pipeline of five processes connected, in a pipeline,
+with four pipes.
 
+Jobs traverse the servers, in order, the way they would in a Linux pipeline,
+but queues play the role of the pipes.
 
-There's one general-purpose utility, crawl_queue_status.php, which you can use to monitor the current state of the queues.
+ 
 
-Here's the flow
+The servers use S3 for interchange of large objects, in the same way you might
+use files for IPC between processes in a shell script.
 
-  load_crawl_urls.php
-	|
-	V
-    URL_QUEUE
-	|
-	V
-  fetch_page.php
-	|
-	V
-    PARSE_QUEUE
-	|
-	V
-  parse_page.php
-	|
-	V
-    IMAGE_QUEUE
-	|
-	V
-  fetch_images.php
-	|
-	V
-    RENDER_QUEUE
-	|
-	V
-  render_images.php
+ 
+
+(Developers will resort to S3 objects more often than they would to files
+because queue messages have size limitations.)
+
+ 
+
+There's one general-purpose utility, crawl_queue_status.php, which you can use
+to monitor the current state of the queues.
+
+ 
+
+Here's the flow:
+
+ 
+
+ load_crawl_urls.php
+
+        |
+
+        V
+
+   URL_QUEUE
+
+        |
+
+        V
+
+ fetch_page.php
+
+        |
+
+        V
+
+   PARSE_QUEUE
+
+        |
+
+        V
+
+ parse_page.php
+
+        |
+
+        V
+
+   IMAGE_QUEUE
+
+        |
+
+        V
+
+ fetch_images.php
+
+        |
+
+        V
+
+   RENDER_QUEUE
+
+        |
+
+        V
+
+ render_images.php
+
+ 
+
+ 
+
+Edit this page (if you have permission)–Published by Google Docs–Report Abuse
+–Updated automatically every 5 minutes

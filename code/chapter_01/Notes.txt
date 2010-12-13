@@ -1,0 +1,414 @@
+AWS Step-by-Step
+
+Step-by-Step Amazon Web Services
+
+ 
+
+Getting Started
+
+ 
+
+What follows works on my up-to-date version of Ubuntu 10.10, Maverick Meerkat.
+"Works for me." If it doesn't work on your system, don't complain.  Instead,
+just update these notes so they work for you, too.
+
+ 
+
+Back when their notices went out by surface mail, the Front-Range Unix Users
+Group would accept donations of stamps, but not of money for stamps. If they
+accepted money, someone would still have to go get the stamps, and that was a
+hassle.
+
+Grab the Book
+
+ 
+
+ + Get a copy of Jeff Barr's book.
+
+ 
+
+You can get a dead-tree version overnight. The Kindle copy arrives immediately,
+and it's cheaper. If you have a Kindle account, you can now install Kindle for
+Your PC under Wine, to read Kindle books on your laptop, in the dark.
+
+ 
+
+It’s possible you won’t need the book to go through the mechanical steps I set
+out, but you also won’t have any idea why you’re doing what follows, and what’s
+the point of that? You’re trying to learn something, here.
+
+ 
+
+Plus, it really is a good book.
+
+ 
+
+Jeff Barr is Amazon’s Lead Web Services Evangelist. He can talk and write about
+AWS and gets daily practice. Other folks in the know review his material.  And
+he has the inside scoop. Heck. He probably makes the inside scoop.
+
+ 
+
+The topic’s reached escape velocity, so even though it was published in
+September, 2010, some things in the book are already wrong. The author praises
+Firefox’s ElasticFox extension, which won’t even work with the newest Firefox.
+He says in his introduction that he had to add chapters on new services AWS
+introduced while he was writing. He bases all his code on the CloudFusion
+toolkit, which has already been replaced by the not-completely-compatible
+AWSSDKforPHP. And so on.
+
+ 
+
+It’s still as close as you’re going to get to an up-t0-date and accurate
+introductory text.
+
+ 
+
+You can go through the book without looking at these instructions, figuring out
+all the niggling, little details that follow by yourself. I had to do that. The
+details took a lot of time and didn’t seem like learning to me, which is why
+I’m laying them out for you.
+
+ 
+
+You can even ignore both these instructions and the book, and just paw through
+the AWS web site, until either you learn something, or you give up,
+overwhelmed.
+
+ 
+
+I’m just offering to save you some needless thrashing.
+
+ 
+
+But given that AWS is changing under Jeff Barr’s feet, it will under ours, too.
+ This document will go out of date, quickly. Please patch it as it does.
+
+Set Up an Amazon Web Services Account
+
+ 
+
+ + Get an Amazon account.
+
+ 
+
+AWS bills your Amazon account.  For a while, they billed my credit card about
+$0.03/month for a disk image I neglected to delete.  If you’re one of the 13
+people in the country who don’t have an Amazon account, and won’t get one for
+whatever reason, you won’t have  an AWS account, either.
+
+ 
+
+ + Sign up for an Amazon Web Services account.
+
+ 
+
+It costs, but it's cheap. If you're a new user, it's free, as long as you don’t
+use it too much.  You’ll still need to tie it to your normal, Amazon account,
+so be prepared to do that.
+
+ 
+
+ + Subscribe to services
+
+ 
+
+You have to subscribe to each service you want to use, too. And there are lots
+to choose from.
+
+ 
+
+For starters, you’ll want to subscribe to Amazon S3 , because you’ll try it out
+in a minute, below, to check that everything’s working.  Sign up for Amazon
+EC2, too. You’ll use it, and signing up for a second service will show you that
+they’re all more-or-less the same.
+
+ 
+
+Why isn’t there a single sign-up for everything? I don’t know.
+
+ 
+
+ + Add the S3Fox extension to Firefox.
+
+ 
+
+Me, I normally use Chrome, so I've set up Firefox to be my AWS-browser. My
+Firefox home page has tabs for the AWS things I use, like this:
+
+ 
+
+https://console.aws.amazon.com/ec2/home|https://aws.amazon.com/
+
+Chrome lets you synchronize extensions on all the copies you use, so installing
+this on one box, installs it on all of them.  If you know how to do this in
+Firefox, please put it in here.
+
+Set Up Your Computer
+
+ 
+
+ + Put your creds into ~/.awssecret .
+
+ 
+
+Go to the access-credentials section of your account tab and copy the
+credentials -- first the AWS_KEY, then the AWS_SECRET_KEY.
+
+ 
+
+When you're done it'll look like this
+
+ 
+
+$ cat ~/.awssecret
+
+1234567890ABCDEFGHIJ
+
+AbCdEfgHiJkLmNoPqRsTuVwXyZ1!2@3#4$5%6^7&
+
+ 
+
+ + Make it readable only by you.
+
+ 
+
+$ chmod 600 ~/.awssecret
+
+ 
+
+ + Install some packages you'll need.
+
+ 
+
+For Ubuntu:
+
+ 
+
+$ sudo apt-get install git php-pear php5-gd
+
+ 
+
+Note that older systems call the first package git-core, not git, because git
+was already a package for some little-used GNU tools. At some point, this was
+deemed a nuisance, and package renaming ensued. Check to make sure you’re
+gitting the one you need.
+
+ 
+
+$ apt-cache show git | grep Description
+
+Description: fast, scalable, distributed revision control system
+
+ 
+
+You’ll use git in a second, below, to grab some code samples off of the web.
+You don’t need to learn it: you’ll only need to type one command.
+
+ 
+
+The PHP packages are because all the programming is in PHP.
+
+ 
+
+Perhaps you're thinking, "But I don't know PHP." That's okay. I don't either.
+It's part of the great family of C-like languages. Modifying the code to change
+it a little, or even pasting a whole program together out of fragments of the
+code sample is easy enough. When it isn't, Google is your friend.
+
+ 
+
+Perhaps you’re thinking, “But I do know PHP, and some things you’re doing are
+dopey.” Even better! Fix the document to show the next reader how to do them
+right.
+
+ 
+
+The packages install a command-line interpreter, /usr/bin/php, and a
+command-line interface to the PHP Extension and Application Repository, /usr/
+bin/pear. The last package is a php interface to an image-manipulation library,
+GD. You’ll use it  in some of the book’s sample PHP scripts, which are, I will
+say, pretty cool.
+
+ 
+
+ + Install AWSSDKforPHP.
+
+ 
+
+$ sudo pear channel-discover pear.amazonwebservices.com
+
+$ sudo pear install aws/sdk
+
+$ cd /usr/share/php/AWSSDKforPHP/_compatibility_test
+
+ 
+
+On the Mac platform, the path is /usr/lib/php/AWSSDKforPHP, on some other Linux
+distros, it’s /usr/share/pear/AWSSDKforPHP. If it gets installed in some third
+place for you, improve this document.
+
+ 
+
+$ php sdk_compatibility_test_cli.php
+
+ 
+
+The last command looks to see whether you have everything else you need on your
+system. If it tells you you’re missing stuff, install it.
+
+ 
+
+For example, my run told me I had minimal compatibility -- some things were
+missing, but it was “no big deal.” The script lists what it’s checked, and the
+first missing item was “APC.” Having no idea what that was, I did apt-cache
+search apc | grep APC (apt-cache search is case-insensitive), and found this:
+
+ 
+
+php-apc - APC (Alternative PHP Cache) module for PHP 5
+
+ 
+
+After a simple sudo apt-get install php-apc , the compatibility test now tells
+me I can take advantage of all possible features.
+
+ 
+
+Warning: More is not better. Next, I tried adding something else the test told
+me was missing: XCache.  That’s supplied by the package php5-xcache so I
+intalled it. Why not?
+
+ 
+
+Php stopped running.  It would only complain that apc and xcache were
+incompatible and segfault.  I removed the package, with sudo apt-get remove
+php5-xcache , but even that wasn’t enough.  
+
+ 
+
+$ php -v
+
+Failed loading /usr/lib/php5/20090626+lfs/xcache.so:  /usr/lib/php5/
+20090626+lfs/xcache.so: cannot open shared object file: No such file or
+directory
+
+ 
+
+The remove doesn’t remove everything. After some poking, I removed /etc/php5/
+cli/ conf.d/xcache.ini , and everyone was happy again.
+
+ 
+
+If you think I should have repaired my mistake differently, please put the
+correct fix in here.
+
+ 
+
+ + Download the code samples.
+
+ 
+
+I started with Jeff Barr's original, which you can find here, but I've modified
+it to fix bugs, to use AWSSDKforPHP, and so on. You can get the ported code,
+with some additional material, like this:
+
+ 
+
+$ git clone git://github.com/jsh/BarrBookCode.git
+
+$ PATH+=:$PWD/BarrBookCode/bin
+
+ 
+
+The second line makes some utilities available. I find it’s easier to navigate
+with CDPATH+=:$PWD/BarrBookCode/code . If you, too, like that sort of thing,
+that’s the sort of thing you’ll like.
+
+ 
+
+ + Tell the AWSSDKforPHP your AWS_KEY and AWS_SECRET_KEY.
+
+ 
+
+There’s a short way and a long way.  First, the short way:
+
+ 
+
+     $ setup-AWS-config
+
+ 
+
+It’s one of the programs in BarrBookCode/bin/ .
+
+ 
+
+Next, the long way, which does the same thing:
+
+ 
+
+$ mkdir -p ~/.aws/sdk
+
+$ cp /usr/share/php/AWSSDKforPHP/config-sample.inc.php ~/.aws/sdk/
+config.inc.php
+
+$ chmod 600 ~/.aws/sdk/config.inc.php
+
+$ vi ~/.aws/sdk/config.inc.php
+
+ 
+
+Edit this config file, changing the two lines that look like this
+
+define('AWS_KEY', '');
+
+define('AWS_SECRET_KEY', '');
+
+ 
+
+to put in your keys, like this:
+
+
+define('AWS_KEY', '1234567890ABCDEFGHIJ');
+
+define('AWS_SECRET_KEY', 'AbCdEfgHiJkLmNoPqRsTuVwXyZ1!2@3#4$5%6^7&');
+
+ 
+
+The short version does all these steps, but you can do ‘em by hand if you like
+seeing what’s going on.
+
+ 
+
+ + Now (finally!) let’s try executing code.
+
+$ cd BarrBookCode/code/chapter_04
+
+$ ./list_buckets
+
+You should get a listing of all your Amazon S3 buckets. If you don’t have any
+yet you won’t see much, but you shouldn’t see a bunch of error messages from
+PHP, either. If you see PHP errors,  find and fix the problem(s) before going
+further. Then update this document.
+
+What’s next?
+
+Now that you have the both the code and the book, and you have the reassurance
+that something works, you can start plowing through the chapters and trying
+(and tweaking) the examples.
+
+ 
+
+The code is arranged by chapter, and I’ve made notes for each chapter that may
+help.
+
+ 
+
+If they don’t, don’t just tell me! Send me an improved version.
+
+ 
+
+This is an evolving project.
+
+Edit this page (if you have permission)–Published by Google Docs–Report Abuse
+–Updated automatically every 5 minutes
