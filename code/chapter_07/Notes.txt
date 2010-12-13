@@ -17,3 +17,5 @@ Elastic Load Balancing API Tools
 
 The script BarrBookCode/bin/get-AWS-CLI-toolkits.sh downloaded the toolkits I needed for this chapter.
 You can use it, too, but it will go out-of-date as the toolkits get updated, which is often, so you'll need to update it as that happens. If you do that, please let me know so we can get it into the GitHub copy.
+
+You'll need a JRE. My Ubuntu box had it by default.
