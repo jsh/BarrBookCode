@@ -1,0 +1,309 @@
+[aws_logo_v3]
+●Sign in to the AWS Management Console ●Create an AWS Account
+
+  • AWS
+  • Products
+  • Developers
+  • Community
+  • Support
+  • Account
+
+close ●
+
+● Migrating to the AWS SDK for PHP
+
+Articles & Tutorials>Migrating to the AWS SDK for PHP
+CloudFusion has now become the AWS SDK for PHP. This guide walks through the
+specific changes for migrating from CloudFusion 2.5 to the AWS SDK for PHP 1.0.
+
+Details
+
+Submitted By:    Craig@AWS
+AWS Products     Amazon CloudFront, Amazon EC2, Amazon S3, Amazon SQS, Amazon
+Used:            SimpleDB
+Language(s):     PHP
+Created On:      September 27, 2010 5:03 PM GMT
+Last Updated:    September 29, 2010 12:05 AM GMT
+
+Starting out as “Tarzan” in July 2005 with only support for the Product
+Advertising API, the project later known as “CloudFusion” grew to support more
+services over time. As of September 2010, CloudFusion has become the AWS SDK
+for PHP. Because the AWS SDK for PHP is based on CloudFusion, much of the code,
+design patterns and history are shared. If you’re already familiar with
+CloudFusion, then the AWS SDK for PHP should make you feel right at home.
+
+General Changes
+
+Including the SDK in your projects
+
+The main cloudfusion.class.php include file has been renamed to sdk.class.php.
+Existing references to the old filename will no longer function.
+
+Minimum requirements
+
+To better support the use of JSON across the underlying AWS service APIs, the
+minimum supported version is now PHP 5.2. However, with the discontinued
+support for PHP 5.2, PHP developers are encouraged to move to 5.3.x.
+
+Support for Amazon Associates/Product Advertising API
+
+CloudFusion’s AmazonPAS class is not included in the AWS SDK for PHP, which
+focuses on supporting AWS infrastructure services. However, the AmazonPAS class
+is still available from the CloudFusion GitHub repository. You can find
+installation instructions there.
+
+Class constants
+
+To keep SDK code as self-contained as possible, we’ve generally moved away from
+global constants in favor of class constants. A limited number of global
+constants remain, but most of the constants you are likely refer to in your
+code have been modified.
+
+For example, S3_GRANT_READ is now $s3::GRANT_READ assuming that you have an
+instance of the AmazonS3 class called $s3. See the SDK Reference for a complete
+list of the available constants.
+
+Swapping base classes
+
+For those who are intentionally extending any of the base utility methods,
+you’ll need to update the names of the classes they extend.
+
+  • RequestCore, ResponseCore, and SimpleXMLElement are now extended by
+    CFRequest, CFResponse, and CFSimpleXML, respectively. These new classes are
+    now used by default.
+  • You must now extend CFRequest instead of RequestCore, and then pass that
+    class name to set_request_class().
+  • You must now extend CFResponse instead of ResponseCore, and then pass that
+    class name to set_response_class().
+
+Also, if you’ve written code that extends the CloudFusion class, you should
+modify it to extend the CFRuntime class instead.
+
+File structure
+
+The package file structure has been refined in a few ways:
+
+  • All service-specific classes are inside the /services/ directory.
+  • All utility-specific classes are inside the /utilities/ directory.
+
+Base/Runtime
+
+CFRuntime
+
+The base CFRuntime class (formerly the CloudFusion class) — from which all
+Amazon classes extend — has had the following changes:
+
+  • CloudFusion_Exception has been renamed as CFRuntime_Exception.
+  • The following global constants have been added: CFRUNTIME_NAME,
+    CFRUNTIME_VERSION, CFRUNTIME_BUILD, CFRUNTIME_URL, and CFRUNTIME_USERAGENT
+  • CFRuntime::disable_ssl() no longer takes any parameters. Once SSL is off,
+    it is always off for that class instance.
+  • All date-related constants are now class constants of the CFUtilities class
+    (e.g., CFUtilities::DATE_FORMAT_ISO8601).
+      □ Use CFUtilities::konst() if you’re extending classes and need to do
+        something such as $this->util::DATE_FORMAT_ISO8601 but keep getting the
+        T_PAAMAYIM_NEKUDOTAYIMM error.
+  • All x-cloudfusion- and x-tarzan- HTTP headers are now x-aws-.
+  • CloudFusion::autoloader() is now in its own separate class:
+    CFLoader::autoloader(). This prevents it from being incorrectly inherited
+    by extending classes.
+  • cache_response() and delete_cache_response() have been replaced with new
+    caching APIs: cache() and delete_cache(). These methods work differently
+    from the methods they replace. Search the SDK reference docs for more
+    information.
+
+Config file
+
+The config.inc.php file — which stores your various AWS keys — has had the
+following changes:
+
+  • Added AWS_MFA_SERIAL
+  • Added AWS_CLOUDFRONT_KEYPAIR_ID
+  • Added AWS_CLOUDFRONT_PRIVATE_KEY_PEM
+  • Added AWS_ENABLE_EXTENSIONS
+  • Removed AWS_ASSOC_ID
+  • Removed AWS_DEFAULT_LOCALE
+
+View the instructions in config.inc.php to configure these new values
+correctly.
+
+Service Classes
+
+While changes to each service class are generally staraightforward, there are a
+few backwards-incompatible changes that cleaned up older code. The following
+are specific service class changes.
+
+AmazonCloudFront
+
+  • Replaced all of the CDN_* constants with class constants.
+
+AmazonCloudWatch
+
+  • The global CW_DEFAULT_URL constant has been replaced with new
+    region-specific class constants: DEFAULT_URL, REGION_US_E1, REGION_US_W1,
+    REGION_EU_W1, and REGION_APAC_SE1.
+
+AmazonEC2
+
+  • The global EC2_LOCATION_US and EC2_LOCATION_EU constants have been replaced
+    with new class constants for regions: REGION_US_E1, REGION_US_W1,
+    REGION_EU_W1, REGION_APAC_SE1.
+  • The set_locale() method has been renamed to set_region(). It accepts any of
+    the region constants.
+
+AmazonS3
+
+  • Added class constants for regions: REGION_US_E1, REGION_US_W1,
+    REGION_EU_W1, and REGION_APAC_SE1.
+  • Added class constants for storage types: STORAGE_STANDARD and
+    STORAGE_REDUCED.
+  • Replaced all of the remaining S3_* constants with class constants: ACL_*,
+    GRANT_*, USERS_*, and PCRE_ALL.
+  • Removed store_remote_file() because its intended use repeatedly confused
+    users, and had potential for misuse. If you were using it to upload from
+    the local file system, you should be using create_object() instead.
+  • Removed copy_bucket(), replace_bucket(), duplicate_object(), move_object(),
+    and rename_object() because only a small number of users used them, and
+    they weren’t very robust anyway.
+  • Removed get_bucket() because it was just an alias for list_objects()
+    anyway. Use the latter from now on — it’s identical.
+  • Changed the function signature for create_object(). The filename is now
+    passed as the second parameter, while the remaining options are now passed
+    as the third parameter. This behavior now matches all of the other
+    object-related methods.
+  • Changed the function signature for head_object(), delete_object(), and
+    get_object_acl(). The methods now accept optional parameters as the third
+    parameter instead of simply returnCurlHandle.
+  • Changed the function signature for get_object_url() and get_torrent_url().
+    Instead of passing a number of seconds until the URL expires, you now pass
+    a string that strtotime() understands (including 60 seconds).
+  • Changed how returnCurlHandle is used. Instead of passing true as the last
+    parameter to most methods, you now need to explicitly set array
+    ('returnCurlHandle' => true). This behavior is consistent with the
+    implementation in other classes.
+  • Optional parameter names changed in list_objects(): maxKeys is now
+    max-keys.
+  • get_bucket_locale() is now called get_bucket_region(), and returns the
+    response body as a string for easier comparison with class constants.
+  • create_bucket() has two backward-incompatible changes:
+      □ Method now requires the region (formerly locale) to be set.
+      □ Method takes an $acl parameter so that the ACL can be set directly when
+        creating a new bucket.
+  • Bucket names are now validated. Creating a new bucket now requires the more
+    stringent DNS-valid guidelines, while the process of reading existing
+    buckets follows the looser path-style guidelines. This change also means
+    that the reading of path-style bucket names is now supported, when
+    previously they weren’t.
+
+AmazonSDB
+
+  • Changed the function signatures for get_attributes() and delete_attributes
+    () to improve consistency.
+
+AmazonSQS
+
+  • Because we now support multiple region endpoints, queue names alone are no
+    longer sufficient for referencing your queues. As such, you must now use a
+    full-queue URL instead of just the queue name.
+  • The global SQS_LOCATION_US and SQS_LOCATION_EU constants have been replaced
+    with new class constants for regions: REGION_US_E1, REGION_US_W1,
+    REGION_EU_W1, and REGION_APAC_SE1.
+  • Renamed set_locale() as set_region(). It accepts any of the region
+    constants.
+  • Changed the function signature for list_queues(). See the updated API
+    reference.
+  • Changed the function signature for set_queue_attributes(). See the updated
+    API reference.
+  • Changed how returnCurlHandle is used. Instead of passing true as the last
+    parameter to most methods, you now need to explicitly set array
+    ('returnCurlHandle' => true). This behavior is consistent with the
+    implementation in other classes.
+  • Function signature changed in get_queue_attributes(). The $attribute_name
+    parameter is now passed as a value in the $opt parameter.
+
+AmazonSQSQueue
+
+  • AmazonSQSQueue was a simple wrapper around the AmazonSDB class. It
+    generally failed as an object-centric approach to working with SQS, and as
+    such, has been eliminated. Use the AmazonSQS class instead.
+
+Utility Classes
+
+CFUtilities
+
+  • convert_response_to_array() has been fixed to correctly return an all-array
+    response under both PHP 5.2 and 5.3. Previously, PHP 5.3 returned a mix of
+    arrays and stdClass objects.
+  • Removed json_encode_php51() now that the minimum required version is PHP
+    5.2 (which includes the JSON extension by default).
+
+Third-party Libraries
+
+CacheCore
+
+  • Support for MySQL and PostgreSQL as storage mechanisms has been deprecated.
+    Because they’re using PDO, they’ll continue to function (as we’re
+    maintaining SQLite support via PDO), but we recommend migrating to using
+    APC, XCache, Memcache, or SQLite if you’d like to continue using response
+    caching.
+
+Browse By Category
+
+AWS Services
+
+  • Amazon CloudFront
+  • Amazon Elastic Compute Cloud
+  • Amazon Elastic MapReduce
+  • Amazon Flexible Payments Service
+  • Amazon Mechanical Turk
+  • Amazon Relational Database Service
+  • Amazon SimpleDB
+  • Amazon Simple Queue Service
+  • Amazon Simple Storage Service
+
+Technology
+
+  • Java
+  • Windows & .NET
+  • PHP
+  • Python
+  • Ruby
+  • Mobile
+
+SDKs
+
+  • AWS SDK for Java
+  • AWS SDK for .NET
+  • AWS SDK for PHP
+  • AWS SDK for iOS
+  • AWS SDK for Android
+
+Developer Resources
+
+  • Amazon Machine Images (AMIs)
+  • Customer Apps
+  • Developer Tools
+  • Documentation
+  • Public Data Sets
+  • Release Notes
+  • Sample Code & Libraries
+  • Security Center
+  • Videos & Webinars
+
+Suggest an Article
+
+Have an idea for an article or tutorial? Wish you could have found an article
+here that covered a certain AWS topic? Tell us what you'd like to read about or
+suggest ideas for articles and tutorials.
+
+Submit an Idea
+
+  • AWS Blog This link will launch a new browser window or tab.
+  • Press Inquiries
+  • Careers at AWS
+  • Contact Us
+  • Privacy Policy
+  • Terms of Use
+
+©2010, Amazon Web Services LLC or its affiliates. All rights reserved.
+[logo_an_amazon_compan]

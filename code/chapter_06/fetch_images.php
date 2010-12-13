@@ -22,22 +22,44 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
+
+if ($argc != 2)
+{
+  exit("Usage: " . $argv[0] . " bucket name\n");
+}
+
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 
 // Create the SQS and S3 access objects
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(IMAGE_QUEUE);
+if ($res->isOK())
+{
+  $imageQueueURL = urlFromQueueObject($res);
+}
+
+$res = $sqs->create_queue(RENDER_QUEUE);
+if ($res->isOK())
+{
+  $renderQueueURL = urlFromQueueObject($res);
+}
+
 // Pull, process, post
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, IMAGE_QUEUE);
+  $message = pullMessage($sqs, $imageQueueURL);
 
   if ($message != null)
   {
@@ -65,7 +87,7 @@ while (true)
       // Store the image in S3
       $key  = 'image_' . md5($imageURL) . '.png';
 
-      if (uploadObject($s3, BOOK_BUCKET, $key, $imageThumb))
+      if (uploadObject($s3, $bucket, $key, $imageThumb))
       {
         print("  Stored image in S3 using key '${key}'\n");
         $s3ImageKeys[] = $key;
@@ -89,13 +111,13 @@ while (true)
            'PageTitle' => $pageTitle));
 
       // Pass the page along to the image renderer
-      $res = $sqs->send_message(RENDER_QUEUE, $message);
+      $res = $sqs->send_message($renderQueueURL, $message);
       print("  Sent page to image renderer\n");
 
       if ($res->isOK())
       {
         // Delete the message
-        $sqs->delete_message(IMAGE_QUEUE, $receiptHandle);
+        $sqs->delete_message($imageQueueURL, $receiptHandle);
         print("  Deleted message from fetch queue\n");
       }
 
@@ -104,3 +126,4 @@ while (true)
   }
 }
 ?>
+

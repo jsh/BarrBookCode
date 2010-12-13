@@ -20,22 +20,45 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
+
+if ($argc != 2)
+{
+  exit("Usage: " . $argv[0] . " bucket name\n");
+}
+
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 
 // Create the SQS and S3 access objects
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(URL_QUEUE);
+if ($res->isOK())
+{
+  $urlQueueURL = urlFromQueueObject($res);
+}
+
+$res = $sqs->create_queue(PARSE_QUEUE);
+if ($res->isOK())
+{
+  $parseQueueURL = urlFromQueueObject($res);
+}
+
+
 // Pull, process, post
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, URL_QUEUE);
+  $message = pullMessage($sqs, $urlQueueURL);
   
   if ($message != null)
   {
@@ -51,10 +74,10 @@ while (true)
 
     // Store the page in S3
     $key = 'page_' . md5($pageURL) . '.html';
-    if (uploadObject($s3, BOOK_BUCKET, $key, $html, S3_ACL_PUBLIC))
+    if (uploadObject($s3, $bucket, $key, $html, AmazonS3::ACL_PUBLIC))
     {
       // Get URL in S3
-      $s3URL = $s3->get_object_url(BOOK_BUCKET, $key);
+      $s3URL = $s3->get_object_url($bucket, $key, "60 seconds");
       print("  Uploaded page to S3 as '${key}'\n");
 
       // Form message to pass page along to parser
@@ -69,13 +92,13 @@ while (true)
            'History' => $history));
 
       // Pass the page along to the parser
-      $res = $sqs->send_message(PARSE_QUEUE, $message);
+      $res = $sqs->send_message($parseQueueURL, $message);
       print("  Sent page to parser\n");
 
       if ($res->isOK())
       {
         // Delete the message
-        $sqs->delete_message(URL_QUEUE, $receiptHandle);
+        $sqs->delete_message($urlQueueURL, $receiptHandle);
         print("  Deleted message from URL queue\n");
       }
       print("\n");
@@ -88,3 +111,4 @@ while (true)
 }
 
 ?>
+

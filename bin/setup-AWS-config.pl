@@ -6,33 +6,37 @@ use warnings;
 use strict;
 
 my ( $in, $out );
-my $awsdir     = "/usr/share/php/AWSSDKforPHP";
-my $template   = "$awsdir/config-sample.inc.php";
-my $configfile = "$awsdir/config.inc.php";
+my $public_awsdir  = "/usr/share/php/AWSSDKforPHP";
+my $template       = "$public_awsdir/config-sample.inc.php";
+my $private_awsdir = "$ENV{HOME}/.aws/sdk";
+my $configfile     = "$private_awsdir/config.inc.php";
+my $secretsfile    = "$ENV{HOME}/.awssecret";
+
+# pull in secrets
+open( $in, '<', $secretsfile )
+  or die "Can't read '$secretsfile'";
+my ( $AWS_KEY, $AWS_SECRET_KEY ) = <$in>;
+close $in
+  or die "can't close '$secretsfile'";
+chomp( $AWS_KEY, $AWS_SECRET_KEY );
 
 open( $in, '<', $template )
   or die "Can't read '$template'";
+die "Can't create '$private_awsdir'"
+  unless ( system("mkdir -p $private_awsdir") == 0 );
 open( $out, '>', $configfile )
   or die "Can't write '$configfile'";
 
-my $added_require_secretsfile = 0;
-
+# copy the template to the private config file
+# inserting the key values
 while (<$in>) {
 
-    # comment out old AWS_KEY, AWS_SECRET_KEY defines
-    s{define\('AWS_.*KEY'}{//$&};
-    if ( /^\s*$/ && ( $added_require_secretsfile == 0 ) ) {
-
-        # put in the requires
-        print $out q(
-
-      // pull in the user's AWS keys
-      $home = $_SERVER['HOME'];
-      $usersecrets = "$home/.awssecret.inc.php";
-      require_once($usersecrets);
-
-    );
-        $added_require_secretsfile = 1;
+    # insert key values
+    if (m{define\('AWS_KEY'}) {
+        s/''/'$AWS_KEY'/;
+    }
+    if (m{define\('AWS_SECRET_KEY'}) {
+        s/''/'$AWS_SECRET_KEY'/;
     }
     print $out $_;
 }

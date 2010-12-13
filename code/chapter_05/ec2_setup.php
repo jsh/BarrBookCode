@@ -21,17 +21,19 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 
 // Create the EC2 access object
 $ec2 = new AmazonEC2();
 
 // Run an instance
-$options = array('KeyName' => "Louis' Keys",
+$options = array('KeyName' => "testkey",
 		 'InstanceType' => "m1.small");
 
 $res = $ec2->run_instances("ami-48aa4921", 1, 1, $options);
@@ -92,8 +94,10 @@ print("Associated IP address ${publicIP} " .
       "with instance ${instanceId}.\n");
 
 // Create two EBS volumes in the instance's availability zone
-$res1 = $ec2->create_volume(1, $availabilityZone);
-$res2 = $ec2->create_volume(1, $availabilityZone);
+$opt = array();
+$opt['Size'] = 1;
+$res1 = $ec2->create_volume($availabilityZone, $opt);
+$res2 = $ec2->create_volume($availabilityZone, $opt);
 
 if (!$res1->isOK() || !$res2->isOK())
 {

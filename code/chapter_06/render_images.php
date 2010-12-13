@@ -23,12 +23,21 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
+
+if ($argc != 2)
+{
+  exit("Usage: " . $argv[0] . " bucket name\n");
+}
+
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 
 // Define image layout constants
 define('BORDER_LEFT', 12);
@@ -43,11 +52,18 @@ define('GAP_SIZE', 6);
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(RENDER_QUEUE);
+if ($res->isOK())
+{
+  $renderQueueURL = urlFromQueueObject($res);
+}
+
 // Pull, process
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, RENDER_QUEUE);
+  $message = pullMessage($sqs, $renderQueueURL);
 
   if ($message != null)
   {
@@ -89,7 +105,7 @@ while (true)
     {
       // Fetch the image
       print("  Fetch image '${imageKey}'\n");
-      $image = $s3->get_object(BOOK_BUCKET, $imageKey);
+      $image = $s3->get_object($bucket, $imageKey);
 
       // Convert it to GD format
       $imageBits = ImageCreateFromString($image->body);
@@ -123,15 +139,15 @@ while (true)
     // Store the final image in S3
     $key = 'page_image_' . md5($pageTitle) . '.png';
 
-    if (uploadObject($s3, BOOK_BUCKET, $key, $imageBitsOut,
-         S3_ACL_PUBLIC))
+    if (uploadObject($s3, $bucket, $key, $imageBitsOut,
+         AmazonS3::ACL_PUBLIC))
     {
       print("  Stored final image in S3 using key '${key}'\n");
 
       print_r($messageDetail['History']);
 
       // Delete the message
-      $sqs->delete_message(RENDER_QUEUE, $receiptHandle);
+      $sqs->delete_message($renderQueueURL, $receiptHandle);
       print("  Deleted message from render queue\n");
     }
 

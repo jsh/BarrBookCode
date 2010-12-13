@@ -16,6 +16,8 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 // Buckets
@@ -93,7 +95,7 @@ function getBucketObjects($s3, $bucket, $prefix = '')
  *  Return true on success, false on error.
  */
 function uploadObject($s3, $bucket, $key, $data,
-          $acl = S3_ACL_PRIVATE, $contentType = "text/plain")
+          $acl = AmazonS3::ACL_PRIVATE, $contentType = "text/plain")
 {
   $try = 1;
   $sleep = 1;
@@ -101,8 +103,8 @@ function uploadObject($s3, $bucket, $key, $data,
   {
   // Do the upload
     $res = $s3->create_object($bucket,
+	$key,
         array(
-          'filename'    => $key,
           'body'        => $data,
           'acl'         => $acl,
           'contentType' => $contentType
@@ -316,6 +318,22 @@ function pullMessage($sqs, $queue)
       return null;
     }
   }
+}
+
+
+/*
+ * urlFromQueueObject -
+ *
+ *  Get an AWS (string) URL from a valid queue object
+ *  Assumes argument is a valid result from a successful create_queue call
+ *  Does no error checking.
+ *
+ */
+
+function urlFromQueueObject($queueObject)
+{
+  $queueNameString = $queueObject->body->CreateQueueResult->QueueUrl;
+  return $queueNameString;
 }
 
 

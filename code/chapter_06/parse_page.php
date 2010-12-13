@@ -22,11 +22,13 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/simple_html_dom.php');
 require_once('include/book.inc.php');
 
@@ -34,18 +36,34 @@ require_once('include/book.inc.php');
 $sqs = new AmazonSQS();
 $s3  = new AmazonS3();
 
+// Convert the queuenames to URLs
+$res = $sqs->create_queue(PARSE_QUEUE);
+if ($res->isOK())
+{
+  $parseQueueURL = urlFromQueueObject($res);
+}
+
+$res = $sqs->create_queue(IMAGE_QUEUE);
+if ($res->isOK())
+{
+  $imageQueueURL = urlFromQueueObject($res);
+}
+
+
 // Pull, process, post
 while (true)
 {
   // Pull the message from the queue
-  $message = pullMessage($sqs, PARSE_QUEUE);
-  
+  $message = pullMessage($sqs, $parseQueueURL);
+
   if ($message != null)
   {
     // Extract message detail
     $messageDetail = $message['MessageDetail'];
     $receiptHandle = (string)$message['ReceiptHandle'];
     $pageURL       = $messageDetail['Data'];
+
+    $pageURL = preg_replace('/\?.*$/', '', $pageURL); // jsh: very questionable hack
 
     // Fetch and parse the page
     print("Processing URL '${pageURL}':\n");
@@ -87,13 +105,13 @@ while (true)
            'PageTitle' => $pageTitle));
 
       // Pass the page along to the image fetcher
-      $res = $sqs->send_message(IMAGE_QUEUE, $message);
+      $res = $sqs->send_message($imageQueueURL, $message);
       print("  Sent page to image fetcher\n");
 
       if ($res->isOK())
       {
         // Delete the message
-        $sqs->delete_message(PARSE_QUEUE, $receiptHandle);
+        $sqs->delete_message($parseQueueURL, $receiptHandle);
         print("  Deleted message from parse queue\n");
       }
 

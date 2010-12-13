@@ -9,6 +9,7 @@
 
 # Including the SDK in your projects
 cloudfusion.class.php
+tarzan
 
 # Support for Amazon Associates/Product Advertising API
 AmazonPAS
@@ -66,3 +67,28 @@ get_torrent_url
 list_objects
 get_bucket_locale
 cteate_bucket
+
+# AmazonSDB
+get_attributes
+delete_attributes
+
+# AmazonSQS
+SQS_LOCATION_EU
+SQS_LOCATION_US
+set_locale
+list_queues
+set_queue_attributes
+returnCurlHandle
+get_queue_attributes
+
+# AmazonSQSQueue
+AmazonSQSQueue
+
+# CFUtilities
+convert_response_to_array
+json_encode_php51
+
+# CacheCore
+MySQL
+PostgreSQL
+

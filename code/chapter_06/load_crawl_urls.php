@@ -19,11 +19,13 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
 // Make sure that at least one argument was given
@@ -34,6 +36,12 @@ if ($argc < 2)
 
 // Create the SQS access object
 $sqs = new AmazonSQS();
+
+$res = $sqs->create_queue(URL_QUEUE);
+if ($res->isOK())
+{
+  $queueURL = urlFromQueueObject($res);
+}
 
 // Load each URL
 for ($i = 1; $i < $argc; $i++)
@@ -46,7 +54,7 @@ for ($i = 1; $i < $argc; $i++)
         'Data'   => $argv[$i],
         'History' => $histItem));
   // Post message
-  $res = $sqs->send_message(URL_QUEUE, $message);
+  $res = $sqs->send_message($queueURL, $message);
 
   if ($res->isOK())
   {
@@ -59,3 +67,4 @@ for ($i = 1; $i < $argc; $i++)
   }
 }
 ?>
+
