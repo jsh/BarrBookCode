@@ -8,6 +8,28 @@ Getting Started
 
  
 
+These notes will help you get started with Amazon Web Services.
+
+ 
+
+The notes are just that -- notes. They’re not meant to be a text or a tutorial,
+because there’s already a tutorial text, a book by Jeff Barr called Host Your
+Web Site in the Cloud: Amazon Web Services Made Easy. It’s good.
+
+ 
+
+Reading it takes time, though, and I want to get you up and running, quickly.
+For an Installfest-in-the-Cloud or a workshop, I want things to work, first
+time, out-of-the-box, quickly.
+
+ 
+
+Understanding takes reading and reflection, and it’s what you want, but it will
+come more gradually. These notes are to help you start without getting
+discouraged or bogged down.
+
+ 
+
 What follows works on my up-to-date version of Ubuntu 10.10, Maverick Meerkat.
 "Works for me." If it doesn't work on your system, don't complain.  Instead,
 just update these notes so they work for you, too.
@@ -29,13 +51,14 @@ Grab the Book
 
 You can get a dead-tree version overnight. The Kindle copy arrives immediately,
 and it's cheaper. If you have a Kindle account, you can now install Kindle for
-Your PC under Wine, to read Kindle books on your laptop, in the dark.
+Your PC under Wine, to read it on your laptop, in the dark, in bed, without
+waking your girlfriend. It’s what I do.
 
  
 
-It’s possible you won’t need the book to go through the mechanical steps I set
-out, but you also won’t have any idea why you’re doing what follows, and what’s
-the point of that? You’re trying to learn something, here.
+You may not need the book to go through the mechanical steps I set out, but you
+also won’t have any idea why you’re doing what follows, and what’s the point of
+that? You’re trying to learn something, here.
 
  
 
@@ -45,17 +68,17 @@ Plus, it really is a good book.
 
 Jeff Barr is Amazon’s Lead Web Services Evangelist. He can talk and write about
 AWS and gets daily practice. Other folks in the know review his material.  And
-he has the inside scoop. Heck. He probably makes the inside scoop.
+he has the inside scoop. Heck, he probably is the inside scoop.
 
  
 
-The topic’s reached escape velocity, so even though it was published in
-September, 2010, some things in the book are already wrong. The author praises
-Firefox’s ElasticFox extension, which won’t even work with the newest Firefox.
-He says in his introduction that he had to add chapters on new services AWS
-introduced while he was writing. He bases all his code on the CloudFusion
-toolkit, which has already been replaced by the not-completely-compatible
-AWSSDKforPHP. And so on.
+AWS has reached escape velocity, so even though it was published in September,
+2010, some things in the book are already wrong. The author praises Firefox’s
+ElasticFox extension, which won’t even work with the newest Firefox. He says in
+his introduction that he had to add chapters on new services AWS introduced
+while he was writing. He bases all his code on the CloudFusion toolkit, which
+has already been replaced by the not-completely-compatible AWSSDKforPHP. And so
+on.
 
  
 

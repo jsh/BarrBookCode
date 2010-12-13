@@ -61,6 +61,18 @@ Making the "_page" Scripts Work
 
  
 
+Two options here.
+
+ 
+
+The first way
+
+ 
+
+Install a web server on your box and configure it to serve up these pages.
+
+ 
+
  + install a web server
 
  
@@ -109,6 +121,17 @@ firefox http://localhost/list_bucket_objects_thumbs_page.php?bucket=
  
 
 Is there a better way to do all this? Show me how.
+
+ 
+
+The second way
+
+ 
+
+If you don’t want to go through the hassle of installing and configuring a web
+server on your machine, you can just to skip this. In the next chapter, you’ll
+launch a web server in the cloud. At that point, you can install all this stuff
+on the web server and do it there.
 
 Forcing an Argument
 

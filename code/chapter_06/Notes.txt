@@ -1,7 +1,6 @@
 Building a Scalable Architecture with Amazon SQS
 
-Chapter 6: Building a Scalable Architecture with Chapter 6: Building a Scalable
-Architecture with Amazon SQS
+Chapter 6: Building a Scalable Architecture with Amazon SQS
 
  
 
@@ -158,7 +157,12 @@ Of these, fetch_images.php, fetch_page.php, and render_images.php require an
 S3-bucket name for an argument. Use one of your existing buckets, or make a new
 one with the utilities from Chapter 4.
 
- 
+If you run the steps one-at-a-time, you can run crawl_queue_status.php between
+steps to see the progress through the pipeline.
+
+When you’re done, go to the S3 bucket, and you’ll see images and a page that’s
+the final result. S3Fox will let you look at that page directly, without a
+download step!
 
 Edit this page (if you have permission)–Published by Google Docs–Report Abuse
 –Updated automatically every 5 minutes
