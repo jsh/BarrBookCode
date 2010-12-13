@@ -1,0 +1,19 @@
+Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
+
+We're shifting to Java, and need to install a bunch of Amazon toolkits before we go anywhere.  Also the JRE.
+
+Get the Tools
+
+In general, you'll find AWS toolkits here:
+
+http://aws.amazon.com/developertools
+
+You need these:
+
+Amazon EC2 API Tools
+Amazon Cloudwatch API Tools
+AutoScaling API Tools
+Elastic Load Balancing API Tools
+
+The script BarrBookCode/bin/get-AWS-CLI-toolkits.sh downloaded the toolkits I needed for this chapter.
+You can use it, too, but it will go out-of-date as the toolkits get updated, which is often, so you'll need to update it as that happens. If you do that, please let me know so we can get it into the GitHub copy.
