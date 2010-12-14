@@ -41,7 +41,7 @@ if ($res->isOK())
   foreach ($metrics as $metric)
   {
     $metricsRows[] = 
-      array('MeasureName' => (string) $metric->MeasureName,
+      array('MetricName' => (string) $metric->MetricName,
       'Namespace'   => (string) $metric->Namespace,
       'Name'        => (string) $metric->Dimensions->member->Name,
       'Value'       => (string) $metric->Dimensions->member->Value);
@@ -52,7 +52,7 @@ if ($res->isOK())
 
   // Display a header and then the metrics
   printf("%-16s  %-16s  %-16s  %-16s\n",
-   "Namespace", "Measure Name", "Name", "Value");
+   "Namespace", "Metric Name", "Name", "Value");
 
   printf("%-16s  %-16s  %-16s  %-16s\n",
    "=========", "============", "====", "=====");
@@ -61,7 +61,7 @@ if ($res->isOK())
   {
     printf("%-16s  %-16s  %-16s  %-16s\n",
      $metricsRow['Namespace'],
-     $metricsRow['MeasureName'],
+     $metricsRow['MetricName'],
      $metricsRow['Name'],
      $metricsRow['Value']);
   }
@@ -74,8 +74,8 @@ else
 
 function CmpMetrics($m1, $m2)
 {
-  $k1 = $m1['Namespace'] . $m1['MeasureName'] . $m1['Name'];
-  $k2 = $m2['Namespace'] . $m2['MeasureName'] . $m2['Name'];
+  $k1 = $m1['Namespace'] . $m1['MetricName'] . $m1['Name'];
+  $k2 = $m2['Namespace'] . $m2['MetricName'] . $m2['Name'];
 
   return strcmp($k1, $k2);
 }
