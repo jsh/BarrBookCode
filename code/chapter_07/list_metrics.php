@@ -51,15 +51,15 @@ if ($res->isOK())
   usort($metricsRows, 'CmpMetrics');
 
   // Display a header and then the metrics
-  printf("%-16s  %-16s  %-16s  %-16s\n",
+  printf("%-16s  %-20s  %-16s  %-16s\n",
    "Namespace", "Metric Name", "Name", "Value");
 
-  printf("%-16s  %-16s  %-16s  %-16s\n",
+  printf("%-16s  %-20s  %-16s  %-16s\n",
    "=========", "============", "====", "=====");
 
   foreach ($metricsRows as $metricsRow)
   {
-    printf("%-16s  %-16s  %-16s  %-16s\n",
+    printf("%-16s  %-20s  %-16s  %-16s\n",
      $metricsRow['Namespace'],
      $metricsRow['MetricName'],
      $metricsRow['Name'],
