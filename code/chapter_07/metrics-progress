@@ -1,0 +1,24 @@
+#!/bin/bash -eu
+
+source ../../bin/gripe.sh
+
+./launch_ec2.php &> /tmp/Launch
+instance=$(grep -o -w '\bi-\w*' /tmp/Launch | sed 1q)
+if [ "$instance" ]; then
+  echo "Launched '$instance'"
+  rm -f /tmp/Launch
+else
+  die "$0: Cannot identify instance."
+fi
+
+rm -rf Results; mkdir -p Results
+for i in {1..40}; do
+  {
+    list_metrics.php | sort --key=3 | uniq -c --skip-fields=3 | grep -v '^ *1 '
+  } > Results/$(date +'%H_%M_%S')
+  sleep 30
+done
+
+cd Results
+grep $instance *
+
