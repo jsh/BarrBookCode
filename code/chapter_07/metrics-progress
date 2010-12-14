@@ -22,4 +22,4 @@ done
 cd Results
 grep $instance *
 
-echo "Remember to terminate '$instance'!"
+warn "Remember to terminate '$instance'!"
