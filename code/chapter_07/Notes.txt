@@ -8,6 +8,8 @@ Auto Scaling lets your ELB volumes expand and contract in response to demand.
 
 CloudWatch
 
+When I started writing these notes, a couple of weeks ago, you still had to pay for CloudWatch. Now, Amazon's made the basic monitoring data free. That will give you some sense of the speed with which this is moving. (You can get even more data on your instance for a price.) 
+
 The program list_metrics.php will run without further ado.
 
 It's instructive to run it, capture the output, launch an ec2 instance, then run it again and watch the output change.
@@ -21,7 +23,7 @@ See how the metrics become available in stages, rather than all at once?  Termin
 
 If you select your instance on the AWS console, the monitoring tab, in the bottom pane, shows you graphs of some of these metrics.
 
-When I started writing these notes, a couple of weeks ago, you still had to pay for CloudWatch. Now, Amazon's made the basic monitoring data free. That will give you some sense of the speed with which this is moving. (You can get even more data on your instance for a price.) 
+Do not forget to terminate your instance when you finish this experiment.
 
 Get the Tools
 
