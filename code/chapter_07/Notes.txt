@@ -1,5 +1,28 @@
 Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
 
+AWS Elastic Load Balancing (ELB) lets you aggregate instances and treat them as a single resource (an ELB volume), with the load balanced among components.
+
+AWS EC2 CloudWatch lets you collect stats on your instances and volumes.
+
+Auto Scaling lets your ELB volumes expand and contract in response to demand.
+
+CloudWatch
+
+The program list_metrics.php will run without further ado.
+
+It's instructive to run it, capture the output, launch an ec2 instance, then run it again and watch the output change.
+I've added some scripts to help with this:
+
+nmetrics shows how many metrics are currently available for each instance.
+launch_ec2_micro.php is a trimmed-down version of chapter_05's ec2_setup.php. It launches a micro instance without attaching an Elastic IP address or extra EBS volumes.
+metrics-progress invokes launch_ec2_micro.php, to launch an instance, and then counts metrics every minute to watch them come on line. The script runs for 20 minutes, and the first metrics won't even come on line for almost 10, so you'll want to do this at home, not in the workshop.
+
+See how the metrics become available in stages, rather than all at once?  Terminating your instance doesn't make the stats go away instantly, either.
+
+If you select your instance on the AWS console, the monitoring tab, in the bottom pane, shows you graphs of some of these metrics.
+
+When I started writing these notes, a couple of weeks ago, you still had to pay for CloudWatch. Now, Amazon's made the basic monitoring data free. That will give you some sense of the speed with which this is moving. (You can get even more data on your instance for a price.) 
+
 Get the Tools
 
 You'll need to install a bunch of Amazon, CLI toolkits before we go anywhere.
