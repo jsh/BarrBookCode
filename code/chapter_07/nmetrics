@@ -1,0 +1,6 @@
+#!/bin/bash -eu
+# How many metrics are available for each instance or EBS volume?
+# (Don't count the header in the pipe.)
+
+
+list_metrics.php | sort --key=3 | uniq -c --skip-fields=3 | grep -v '^ *1 '
