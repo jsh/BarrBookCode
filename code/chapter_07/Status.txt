@@ -1,3 +1,5 @@
 list_metrics.php SUCCESS
+aws cli tool installation SUCCESS
+aws cli tool examples
 statistics_chart_page.php
 test_plan_scale.jmx
