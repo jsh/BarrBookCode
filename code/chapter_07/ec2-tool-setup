@@ -1,6 +1,6 @@
 # This needs to get pointed at and sourced
 
-# add utils to path
+# add utils to path and check to make sure everything's set reasonably
 
 AWS_PATH=/usr/local/share/aws
 
@@ -8,17 +8,24 @@ export EC2_HOME=$AWS_PATH/ec2-api-tools-1.3-57419
 export AWS_ELB_HOME=$AWS_PATH/ElasticLoadBalancing-1.0.10.0
 export AWS_CLOUDWATCH_HOME=$AWS_PATH/CloudWatch-1.0.9.5
 export AWS_AUTO_SCALING_HOME=$AWS_PATH/AutoScaling-1.0.33.1
-for i in EC2 AWS_ELB AWS_CLOUDWATCH AWS_AUTO_SCALING; do
-  B=${i}_HOME
-  if [ -d ${!B} ]; then
-    PATH+=:${!B}/bin
+export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre/
+for i in EC2 AWS_ELB AWS_CLOUDWATCH AWS_AUTO_SCALING JAVA; do
+  d=${i}_HOME
+  if [ -d ${!d} ]; then
+    PATH+=:${!d}/bin
   else
-    echo "${!B} does not exist" >&2
+    echo "directory '$d' [ set to '${!d}' ] does not exist" >&2
   fi
 done
 
-export JAVA_HOME=/usr/lib/jvm/java-6-openjdk/jre/
-
-export EC2_PRIVATE_KEY=~/.ssh/pk-VIP5D7DHZCKLTVRCOBBL5FJQGMVAKW32.pem
-export EC2_CERT=~/.ssh/cert-VIP5D7DHZCKLTVRCOBBL5FJQGMVAKW32.pem
+export EC2_PRIVATE_KEY=~/.ssh/pk-VIP5D7DHZCKLTVRCOBBL5FJQGMVAKW32.pem  # you'll need your own
+export EC2_CERT=~/.ssh/cert-VIP5D7DHZCKLTVRCOBBL5FJQGMVAKW32.pem       # you'll need your own
 export AWS_CREDENTIAL_FILE=~/.awscredentials.txt
+
+for f in EC2_PRIVATE_KEY EC2_CERT AWS_CREDENTIAL_FILE; do
+  if ! [ -r ${!f} ]; then
+    echo "cannot read file '$f' [ set to '${!f}' ]" >&2
+  fi
+done
+
+
