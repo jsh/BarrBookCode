@@ -13,7 +13,7 @@ export AWS_AUTO_SCALING_HOME=$AWS_PATH/AutoScaling-1.0.33.1
 for i in EC2 AWS_ELB AWS_CLOUDWATCH AWS_AUTO_SCALING; do
   B=${i}_HOME
   if [ -d ${!B} ]; then
-    PATH+=:${!B}
+    PATH+=:${!B}/bin
   else
     warn "${!B} does not exist"
   fi
