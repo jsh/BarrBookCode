@@ -1,0 +1,19 @@
+#!/bin/bash -eux
+
+# show there are metrics to look at
+mon-list-metrics | grep CPUUtilization
+
+# make something to talk about
+launch_ec2_micro.php
+sleep $(15*60)	# takes a while to get the instance up and collect statistics
+
+# now see that the machine is there
+ec2-describe-instances
+instance=$(ec2-describe-instances | awk '/INSTANCE/{print $2}')
+
+# this shouldn't be needed
+#echo "== ec2-monitor-instances"
+#ec2-monitor-instances NNNN
+
+# and report some statistics
+mon-get-stats CPUUtilization --namespace "AWS/EC2" --statistics Average --dimensions "InstanceId=$instance"
