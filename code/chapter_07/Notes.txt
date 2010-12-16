@@ -67,7 +67,7 @@ bottom pane, shows you graphs of some of these metrics.
 
  
 
-Get the Tools
+Get the AWS CLI Tools
 
  
 
@@ -81,8 +81,6 @@ In general, you'll find AWS toolkits here:
 
 http://aws.amazon.com/developertools
 
- 
-
 You need these:
 
  
@@ -94,29 +92,79 @@ You need these:
 
  
 
-The script BarrBookCode/bin/get-AWS-CLI-toolkits.sh downloaded the toolkits I
-needed for this chapter. You can use it, too, but it will go out-of-date as the
-toolkits get updated, which is often, so you'll need to update it as that
-happens. If you do that, please let me know so we can get it into the GitHub
-copy.
+I used the script get-AWS-CLI-toolkits to download the toolkits I needed for
+this chapter, and install-AWS-CLI-toolkits to install them.  You can use these,
+too, but they will go out-of-date as the toolkits get updated, which is often,
+so you'll need to update them as that happens. If you do that, please let me
+know so we can get it into the GitHub copy.
 
  
 
-We're also going to do a bunch of Java, so you'll need to install a bunch of
-Amazon toolkits before we go anywhere.  Also the JRE.
+(Scripts aren’t just for automation. They document exactly what you did.
+ Later, you never have to say later, after half-an-hour’s work, “Oh. That’s
+right. I’d forgotten. I also had to set this environment variable and make that
+directory.” You just read the code.)
 
  
 
-"Oh, no! I don't know Java."
+These toolkits need Java, so you’ll also need a Java Runtime Environment (JRE).
+My Ubuntu intallation had a JRE by default. If yours doesn’t, and you figure
+out what you need to install it, please add that information here.
+
+ 
+
+"Whoa! I don't know Java."
 
  
 
 Me neither. Get over it.
 
+Setting Up the Tools
+
  
 
-You'll need a JRE. My Ubuntu box had it by default. You'll also need jmeter. On
-my Ubuntu box that's
+The book has detailed directions. You’ll need to create and download X.509
+certificates from your AWS account information, and then set a bunch of
+variables.  The script ec2-setup-tools documents what you’ll need.
+
+ 
+
+After you’ve done this, test it.  To save yourself some typing, do this
+
+ 
+
+$ ec2-setup-tools.t
+
+ 
+
+If it fails, your setup’s wrong.  Read the book and the code, then tinker with
+things until the test succeeds, and add information here to help other folks.
+
+ 
+
+Once it succeeds, do this
+
+ 
+
+$ source ec2-setup-tools
+
+ 
+
+I also set all these variables in my .bashrc.
+
+ 
+
+$ ln $PWD/ec2-setup-tools ~/.bash-aws
+
+$ echo ‘[ -f ~/.bash-aws ] && source ~/.bash-aws’ >> ~/.bashrc
+
+ 
+
+More Java Setup
+
+ 
+
+You'll also need jmeter. On my Ubuntu box that's
 
  
 
@@ -132,6 +180,8 @@ Once jmeter is installed, you have to do a bunch of clicky stuff to create a
 Is it a complete PITA that you can only do it as point-and-click? Yes, indeedy.
 Do you know a better way? Excellent. Please use your knowledge to re-write this
 paragraph.
+
+ 
 
  
 
