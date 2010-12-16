@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# unpack the Downloads
+D=$PWD
+if ! [ -d /usr/local/share/aws ]; then
+  sudo mkdir -p /usr/local/share/aws
+  cd /usr/local/share/aws
+  for i in $D/Downloads/*.zip; do
+    unzip $i
+  done
+fi
+
+# set up credentials file
+cd /usr/local/share/aws/CloudWatch*
+
+template=credential-file-path.template
+paste -d= <(sed s/=.*// $template) ~/.awssecret > ~/.awscredentials.txt
+chmod 400 ~/.awscredentials.txt
