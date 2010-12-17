@@ -1,11 +1,14 @@
 #!/bin/bash -eux
+# called with args, it launches an instance
 
 # show there are metrics to look at
 mon-list-metrics | grep CPUUtilization
 
-# make something to talk about
-launch_ec2_micro.php
-sleep $((15*60))	# takes a while to get the instance up and collect statistics
+if [ "$*" ]; then
+  # make something to talk about
+  launch_ec2_micro.php
+  sleep $((15*60))	# takes a while to get the instance up and collect statistics
+fi
 
 # now see that the machine is there
 ec2-describe-instances
