@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 /*
  * statistics_chart_page.php
@@ -95,12 +97,15 @@ foreach ($charts as &$chart)
   $label   = $chart['L'];
 
   // Get the metrics
-  $res = $cw->get_metric_statistics($measure,
-            $statistics,
-            $unit,
+
+  $res = $cw->get_metric_statistics($opt['Namespace'],
+            $measure,
             $start,
             $end,
-            $opt);
+	    $opt['Period'],
+            $statistics,
+            $unit);
+
   print_r($res);
   if ($res->isOK())
   {
