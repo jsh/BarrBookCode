@@ -1,9 +1,13 @@
 #!/bin/bash -eux
 # called with args, it launches an instance
 
+TMPFILE=/tmp/$$
+trap 'rm -f $TMPFILE' EXIT
+
 # show there are metrics to look at
 mon-list-metrics | grep CPUUtilization
 
+# called with args, it launches an instance
 if [ "$*" ]; then
   # make something to talk about
   launch_ec2_micro.php
@@ -11,8 +15,8 @@ if [ "$*" ]; then
 fi
 
 # now see that the machine is there
-ec2-describe-instances
-instances=$(ec2-describe-instances | awk '/INSTANCE/{print $2}')
+ec2-describe-instances | tee /tmp/$$
+instances=$( cat $TMPFILE | awk '/INSTANCE/{print $2}' )
 
 # this shouldn't be needed
 #echo "== ec2-monitor-instances"
@@ -22,3 +26,12 @@ instances=$(ec2-describe-instances | awk '/INSTANCE/{print $2}')
 for i in $instances; do
   mon-get-stats CPUUtilization --namespace "AWS/EC2" --statistics Average --dimensions "InstanceId=$i"
 done
+
+# warn if there are instances running
+running_instances=$( grep INSTANCE $TMPFILE | grep -v terminated )
+[ "$running_instances" ] &&
+{
+echo "---------------------------------------------------"
+echo "THERE ARE RUNNING EC2 INSTANCES.  Do you want that?"
+echo "---------------------------------------------------"
+} >&2
