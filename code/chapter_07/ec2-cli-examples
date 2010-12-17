@@ -5,7 +5,7 @@ mon-list-metrics | grep CPUUtilization
 
 # make something to talk about
 launch_ec2_micro.php
-sleep $(15*60)	# takes a while to get the instance up and collect statistics
+sleep $((15*60))	# takes a while to get the instance up and collect statistics
 
 # now see that the machine is there
 ec2-describe-instances
