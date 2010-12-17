@@ -1,0 +1,59 @@
++ mon-list-metrics
++ grep CPUUtilization
+CPUUtilization        AWS/EC2  {InstanceId=i-4e6d5123}
+CPUUtilization        AWS/EC2  {InstanceId=i-fe3a1c93}
+CPUUtilization        AWS/EC2  {InstanceId=i-50c1e43d}
+CPUUtilization        AWS/EC2  {InstanceId=i-26fbde4b}
+CPUUtilization        AWS/EC2  {InstanceId=i-02a5a16f}
+CPUUtilization        AWS/EC2  {InstanceId=i-dc3214b1}
+CPUUtilization        AWS/EC2  {InstanceId=i-eca4a081}
+CPUUtilization        AWS/EC2  {InstanceId=i-3cfdd851}
+CPUUtilization        AWS/EC2  {InstanceId=i-92a29fff}
+CPUUtilization        AWS/EC2  {InstanceId=i-1630177b}
+CPUUtilization        AWS/EC2  {InstanceId=i-2202274f}
+CPUUtilization        AWS/EC2  {InstanceId=i-ae3531c3}
+CPUUtilization        AWS/EC2  {InstanceId=i-c2e9ccaf}
+CPUUtilization        AWS/EC2  {InstanceId=i-0a3a6267}
+CPUUtilization        AWS/EC2  {InstanceId=i-64e4c109}
+CPUUtilization        AWS/EC2  {InstanceId=i-9e6931f3}
+CPUUtilization        AWS/EC2  {InstanceId=i-5a1e3b37}
+CPUUtilization        AWS/EC2  {InstanceId=i-e2c5f88f}
+CPUUtilization        AWS/EC2  {InstanceId=i-8cffdae1}
++ '[' '' ']'
++ ec2-describe-instances
+RESERVATION	r-0d397467	103862078813	default
+INSTANCE	i-eca4a081	ami-08728661	ec2-184-72-215-87.compute-1.amazonaws.com	ip-10-242-79-95.ec2.internal	running	testkey	0		t1.micro	2010-12-17T02:46:33+0000	us-east-1d	aki-407d9529			monitoring-disabled	184.72.215.87	10.242.79.95			ebs					paravirtual	
+BLOCKDEVICE	/dev/sda1	vol-c87aa8a0	2010-12-17T02:46:43.000Z	
+RESERVATION	r-5138753b	103862078813	default
+INSTANCE	i-02a5a16f	ami-08728661	ec2-50-16-15-128.compute-1.amazonaws.com	ip-10-195-169-93.ec2.internal	running	testkey	0		t1.micro	2010-12-17T02:49:03+0000	us-east-1d	aki-407d9529			monitoring-disabled	50.16.15.128	10.195.169.93			ebs					paravirtual	
+BLOCKDEVICE	/dev/sda1	vol-767ba91e	2010-12-17T02:49:07.000Z	
+++ ec2-describe-instances
+++ awk '/INSTANCE/{print $2}'
++ instances='i-eca4a081
+i-02a5a16f'
++ for i in '$instances'
++ mon-get-stats CPUUtilization --namespace AWS/EC2 --statistics Average --dimensions InstanceId=i-eca4a081
+2010-12-17 14:24:00  0.23399999999999999  Percent
+2010-12-17 14:29:00  0.0                  Percent
+2010-12-17 14:34:00  0.238                Percent
+2010-12-17 14:39:00  0.238                Percent
+2010-12-17 14:44:00  0.0                  Percent
+2010-12-17 14:49:00  0.242                Percent
+2010-12-17 14:54:00  0.0                  Percent
+2010-12-17 14:59:00  0.242                Percent
+2010-12-17 15:04:00  0.23399999999999999  Percent
+2010-12-17 15:09:00  0.0                  Percent
+2010-12-17 15:14:00  0.242                Percent
++ for i in '$instances'
++ mon-get-stats CPUUtilization --namespace AWS/EC2 --statistics Average --dimensions InstanceId=i-02a5a16f
+2010-12-17 14:27:00  0.238                Percent
+2010-12-17 14:32:00  0.242                Percent
+2010-12-17 14:37:00  0.0                  Percent
+2010-12-17 14:42:00  0.238                Percent
+2010-12-17 14:47:00  0.0                  Percent
+2010-12-17 14:52:00  0.23399999999999999  Percent
+2010-12-17 14:57:00  0.0                  Percent
+2010-12-17 15:02:00  0.238                Percent
+2010-12-17 15:07:00  0.238                Percent
+2010-12-17 15:12:00  0.0                  Percent
+2010-12-17 15:17:00  0.238                Percent
