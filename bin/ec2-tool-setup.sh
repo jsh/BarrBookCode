@@ -1,1 +1,1 @@
-/home/jsh/Desktop/Cloud/BarrBookCode/code/chapter_07/ec2-tool-setup.sh
+/home/jsh/Desktop/Cloud/BarrBookCode/code/chapter_07/ec2-tool-setup
