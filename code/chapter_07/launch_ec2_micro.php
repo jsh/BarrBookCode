@@ -34,7 +34,8 @@ $ec2 = new AmazonEC2();
 
 // Run an instance
 $options = array('KeyName' => "testkey",
-		 'InstanceType' => "t1.micro");
+		 'InstanceType' => "t1.micro",
+		 'Placement.AvailabilityZone' => "us-east-1a");
 
 $res = $ec2->run_instances("ami-08728661", 1, 1, $options);
 
