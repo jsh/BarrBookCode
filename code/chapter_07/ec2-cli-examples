@@ -27,11 +27,15 @@ for i in $instances; do
   mon-get-stats CPUUtilization --namespace "AWS/EC2" --statistics Average --dimensions "InstanceId=$i"
 done
 
+set +x
 # warn if there are instances running
 running_instances=$( grep INSTANCE $TMPFILE | grep -v terminated )
 [ "$running_instances" ] &&
 {
-echo "---------------------------------------------------"
-echo "THERE ARE RUNNING EC2 INSTANCES.  Do you want that?"
-echo "---------------------------------------------------"
+echo "--------------------------------------------------------"
+echo "THERE ARE UNTERMINATED EC2 INSTANCES.  Do you want that?"
+echo "--------------------------------------------------------"
+echo
+echo -e "To terminate them, run this command:\n"
+echo -e "\tec2-terminate-instances $instances\n"
 } >&2
