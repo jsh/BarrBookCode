@@ -29,7 +29,7 @@ done
 
 set +x
 # warn if there are instances running
-running_instances=$( grep INSTANCE $TMPFILE | grep -v terminated )
+running_instances="$( grep INSTANCE $TMPFILE | grep -v terminated )"
 [ "$running_instances" ] &&
 {
 echo "--------------------------------------------------------"
@@ -37,5 +37,5 @@ echo "THERE ARE UNTERMINATED EC2 INSTANCES.  Do you want that?"
 echo "--------------------------------------------------------"
 echo
 echo -e "To terminate them, run this command:\n"
-echo -e "\tec2-terminate-instances $instances\n"
+echo -e "\tec2-terminate-instances $running_instances\n"
 } >&2
