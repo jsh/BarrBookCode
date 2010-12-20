@@ -1,11 +1,9 @@
 #!/usr/bin/php
 <?php
 /*
- * ec2_setup.php
+ * launch_ec2_micro.php
  *
- * Launch an EC2 instance, allocate and assign it a 
- * public IP address, and then create and attach a
- * pair of EBS volumes.
+ * Launch a micro EC2 instance.
  *
  * Copyright 2009-2010 Amazon.com, Inc. or its affiliates. All Rights
  * Reserved.
