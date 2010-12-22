@@ -1,0 +1,14 @@
+augment_items.php: SUCCESS
+batch_insert_items.php: SUCCESS
+create_domain.php: SUCCESS
+delete_attrs.php: SUCCESS
+delete_items.php: FAIL
+insert_items.php: SUCCESS
+list_domains.php: SUCCESS
+load_feed_urls.php: UNTESTED
+metadata.php: SUCCESS
+query_domain_cmd.php: SUCCESS
+query_domain.php: SUCCESS
+rss_process.php: UNTESTED
+sdb.class.php: UNTESTED
+start_rss_procs.bash: UNTESTED
