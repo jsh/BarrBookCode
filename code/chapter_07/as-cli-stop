@@ -1,0 +1,18 @@
+#!/bin/bash -eu
+
+as-delete-trigger Trigger1 --auto-scaling-group AutoScale
+as-update-auto-scaling-group AutoScale --min-size 0 --max-size 0
+as-describe-scaling-activities AutoScale
+
+shopt -s nocasematch
+while read -p "keep waiting? (Y/n) " ans; do
+	case $ans in
+		"n") break ;;
+		*) continue ;;
+	esac
+done
+shopt -u nocasematch
+
+as-delete-auto-scaling-group AutoScale
+elb-delete-lb LoadBal
+
