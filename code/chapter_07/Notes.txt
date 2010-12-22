@@ -65,8 +65,6 @@ bottom pane, shows you graphs of some of these metrics.
 
  
 
- 
-
 Get the AWS CLI Tools
 
  
@@ -119,7 +117,7 @@ out what you need to install it, please add that information here.
 
 Me neither. Get over it.
 
-Setting Up the Tools
+Set Up the Tools
 
  
 
@@ -158,6 +156,30 @@ $ ln $PWD/ec2-setup-tools ~/.bash-aws
 
 $ echo ‘[ -f ~/.bash-aws ] && source ~/.bash-aws’ >> ~/.bashrc
 
+Try Out the Tools
+
+ 
+
+ec2-cli-examples shows off the command-line tools, using examples from the
+book. Almost everything works as advertised, except mon-get-stats, which
+requires you specify an instance. The code in ec2-cli-examples shows how to use
+it. Also, you no longer have to invoke ec2-monitor-instances, because simple
+CloudWatch monitoring is now free and on by default. (See above.)
+
+ 
+
+CloudWatch Almost Works
+
+ 
+
+The supplied CloudWatch example is statistics_chart_page.php, and uses some
+cool Google Chart technology. Or would if I could get it to work. I’ve
+converted it to use AWSSDKforPHP, but can’t seem to figure out how to make
+get_metric_statistics() return any data. I’m sure there’s a way, but I’ve
+failed, and can’t even get the much-simpler example in Amazon’s on-line
+documentation to work. (I’ve put that example into cw-stats-example.php .) Can
+you? If so, please contribute the solution.
+
  
 
 More Java Setup
@@ -181,18 +203,64 @@ Is it a complete PITA that you can only do it as point-and-click? Yes, indeedy.
 Do you know a better way? Excellent. Please use your knowledge to re-write this
 paragraph.
 
- 
+Elastic Load Balancing
 
  
 
-The looong example at the end of the chapter, which shows off both Auto Scaling
-and Elastic Load Balancing, says that there is not yet PHP toolkit support for
-these two features.
+The Elastic Load Balancing (elb) example uses Amazon’s command-line tools. The
+examples in the book work. The book goes on to say that there isn’t yet PHP
+toolkit support for elb.
 
  
 
-There is now.  Look in AWSSDKforPHP/services and you'll see as.class.php and
-elb.class.php.
+There is now.  Look in AWSSDKforPHP/services and you'll see elb.class.php.  Do
+you have a nice code example? Please contribute it.
+
+ 
+
+Auto-Scaling
+
+ 
+
+The looong example at the end of the chapter shows off both Auto Scaling and
+Elastic Load Balancing.  Like the CloudWatch example, it doesn’t work. The
+first problem is with as-create-or-update-trigger, which announces that it’s
+deprecated and that you should be using the new triggering mechanism. Mind, it
+doesn’t hint how.
+
+ 
+
+The second is with as-describe-scaling-activities, which always reports None.
+
+ 
+
+I’ve put the examples from the book into as-cli-start and as-cli-stop, but they
+need to be tailored a little. Still, if they worked, they’d save you some
+typing.
+
+ 
+
+What you can do, by tailoring them, is create an elb volume, and then use
+test_plan_scale.jmx, within jmeter, to cause the volume to expand with
+increased demand. You have to watch this from the AWS Console, though because
+as-describe-scaling-activities won’t work.
+
+ 
+
+Also, when you kill the experiment, following the steps from the book (which
+I’ve put into as-cli-stop), you just have to keep trying
+as-delete-auto-scaling-group until it  finally works, for the same reason.
+
+ 
+
+Do you have a fix for the problems?  If so, please contribute them.
+
+ 
+
+For AutoScaling, the book again says that there is not yet PHP toolkit support.
+Look in AWSSDKforPHP/services and you'll see as.class.php . If it works, then
+we should be able to hack together an as-describe-scaling-activities ourselves.
+ If you do this, please contribute it.
 
  
 
