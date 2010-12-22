@@ -1,0 +1,41 @@
+#!/bin/bash -eux
+# called with args, it launches an instance
+
+TMPFILE=/tmp/$$
+trap 'rm -f $TMPFILE' EXIT
+
+# show there are metrics to look at
+mon-list-metrics | grep CPUUtilization
+
+# called with args, it launches an instance
+if [ "$*" ]; then
+  # make something to talk about
+  launch_ec2_micro.php
+  sleep $((15*60))	# takes a while to get the instance up and collect statistics
+fi
+
+# now see that the machine is there
+ec2-describe-instances | tee /tmp/$$
+instances=$( cat $TMPFILE | awk '/INSTANCE/{print $2}' )
+
+# this shouldn't be needed
+#echo "== ec2-monitor-instances"
+#ec2-monitor-instances NNNN
+
+# and report some statistics
+for i in $instances; do
+  mon-get-stats CPUUtilization --namespace "AWS/EC2" --statistics Average --dimensions "InstanceId=$i"
+done
+
+set +x
+# warn if there are instances running
+running_instances="$( grep INSTANCE $TMPFILE | grep -v terminated )"
+[ "$running_instances" ] &&
+{
+echo "--------------------------------------------------------"
+echo "THERE ARE UNTERMINATED EC2 INSTANCES.  Do you want that?"
+echo "--------------------------------------------------------"
+echo
+echo -e "To terminate them, run this command:\n"
+echo -e "\tec2-terminate-instances $running_instances\n"
+} >&2

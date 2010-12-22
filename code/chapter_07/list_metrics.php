@@ -19,11 +19,13 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 
 // Create the CloudWatch access object
 $cw = new AmazonCloudWatch();
@@ -39,7 +41,7 @@ if ($res->isOK())
   foreach ($metrics as $metric)
   {
     $metricsRows[] = 
-      array('MeasureName' => (string) $metric->MeasureName,
+      array('MetricName' => (string) $metric->MetricName,
       'Namespace'   => (string) $metric->Namespace,
       'Name'        => (string) $metric->Dimensions->member->Name,
       'Value'       => (string) $metric->Dimensions->member->Value);
@@ -49,17 +51,17 @@ if ($res->isOK())
   usort($metricsRows, 'CmpMetrics');
 
   // Display a header and then the metrics
-  printf("%-16s  %-16s  %-16s  %-16s\n",
-   "Namespace", "Measure Name", "Name", "Value");
+  printf("%-16s  %-20s  %-16s  %-16s\n",
+   "Namespace", "Metric Name", "Name", "Value");
 
-  printf("%-16s  %-16s  %-16s  %-16s\n",
+  printf("%-16s  %-20s  %-16s  %-16s\n",
    "=========", "============", "====", "=====");
 
   foreach ($metricsRows as $metricsRow)
   {
-    printf("%-16s  %-16s  %-16s  %-16s\n",
+    printf("%-16s  %-20s  %-16s  %-16s\n",
      $metricsRow['Namespace'],
-     $metricsRow['MeasureName'],
+     $metricsRow['MetricName'],
      $metricsRow['Name'],
      $metricsRow['Value']);
   }
@@ -72,8 +74,8 @@ else
 
 function CmpMetrics($m1, $m2)
 {
-  $k1 = $m1['Namespace'] . $m1['MeasureName'] . $m1['Name'];
-  $k2 = $m2['Namespace'] . $m2['MeasureName'] . $m2['Name'];
+  $k1 = $m1['Namespace'] . $m1['MetricName'] . $m1['Name'];
+  $k2 = $m2['Namespace'] . $m2['MetricName'] . $m2['Name'];
 
   return strcmp($k1, $k2);
 }

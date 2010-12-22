@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 /*
  * statistics_chart_page.php
@@ -25,16 +27,28 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
+
+//jsh
+if ($argc == 1)
+{
+  $debug = 0;
+} else {
+  $debug = $argv[1];
+}
+print("debug = $debug\n");
+// jsh
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 
 // Set default date values
 $startDate_DT = new DateTime('now');
 $endDate_DT   = new DateTime('now');
-$startDate_DT->modify('-1 day');
+$startDate_DT->modify('-10 days');
 
 $startDate = $startDate_DT->format('Y-m-d');
 $endDate   = $endDate_DT->format('Y-m-d');
@@ -46,6 +60,12 @@ $end    = isset($_GET['end'])    ? $_GET['end']    : $endDate;
 
 // Adjust parameters as needed
 $period *= 60;
+
+if ($debug < 1) 
+{
+  print("period = $period, start= $start, end=$end\n");
+  exit(0);
+}
 
 // Create array of chart parameters, one interior array per chart
 $charts = array(
@@ -79,7 +99,10 @@ $charts = array(
     );
 
 // Create the CloudWatch access object
-$cw = new AmazonCloudWatch(null, null, 'ap-southeast-1.monitoring.amazonaws.com');
+// $cw = new AmazonCloudWatch(null, null, 'ap-southeast-1.monitoring.amazonaws.com');
+$cw = new AmazonCloudWatch();
+
+// $cw->set_region(REGION_US_E1);
 
 // Prepare to get metrics
 $opt = array('Namespace' => 'AWS/EC2', 'Period' => $period);
@@ -93,13 +116,21 @@ foreach ($charts as &$chart)
   $label   = $chart['L'];
 
   // Get the metrics
-  $res = $cw->get_metric_statistics($measure,
-            $statistics,
-            $unit,
+
+  $res = $cw->get_metric_statistics($opt['Namespace'],
+            $measure,
             $start,
             $end,
-            $opt);
+	    $opt['Period'],
+            $statistics,
+            $unit);
+
+if ($debug < 2)
+{
   print_r($res);
+  exit(0);
+
+}
   if ($res->isOK())
   {
     $datapoints = $res->body->GetMetricStatisticsResult->Datapoints->member;

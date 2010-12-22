@@ -1,0 +1,12 @@
+#!/bin/bash -eu
+
+elb-create-lb LoadBal --availability-zones us-east-1a --listener "protocol=HTTP,lb-port=80,instance-port=80" | tee elb.OUT
+
+as-create-launch-config Config --image-id ami-60da3d09 --instance-type m1.small
+
+as-create-auto-scaling-group AutoScale --launch-configuration Config --availability-zones us-east-1b --min-size 1 --max-size 5 --load-balancers LoadBal
+
+
+as-create-or-update-trigger Trigger1 --auto-scaling-group AutoScale --breach-duration 120 --dimensions "AutoScalingGroupName=AutoScale" --lower-breach-increment "-1" --lower-threshold 30 --measure CPUUtilization --period 60 --statistic Average --upper-breach-increment "1" --upper-threshold 70 --namespace "AWS/EC2" --unit "Percent" 
+
+as-describe-scaling-activities AutoScale
