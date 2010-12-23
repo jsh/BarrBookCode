@@ -33,6 +33,13 @@ require_once ('include/magpierss/rss_fetch.inc');
 // Tell the RSS parser to disable caching of feed data
 define('MAGPIE_CACHE_ON', 0);
 
+// Create the feed queue, if necessary, and grab its URL
+$sqs = new AmazonSQS();
+$res = $sqs->create_queue(FEED_QUEUE);
+if ($res->isOK())
+{
+  $feedQueueUrl = urlFromQueueObject($res);
+}
 
 $doFile  = false;
 $doQueue = false;
@@ -109,7 +116,7 @@ if ($doQueue)
 
   while (true)
   {
-    $message = pullMessage($sqs, FEED_QUEUE);
+    $message = pullMessage($sqs, $feedQueueUrl);
 
     if ($message != null)
     {
@@ -128,7 +135,7 @@ if ($doQueue)
       }
 
       // Delete the message
-      $sqs->delete_message(FEED_QUEUE, $receiptHandle);
+      $sqs->delete_message($feedQueueUrl, $receiptHandle);
     }
   }
 }
