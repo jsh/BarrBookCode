@@ -16,6 +16,8 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 // Buckets
@@ -362,6 +364,21 @@ function getItemAttributes($item)
     }
   }
   return $attrs;
+}
+
+/*
+ * urlFromQueueObject -
+ *
+ *  Get an AWS (string) URL from a valid queue object
+ *  Assumes argument is a valid result from a successful create_queue call
+ *  Does no error checking.
+ *
+ */
+
+function urlFromQueueObject($queueObject)
+{
+  $queueNameString = $queueObject->body->CreateQueueResult->QueueUrl;
+  return $queueNameString;
 }
 
 ?>

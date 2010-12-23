@@ -30,6 +30,14 @@ error_reporting(E_ALL);
 require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
+// Create the feed queue, if necessary, and grab its URL
+$sqs = new AmazonSQS();
+$res = $sqs->create_queue(FEED_QUEUE);
+if ($res->isOK())
+{
+  $feedQueueUrl = urlFromQueueObject($res);
+}
+
 // Make sure that at least one argument was given
 if ($argc < 2)
 {
@@ -49,12 +57,12 @@ for ($i = 1; $i < $argc; $i++)
 
     foreach ($urls as $url)
     {
-      loadURL($sqs, FEED_QUEUE, trim($url));
+      loadURL($sqs, $feedQueueUrl, trim($url));
     }
   }
   else
   {
-    loadURL($sqs, FEED_QUEUE, $argv[$i]);
+    loadURL($sqs, $feedQueueUrl, $argv[$i]);
   }
 }
 
