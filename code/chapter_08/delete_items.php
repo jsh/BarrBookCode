@@ -39,11 +39,8 @@ if ($res1->isOK())
   {
     $itemName = (string)$item->Name;
 
-    // Get list of attributes
-    $attrs = array_keys(getItemAttributes($item));
-
     // Delete the attributes
-    $res2 = $sdb->delete_attributes(BOOK_FILE_DOMAIN, $itemName, $attrs);
+    $res2 = $sdb->delete_attributes(BOOK_FILE_DOMAIN, $itemName);
 
     if ($res2->isOK())
     {

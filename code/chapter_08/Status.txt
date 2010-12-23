@@ -2,7 +2,7 @@ augment_items.php: SUCCESS
 batch_insert_items.php: SUCCESS
 create_domain.php: SUCCESS
 delete_attrs.php: SUCCESS
-delete_items.php: FAIL
+delete_items.php: Success
 insert_items.php: SUCCESS
 list_domains.php: SUCCESS
 load_feed_urls.php: UNTESTED
