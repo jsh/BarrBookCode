@@ -3,4 +3,4 @@
 rss_process.php -f feeds.txt
 load_feed_urls.php -f feeds.txt
 start_rss_procs.bash
-rm parse_out*.txt
+rm -f parse_out*.txt
