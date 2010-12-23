@@ -1,0 +1,8 @@
+#!/bin/bash -x
+
+rss_process.php -f feeds.txt
+load_feed_urls.php -f feeds.txt
+start_rss_procs.bash
+sleep 120	# give time for all the processing to complete
+ps ajax | grep rss_process.php || 
+	rm -f parse_out*.txt

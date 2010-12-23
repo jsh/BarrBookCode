@@ -1,6 +1,6 @@
 AWS Step-by-Step
 
-Step-by-Step Amazon Web Services
+Chapter 0: Step-by-Step Amazon Web Services
 
  
 
@@ -18,9 +18,9 @@ Web Site in the Cloud: Amazon Web Services Made Easy. It’s good.
 
  
 
-Reading it takes time, though, and I want to get you up and running, quickly.
-For an Installfest-in-the-Cloud or a workshop, I want things to work, first
-time, out-of-the-box, quickly.
+Reading the Barr book takes time, though, and I want to get you up and running,
+quickly. For an Installfest-in-the-Cloud or a workshop, I want things to work,
+first time, out-of-the-box, quickly.
 
  
 
@@ -40,6 +40,10 @@ Back when their notices went out by surface mail, the Front-Range Unix Users
 Group would accept donations of stamps, but not of money for stamps. If they
 accepted money, someone would still have to go get the stamps, and that was a
 hassle.
+
+ 
+
+I’ve marked anything that I know could use your help in red. Pitch right in.
 
 Grab the Book
 
@@ -117,8 +121,8 @@ Set Up an Amazon Web Services Account
 
 AWS bills your Amazon account.  For a while, they billed my credit card about
 $0.03/month for a disk image I neglected to delete.  If you’re one of the 13
-people in the country who don’t have an Amazon account, and won’t get one for
-whatever reason, you won’t have  an AWS account, either.
+people in the country who haven’t ever bought anything from Amazon, and refuse
+to, for whatever reason, you won’t get an AWS account, either.
 
  
 
@@ -127,8 +131,11 @@ whatever reason, you won’t have  an AWS account, either.
  
 
 It costs, but it's cheap. If you're a new user, it's free, as long as you don’t
-use it too much.  You’ll still need to tie it to your normal, Amazon account,
-so be prepared to do that.
+use it too much.  You’ll still need to tie it to a credit card tied to your
+normal Amazon account, so be prepared to do that. If you launch a ginormous
+number of dual-GPU, teraflop virtual boxes that generate terabytes of data to
+store on virtual disks.  they won’t ask “Are you sure?” first. They’ll just
+bill you.
 
  
 
@@ -164,8 +171,8 @@ Firefox home page has tabs for the AWS things I use, like this:
 https://console.aws.amazon.com/ec2/home|https://aws.amazon.com/
 
 Chrome lets you synchronize extensions on all the copies you use, so installing
-this on one box, installs it on all of them.  If you know how to do this in
-Firefox, please put it in here.
+this on one box, installs it on all of them.  If you know how to synchronize
+extensions across different machines in Firefox, please put it in here.
 
 Set Up Your Computer
 
@@ -242,7 +249,7 @@ code sample is easy enough. When it isn't, Google is your friend.
  
 
 Perhaps you’re thinking, “But I do know PHP, and some things you’re doing are
-dopey.” Even better! Fix the document to show the next reader how to do them
+dopey.” Even better! Fix this document to show the next reader how to do them
 right.
 
  
@@ -427,11 +434,20 @@ help.
 
  
 
-If they don’t, don’t just tell me! Send me an improved version.
+ + Chapter 0: Step-by-Step Amazon Web Services
+ 2. Chapter 4: Storing Data with Amazon S3
+ 3. Chapter 5: Web Hosting with Amazon EC2  
+ 4. Chapter 6: Building a Scalable Architecture with Amazon SQS
+ 5. Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
+ 6. Chapter 8: Amazon SimpleDB, A Cloud Database
 
  
 
-This is an evolving project.
+If they don’t help, don’t just tell me! Send me an improved version.
+
+ 
+
+This is an evolving workshop.
 
 Edit this page (if you have permission)–Published by Google Docs–Report Abuse
 –Updated automatically every 5 minutes

@@ -1,0 +1,32 @@
+#!/bin/bash -x
+
+create_domain.php
+list_domains.php
+insert_items.php
+batch_insert_items.php
+query_domain.php
+	query_domain_cmd.php "Size = '00001891'"
+	query_domain_cmd.php "Size<'00000900'"
+	query_domain_cmd.php "Size>'00000900'"
+	query_domain_cmd.php "itemName() like '%items%'"
+	query_domain_cmd.php "itemName() like 'delete%'"
+	query_domain_cmd.php "itemName() in ('metadata.php','list_metrics.php')"
+augment_items.php
+query_domain.php
+delete_attrs.php
+query_domain.php
+delete_items.php
+query_domain.php
+metadata.php
+
+exit
+
+
+feeds.txt
+include
+load_feed_urls.php
+Notes
+rss_process.php
+sdb.class.php
+start_rss_procs.bash
+Status.txt
