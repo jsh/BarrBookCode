@@ -71,7 +71,7 @@ why, expand this paragraph.
 
  
 
-Select the AMI that matches the book's: ami-2cb05345 (now called
+Select the AMI that matches the book's: ami-2cb05345 (now named
 phpquickstart-1.5).
 
  
@@ -413,7 +413,8 @@ example here.
 
 On the other hand, there are an awful lot of free AMIs, and if you don't like
 any of them, making your own, custom AMI is trivial. You could even charge
-folks for using them. Amazon will do all the billing for you.
+folks for using them. Amazon says it will do all the billing for you. I haven’t
+done this so if you do put instructions here.
 
  
 

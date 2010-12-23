@@ -150,8 +150,8 @@ load_crawl_urls.php
 
  
 
-I colored the queues blue because it rhymes. “Blue? Queue!”  Servers are orange
-for the same reason.
+I colored the queues blue because it rhymes. “Blue? Queue!”  I colored the
+servers orange for the same reason.
 
 Of these, fetch_images.php, fetch_page.php, and render_images.php require an
 S3-bucket name for an argument. Use one of your existing buckets, or make a new
