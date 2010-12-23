@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eu
 
 # start_rss_procs.bash
 Count=40
