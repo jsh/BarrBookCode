@@ -32,6 +32,7 @@ define('URL_QUEUE', 'c_url');
 define('PARSE_QUEUE', 'c_parse');
 define('IMAGE_QUEUE', 'c_image');
 define('RENDER_QUEUE', 'c_render');
+define('FEEDS', 'feeds.txt');
 define('FEED_QUEUE', 'c_feed');
 
 // Domains
