@@ -9,5 +9,5 @@ load_feed_urls.php: SUCCESS
 metadata.php: SUCCESS
 query_domain_cmd.php: SUCCESS
 query_domain.php: SUCCESS
-rss_process.php: UNTESTED
-start_rss_procs.bash: UNTESTED
+rss_process.php: SUCCESS
+start_rss_procs.bash: SUCCESS
