@@ -10,5 +10,4 @@ metadata.php: SUCCESS
 query_domain_cmd.php: SUCCESS
 query_domain.php: SUCCESS
 rss_process.php: UNTESTED
-sdb.class.php: UNTESTED
 start_rss_procs.bash: UNTESTED
