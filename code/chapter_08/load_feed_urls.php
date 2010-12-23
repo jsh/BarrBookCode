@@ -54,7 +54,7 @@ for ($i = 1; $i < $argc; $i++)
   }
   else
   {
-    loadURL($sqs, FEED_QUEUE, $argv[i]);
+    loadURL($sqs, FEED_QUEUE, $argv[$i]);
   }
 }
 
