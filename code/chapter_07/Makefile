@@ -7,3 +7,5 @@ doc:
 
 clean:
 	rm -rf Results
+
+.PHONY: doc clean
