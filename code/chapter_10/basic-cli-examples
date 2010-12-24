@@ -1,0 +1,67 @@
+#!/bin/bash -eux
+
+# create an ec2 instance here and put its id into $instance
+
+# now create a volume and attach it to the instance
+ec2-create-volume -z us-east-1b -s 50 | tee create-vol.OUT
+vol=$( awk '{print $2}' create.OUT )
+
+# watch the progress
+while true; do
+	ec2-describe-volumes $vol | tee describe-vol.OUT
+	grep -q creating describe-vol.OUT || break
+	echo === 
+	sleep 30
+done
+
+# attach it to the instance
+ec2-attach-volume $vol -i $instance -d /dev/sdf
+
+# watch the progress
+while true; do
+        ec2-describe-volumes $vol | tee describe-vols.OUT
+	grep -q attaching describe-vols.OUT || break
+	echo === 
+	sleep 30
+done
+
+
+# snapshot the volume
+ec2-create-snapshot $vol | tee create-snap.OUT
+snap=$( awk '{print $2}' snap.OUT )
+
+# watch the progress
+while true; do
+	ec2-describe-snapshots $snap | tee describe-snap.OUT
+	grep -q creating describe-snap.OUT || break
+	echo === 
+	sleep 30
+done
+
+# create a volume from the snapshot and watch its progress
+ec2-create-volume -z us-east-1b -s 50 --snapshot $snap | tee create-vol.OUT
+vol=$( awk '{print $2}' create.OUT )
+
+# watch the progress
+while true; do
+	ec2-describe-volumes $vol | tee describe-vol.OUT
+	grep -q creating describe-vol.OUT || break
+	echo === 
+	sleep 30
+done
+
+# attach it to the instance, too
+ec2-attach-volume $vol -i $instance -d /dev/sdg
+
+# watch the progress
+while true; do
+        ec2-describe-volumes $vol | tee describe-vols.OUT
+	grep -q attaching describe-vols.OUT || break
+	echo === 
+	sleep 30
+done
+
+snap_and_log.php "Important backup" $vol
+ec2-describe-snapshots
+
+ec2_diagram.php

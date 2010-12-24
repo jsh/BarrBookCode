@@ -1,0 +1,21 @@
+#!/bin/bash -eux
+
+# again, need an instance here
+
+snap=snap753dfc1c
+
+# create a volume from the snapshot and watch its progress
+ec2-create-volume -z us-east-1b -s 50 --snapshot $snap | tee create-vol.OUT
+vol=$( awk '{print $2}' create.OUT )
+
+# watch the progress
+while true; do
+  ec2-describe-volumes $vol | tee describe-vol.OUT
+  grep -q creating describe-vol.OUT || break
+  echo === 
+  sleep 30
+done
+
+ec2-attach-volume $vol -i $instance -d /dev/sdh
+
+

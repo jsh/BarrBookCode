@@ -1,10 +1,11 @@
-#!/bin/bash -eu
+#!/bin/bash -eux
 
-bucket_usage_page.php
 create_domain.php
+import_usage.php report.csv
+query_usage_cmd.php
+bucket_usage_page.php
+
 delete_usage.php
 ec2_diagram.php
 ec2_user_data.php
-import_usage.php
-query_usage_cmd.php
 snap_and_log.php
