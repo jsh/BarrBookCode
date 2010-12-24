@@ -440,6 +440,9 @@ help.
  4. Chapter 6: Building a Scalable Architecture with Amazon SQS
  5. Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
  6. Chapter 8: Amazon SimpleDB, A Cloud Database
+ 7. Chapter 9: Amazon Relational Database Service
+
+ 
 
  
 
