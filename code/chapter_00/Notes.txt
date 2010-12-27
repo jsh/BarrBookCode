@@ -215,7 +215,7 @@ For Ubuntu:
 
  
 
-$ sudo apt-get install git php-pear php5-gd
+$ sudo apt-get install git php-pear php5-gd php5-curl
 
  
 
@@ -365,7 +365,7 @@ There’s a short way and a long way.  First, the short way:
 
  
 
-     $ setup-AWS-config
+     $ setup-AWS-config.pl
 
  
 
@@ -414,7 +414,7 @@ seeing what’s going on.
 
 $ cd BarrBookCode/code/chapter_04
 
-$ ./list_buckets
+$ ./list_buckets.php
 
 You should get a listing of all your Amazon S3 buckets. If you don’t have any
 yet you won’t see much, but you shouldn’t see a bunch of error messages from
@@ -444,9 +444,12 @@ help.
 
  
 
+If they don’t help, don’t just tell me! Send me an improved version.
+
  
 
-If they don’t help, don’t just tell me! Send me an improved version.
+Doing these in order is probably the right approach, but early on please look
+in the notes for Chapter 9, under the heading, Running the Sample Code.
 
  
 
