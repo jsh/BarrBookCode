@@ -1,1 +1,1 @@
-/home/jsh/Desktop/Cloud/BarrBookCode/code/chapter_07/install-AWS-CLI-tools
+../code/chapter_07/install-AWS-CLI-tools
