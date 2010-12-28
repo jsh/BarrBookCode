@@ -26,7 +26,7 @@
 error_reporting(E_ALL);
 
 require_once('AWSSDKforPHP/sdk.class.php');
-require_once('book.php');
+require_once('include/book.inc.php');
 
 // Create the SimpleDB access object
 $sdb = new AmazonSDB();
