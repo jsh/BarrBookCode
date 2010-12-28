@@ -80,7 +80,7 @@ foreach ($buckets as $bucket)
 }
 
 // create a page header and an explanatory message
-$output_title = 'Chapter 9 Sample - S3 Per-Bucket, Per-Day Outbound Data Transfer';
+$output_title = 'Chapter 10 Sample - S3 Per-Bucket, Per-Day Outbound Data Transfer';
 $output_message = "Table of S3 usage Statistics";
 
 // Output the HTML
