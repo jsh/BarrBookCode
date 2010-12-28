@@ -3,7 +3,7 @@
 create_domain.php
 import_usage.php report.csv
 query_usage_cmd.php
-bucket_usage_page.php
+php bucket_usage_page.php
 
 delete_usage.php
 ec2_diagram.php
