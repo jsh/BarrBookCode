@@ -1,18 +1,21 @@
-#!/bin/bash
+#!/bin/bash -eux
+
+# set all the right variables
+grep -q AWS_PATH ~/.bash-aws || cat ec2-tool-setup >> ~/.bash-aws
 
 # unpack the Downloads
 D=$PWD
-if ! [ -d /usr/local/share/aws ]; then
-  sudo mkdir -p /usr/local/share/aws
-  cd /usr/local/share/aws
-  for i in $D/Downloads/*.zip; do
-    unzip $i
-  done
-fi
+[ -d /usr/local/share/aws ] || sudo mkdir -p /usr/local/share/aws
+
+cd /usr/local/share/aws
+for i in $D/Downloads/*.zip; do
+  sudo unzip -u -o $i
+done
 
 # set up credentials file
 cd /usr/local/share/aws/CloudWatch*
 
 template=credential-file-path.template
+[ -f ~/.awscredentials.txt ] && chmod +w ~/.awscredentials.txt
 paste -d= <(sed s/=.*// $template) ~/.awssecret > ~/.awscredentials.txt
 chmod 400 ~/.awscredentials.txt
