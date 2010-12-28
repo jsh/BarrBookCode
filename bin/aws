@@ -1,0 +1,3 @@
+#!/bin/bash -eu
+
+screen -r aws &>/dev/null || screen -S aws -t aws
