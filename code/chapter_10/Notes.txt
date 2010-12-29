@@ -4,7 +4,31 @@ Chapter 10: Advanced AWS
 
  
 
-This is a placeholder to give the Makefile somewhere to point.
+The Core PHP Scripts
+
+The shell script core-php-examples invokes the php scripts from the chapter.
+Read the chapter and the script to see what's going on.
+
+You'll have to download your own usage statistics as csv files to run most of
+these.  Do that here.
+
+The example assumes you'll download your own EC2 and S3 usage data and call
+them ec2_usage.csv and s3_usage.csv. The book suggests choosing "All Usage
+Types," with "Hours" as the granularity.
+
+I've modified the queries so they're not tied to dates from when the text was
+being written.
+
+bucket_usage.phpbucket_usage_page.php, like the _page scripts in Chapter 4, is
+intended for the server's html/ directory, to be run by the web server.
+basic-examples cheats, invoking the script from the command-line and then
+invoking a browser to look at the output.  Without being run by the web server,
+the page isn't pretty, but the concept is clear.
+
+It displays a particular set of usage data for the last week.  When I ran it,
+hadn't done enough in that time period to be interesting, so I parameterized
+the number of days. If you, too, want to modify the number of days to search
+through, look for $ndays in the script.
 
  
 

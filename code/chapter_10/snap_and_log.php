@@ -51,7 +51,7 @@ for ($i = 2; $i < $argc; $i++)
   $volId = $argv[$i];
 
   // Create snapshot
-  $res1 = $ec2->create_snapshot($volId);
+  $res1 = $ec2->create_snapshot($volId, "$volId: $message");
   
   if ($res1->isOK())
   {
