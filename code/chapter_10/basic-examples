@@ -1,8 +1,22 @@
 #!/bin/bash -eux
 
+## querying data
+# get data to query
 create_domain.php
-import_usage.php report.csv
-query_usage_cmd.php
+# download ec2 and s3 usage reports as instructed in the Barr Book
+[ -f ec2-usage.csv ] && [ -f s3-usage.csv] || die "go get ec2-usage.csv and s3-usage.csv files from the AWS Console, as described in the text"
+import_usage.php ec2-usage.csv s3-usage.csv
+
+# sample queries
+this_month=$(date +%Y-%m%%)
+first_of_this_month=$(date +%Y-%m-01%%)
+query_usage_cmd.php                                                                # everything
+query_usage_cmd.php "Service='AmazonS3'"                                           # just S3
+query_usage_cmd.php "Service='AmazonS3' and StartTime like '$first_of_this_month'" # just the first of the month, for a single service
+
+# this month's data for a single service
+query_usage_cmd.php "Service='AmazonS3' and StartTime like '$this_month' and UsageType='DataTransfer-Out-Bytes'"
+
 php bucket_usage_page.php
 
 delete_usage.php

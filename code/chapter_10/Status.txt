@@ -4,5 +4,5 @@ delete_usage.php: FAIL
 ec2_diagram.php: FAIL
 ec2_user_data.php: FAIL
 import_usage.php: SUCCESS
-query_usage_cmd.php: FAIL
+query_usage_cmd.php: SUCCESS
 snap_and_log.php: FAIL
