@@ -113,5 +113,14 @@ If you can, please write examples and provide them to get us over the hump.
 A community is just the people in it; if no one shows up, there’s no community.
 Show up.
 
+ 
+
+This work is licensed under the Creative Commons Attribution 3.0 Unported
+License. To view a copy of this license, visit http://creativecommons.org/
+licenses/by/3.0/ or send a letter to Creative Commons, 171 Second Street, Suite
+300, San Francisco, California, 94105, USA.
+
+ 
+
 Edit this page (if you have permission)–Published by Google Docs–Report Abuse
 –Updated automatically every 5 minutes

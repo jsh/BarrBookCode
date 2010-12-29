@@ -164,5 +164,12 @@ When you’re done, go to the S3 bucket, and you’ll see images and a page that
 the final result. S3Fox will let you look at that page directly, without a
 download step!
 
+This work is licensed under the Creative Commons Attribution 3.0 Unported
+License. To view a copy of this license, visit http://creativecommons.org/
+licenses/by/3.0/ or send a letter to Creative Commons, 171 Second Street, Suite
+300, San Francisco, California, 94105, USA.
+
+ 
+
 Edit this page (if you have permission)–Published by Google Docs–Report Abuse
 –Updated automatically every 5 minutes

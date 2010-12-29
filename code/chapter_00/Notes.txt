@@ -441,6 +441,8 @@ help.
  5. Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
  6. Chapter 8: Amazon SimpleDB, A Cloud Database
  7. Chapter 9: Amazon Relational Database Service
+ 8. Chapter 10: Advanced AWS
+ 9. Chapter 11: Putting It All Together: CloudList
 
  
 
@@ -454,6 +456,17 @@ in the notes for Chapter 9, under the heading, Running the Sample Code.
  
 
 This is an evolving workshop.
+
+ 
+
+This work is licensed under the Creative Commons Attribution 3.0 Unported
+License. To view a copy of this license, visit http://creativecommons.org/
+licenses/by/3.0/ or send a letter to Creative Commons, 171 Second Street, Suite
+300, San Francisco, California, 94105, USA.
+
+ 
+
+ 
 
 Edit this page (if you have permission)–Published by Google Docs–Report Abuse
 –Updated automatically every 5 minutes
