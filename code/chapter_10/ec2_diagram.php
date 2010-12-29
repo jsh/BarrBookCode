@@ -132,7 +132,7 @@ ImageGIF($image, $imageOut);
 $imageOutBits = file_get_contents($imageOut);
 $imageKey     = 'ec2_diagram_' . date('Y_m_d_H_i_s') . '.gif';
 if (uploadObject($s3, BOOK_BUCKET, $imageKey, $imageOutBits,
-     S3_ACL_PUBLIC, "image/gif"))
+     AmazonS3::ACL_PUBLIC, "image/gif"))
 {
   $imageURL = $s3->get_object_url(BOOK_BUCKET, $imageKey);
 
