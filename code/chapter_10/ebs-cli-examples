@@ -8,8 +8,8 @@ vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
-	ec2-describe-volumes $vol | tee describe-vol.OUT
-	grep -q creating describe-vol.OUT || break
+	ec2-describe-volumes $vol | tee describe-vols.OUT
+	grep -q creating describe-vols.OUT || break
 	echo === 
 	sleep 30
 done
@@ -44,8 +44,8 @@ vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
-	ec2-describe-volumes $vol | tee describe-vol.OUT
-	grep -q creating describe-vol.OUT || break
+	ec2-describe-volumes $vol | tee describe-vols.OUT
+	grep -q creating describe-vols.OUT || break
 	echo === 
 	sleep 30
 done
