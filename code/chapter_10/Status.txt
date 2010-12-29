@@ -3,6 +3,6 @@ create_domain.php: SUCCESS
 delete_usage.php: FAIL
 ec2_diagram.php: FAIL
 ec2_user_data.php: FAIL
-import_usage.php: FAIL
+import_usage.php: SUCCESS
 query_usage_cmd.php: FAIL
 snap_and_log.php: FAIL
