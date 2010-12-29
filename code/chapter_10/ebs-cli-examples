@@ -4,7 +4,7 @@
 
 # now create a volume and attach it to the instance
 ec2-create-volume -z us-east-1b -s 50 | tee create-vol.OUT
-vol=$( awk '{print $2}' create.OUT )
+vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
@@ -28,7 +28,7 @@ done
 
 # snapshot the volume
 ec2-create-snapshot $vol | tee create-snap.OUT
-snap=$( awk '{print $2}' snap.OUT )
+snap=$( awk '{print $2}' create-snap.OUT )
 
 # watch the progress
 while true; do
@@ -40,7 +40,7 @@ done
 
 # create a volume from the snapshot and watch its progress
 ec2-create-volume -z us-east-1b -s 50 --snapshot $snap | tee create-vol.OUT
-vol=$( awk '{print $2}' create.OUT )
+vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
