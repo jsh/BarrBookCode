@@ -9,8 +9,8 @@ ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-z
 instance=$(awk '/INSTANCE/{print $2}')
 
 while true; do
-  ec2-describe-instances | tee describe.OUT
-  grep -q pending describe.OUT || break
+  ec2-describe-instances | tee /dev/stderr |
+    grep -q pending || break
   sleep 30
 done
 
@@ -20,10 +20,9 @@ vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
-	ec2-describe-volumes $vol | tee describe-vols.OUT
-	grep -q creating describe-vols.OUT || break
-	echo === 
-	sleep 30
+  ec2-describe-volumes $vol | tee /dev/stderr |
+    grep -q creating || break
+  sleep 30
 done
 
 # attach it to the instance
@@ -31,10 +30,9 @@ ec2-attach-volume $vol -i $instance -d /dev/sdf
 
 # watch the progress
 while true; do
-        ec2-describe-volumes $vol | tee describe-vols.OUT
-	grep -q attaching describe-vols.OUT || break
-	echo === 
-	sleep 30
+  ec2-describe-volumes $vol | tee /dev/stderr |
+    grep -q attaching || break
+  sleep 30
 done
 
 
@@ -44,36 +42,32 @@ snap=$( awk '{print $2}' create-snap.OUT )
 
 # watch the progress
 while true; do
-	ec2-describe-snapshots $snap | tee describe-snap.OUT
-	grep -q creating describe-snap.OUT || break
-	echo === 
-	sleep 30
+  ec2-describe-snapshots $snap | tee /dev/stderr |
+    grep -q creating || break
+  sleep 30
 done
 
 # create a volume from the snapshot and watch its progress
 ec2-create-volume -z $zone -s 50 --snapshot $snap | tee create-vol.OUT
-vol=$( awk '{print $2}' create-vol.OUT )
+vol2=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
-	ec2-describe-volumes $vol | tee describe-vols.OUT
-	grep -q creating describe-vols.OUT || break
-	echo === 
-	sleep 30
+  ec2-describe-volumes $vol2 | tee /dev/stderr |
+    grep -q creating || break
+  sleep 30
 done
 
 # attach it to the instance, too
-ec2-attach-volume $vol -i $instance -d /dev/sdg
+ec2-attach-volume $vol2 -i $instance -d /dev/sdg
 
 # watch the progress
 while true; do
-        ec2-describe-volumes $vol | tee describe-vols.OUT
-	grep -q attaching describe-vols.OUT || break
-	echo === 
-	sleep 30
+  ec2-describe-volumes $vol2 | tee /dev/stderr |
+    grep -q attaching || break
+  sleep 30
 done
 
-snap_and_log.php "Important backup" $vol
+# now, just for fun, let's snapshot that one
+snap_and_log.php "Important backup" $vol2
 ec2-describe-snapshots
-
-ec2_diagram.php

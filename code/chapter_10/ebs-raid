@@ -10,10 +10,9 @@ create-and-attach() {
   
   # watch the progress
   while true; do
-  	ec2-describe-volumes $vol | tee describe-vol.OUT
-  	grep -q creating describe-vol.OUT || break
-  	echo === 
-  	sleep 30
+    ec2-describe-volumes $vol | tee /dev/stderr |
+      grep -q creating || break
+      sleep 30
   done
   
   ec2-attach-volume $vol -i $instance -d /dev/sdh$1
