@@ -19,12 +19,14 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
-require_once('book.php');
+require_once('AWSSDKforPHP/sdk.class.php');
+require_once('include/book.inc.php');
 
 // Create the SimpleDB access object
 $sdb = new AmazonSDB();
@@ -50,7 +52,7 @@ do
       $attrs = array_keys(getItemAttributes($item));
 
       // Delete the attributes
-      $res2 = $sdb->delete_attributes(BOOK_AWS_USAGE_DOMAIN, $itemName, $attrs);
+      $res2 = $sdb->delete_attributes(BOOK_AWS_USAGE_DOMAIN, $itemName);
 
       if ($res2->isOK())
       {

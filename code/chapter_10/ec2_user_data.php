@@ -15,6 +15,8 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 $userData = file_get_contents('http://169.254.169.254/latest/user-data');

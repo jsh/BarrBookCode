@@ -1,0 +1,28 @@
+#!/bin/bash -eux
+
+source ../../bin/gripe.sh
+
+## querying data
+# get data to query
+create_domain.php
+# download ec2 and s3 usage reports as instructed in the Barr Book
+[ -f ec2_usage.csv ] && [ -f s3_usage.csv] || die "go get ec2_usage.csv and s3_usage.csv files from the AWS Console, as described in the text"
+import_usage.php *.csv
+
+# sample queries
+this_month=$(date +%Y-%m%%)
+first_of_this_month=$(date +%Y-%m-01%%)
+query_usage_cmd.php                                                                # everything
+query_usage_cmd.php "Service='AmazonS3'"                                           # just S3
+query_usage_cmd.php "Service='AmazonS3' and StartTime like '$first_of_this_month'" # just the first of the month, for a single service
+
+# this month's data for a single service
+query_usage_cmd.php "Service='AmazonS3' and StartTime like '$this_month' and UsageType='DataTransfer-Out-Bytes'"
+
+# bucket_usage_page.php is intended to be run by the web server. Oh well. We'll fake it out.
+php bucket_usage_page.php > usage.html
+w3m -dump file:///$PWD/usage.html
+rm usage.html
+
+# now get rid of the usage data
+delete_usage.php

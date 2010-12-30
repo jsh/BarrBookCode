@@ -19,11 +19,13 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
-//error_reporting(E_ALL);
+error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
 // Set parameter to display
@@ -39,17 +41,19 @@ $buckets = $s3->get_bucket_list();
 // Get today's date, which is also last day for query
 $today   = date_create("now");
 $lastDay = $today->format("Y-m-d");
+$ndays = 30;
 
-// Form list of last 7 days in form YYYY-MM-DD
+// Form list of last $ndays days in form YYYY-MM-DD
 $days = array();
-for ($i = 0; $i < 7; $i++)
+for ($i = 0; $i < $ndays; $i++)
 {
   date_modify($today, "-1 day");
   $days[] = $today->format("Y-m-d");
 }
 
 // Get first day for query
-$firstDay = $days[6];
+$firstDay = $days[$ndays-1];
+
 
 $rows = array();
 // Generate data for each table row
@@ -78,7 +82,7 @@ foreach ($buckets as $bucket)
 }
 
 // create a page header and an explanatory message
-$output_title = 'Chapter 9 Sample - S3 Per-Bucket, Per-Day Outbound Data Transfer';
+$output_title = 'Chapter 10 Sample - S3 Per-Bucket, Per-Day Outbound Data Transfer';
 $output_message = "Table of S3 usage Statistics";
 
 // Output the HTML

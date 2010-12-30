@@ -19,28 +19,35 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
 
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
-$domain = BOOK_SNAP_LOG_DOMAIN;
+$log_domain = BOOK_SNAP_LOG_DOMAIN;
+$usage_domain = BOOK_AWS_USAGE_DOMAIN;
+$domains = array($log_domain, $usage_domain);
 
 // Create the SimpleDB access object
 $sdb = new AmazonSDB();
 
-// Create the SimpleDB domain
-$res = $sdb->create_domain($domain);
-
-// Check result
-if (!$res->isOK())
+foreach ($domains as $domain)
 {
-   exit("Create domain operation failed for domain ${domain}\n");
+  // Create the SimpleDB domain
+  $res = $sdb->create_domain($domain);
+  
+  // Check result
+  if (!$res->isOK())
+  {
+     exit("Create domain operation failed for domain ${domain}\n");
+  }
+  
+  print("Domain ${domain} created.\n");
 }
-
-print("Domain ${domain} created.\n");
 
 exit(0);
 ?>

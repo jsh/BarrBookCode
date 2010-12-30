@@ -28,7 +28,7 @@ do
 		die "Can't get $i"
 done &> OUT
 
-mv 'ref\=aws_rc_ec2tools\?location\=http\:%2F%2Fs3.amazonaws.com%2Fec2-downloads%2Fec2-api-tools.zip\&token\=A80325AA4DAB186C80828ED5138633E3F49160D9' EC2-api-tools.zip
+mv ref\=aws_rc_ec2tools\?location\=http\:%2F%2Fs3.amazonaws.com%2Fec2-downloads%2Fec2-api-tools.zip\&token\=A80325AA4DAB186C80828ED5138633E3F49160D9 EC2-api-tools.zip
 
 echo 'SUCCESS!'
 rm OUT

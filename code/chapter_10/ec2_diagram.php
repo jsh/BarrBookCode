@@ -22,10 +22,12 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 error_reporting(E_ALL);
-require_once('cloudfusion.class.php');
+require_once('AWSSDKforPHP/sdk.class.php');
 require_once('include/book.inc.php');
 
 // Define shape geometry
@@ -47,6 +49,12 @@ define('SNAP_GAP',    16);
 // Create the access objects
 $ec2 = new AmazonEC2();
 $s3  = new AmazonS3();
+
+if ($argc != 2) 
+{
+  exit("Usage: " . $argv[0] . " bucket_name\n");
+}
+$bucket = ($argv[1] == '-') ? BOOK_BUCKET : $argv[1];
 
 // Get the EC2 instances, EBS volumes, and snapshots
 $resInstances = $ec2->describe_instances();
@@ -129,10 +137,10 @@ ImageGIF($image, $imageOut);
 // Retrieve the image's bits
 $imageOutBits = file_get_contents($imageOut);
 $imageKey     = 'ec2_diagram_' . date('Y_m_d_H_i_s') . '.gif';
-if (uploadObject($s3, BOOK_BUCKET, $imageKey, $imageOutBits,
-     S3_ACL_PUBLIC, "image/gif"))
+if (uploadObject($s3, $bucket, $imageKey, $imageOutBits,
+     AmazonS3::ACL_PUBLIC, "image/gif"))
 {
-  $imageURL = $s3->get_object_url(BOOK_BUCKET, $imageKey);
+  $imageURL = $s3->get_object_url($bucket, $imageKey);
 
   print("EC2 diagram is at ${imageURL}\n");
 }

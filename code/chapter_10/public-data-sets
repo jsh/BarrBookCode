@@ -1,0 +1,37 @@
+#!/bin/bash -eux
+# illustrate using public data sets
+
+source ./watchers.sh
+
+# create an instance
+zone=us-east-1b
+
+# create a micro ec2 instance here and put its id into $instance
+token=${1:-$(date +%Y-%m-%d-%H-%M)}
+echo token is $token
+ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-zone $zone --client-token $token | tee run.OUT
+instance=$( awk '/INSTANCE/{print $2}' run.OUT )
+
+# track progress
+watch-instance-while pending $instance
+
+snap=snap-753dfc1c  # 7 months of Wikipedia traffic statistics
+
+# create a volume from the snapshot and watch its progress
+ec2-create-volume -z us-east-1b -s 320 --snapshot $snap | tee create-vol.OUT
+vol=$( awk '{print $2}' create-vol.OUT )
+
+# watch the progress
+watch-volumes-while creating $vol
+
+ec2-attach-volume $vol -i $instance -d /dev/sdh
+
+# watch the progress
+watch-volumes-while attaching $vol
+
+# now log in to the aws instance so you can mount the volume
+
+key=~/.ssh/testkey.pem	# or whatever yours is called
+dnsname=$(ec2-describe-instances $instance | awk '/INSTANCE/{print $4}')
+
+ssh -i $key ec2-user@$dnsname

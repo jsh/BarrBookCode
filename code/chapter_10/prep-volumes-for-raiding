@@ -1,0 +1,26 @@
+#!/bin/bash -eux
+# create and attach four, 10G volumes to the instance named in the arg
+# as sda{1..4}
+
+instance=${1:?"usage: $0 instance"}
+
+source ./watchers.sh
+
+zone=us-east-1b
+unset volumes
+
+# create four volumes
+for i in {1..4}; do
+  volumes+="$( ec2-create-volume -z $zone -s 10 | awk '{print $2}' ) "
+done
+
+watch-volumes-while creating $volumes
+
+# attach them to the instance
+set $volumes
+for i in {1..4}; do
+  ec2-attach-volume ${!i} -i $instance -d /dev/sdh$i
+done
+
+# watch the progress
+watch-volumes-while attaching $volumes
