@@ -13,4 +13,4 @@ while true; do
   sleep 30
 done
 
-instance is $instance
+echo == instance is $instance
