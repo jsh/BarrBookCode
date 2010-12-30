@@ -4,10 +4,11 @@ Chapter 10: Advanced AWS
 
  
 
-The Core PHP Scripts
+Accounting and Tracking
 
-The shell script core-php-examples invokes the php scripts from the chapter.
-Read the chapter and the script to see what's going on.
+The shell script accounting-and-tracking invokes the php scripts from the first
+section of this chapter. Read the section and the script to see what's going
+on.
 
 You'll have to download your own usage statistics as csv files to run most of
 these.  Do that here.
@@ -29,6 +30,115 @@ It displays a particular set of usage data for the last week.  When I ran it,
 hadn't done enough in that time period to be interesting, so I parameterized
 the number of days. If you, too, want to modify the number of days to search
 through, look for $ndays in the script.
+
+Elastic Block Storage
+
+ 
+
+The shell script ebs-cli-examples works exercises all the cli commands in the
+EBS section in this chapter. It’s really only there to give you a script that
+can run, to compare with when something you’re doing doesn’t work. I built it
+up for myself as I ported commands, to record what did and didn’t work, and to
+have a written record of how to invoke them all correctly.
+
+ 
+
+It also creates a tiny instance, using the ec2 CLI tools, to mount volumes on,
+and illustrates the correct calling convention for ec2-run-instance.
+
+ 
+
+It does not, however, mount any of the volumes it creates and attaches. The
+examples in the book mount the volumes and make changes to them on the target
+instance.
+
+ 
+
+The script also illustrates how to monitor the progress of events initiated by
+ec2 CLI commands.
+
+These commands typically make requests and then return, but the requests then
+take time to complete.  The typical paradigm I use, in pseudo-code, is
+
+ 
+
+ec2-do-something-to-X
+
+while true; do
+
+ ec2-describe-X | tee /dev/stderr |
+
+   grep -q <still-in-process-indicator> || break
+
+ sleep 30
+
+done
+
+I use tee to let me watch the progress on stderr, while grep’s watching stdout
+to figure out when it’s done.
+
+ 
+
+Public Data Sets
+
+ 
+
+Data? We got yer data right here ….
+
+ 
+
+Amazon will host big, public data sets for free, so people donate them. They're
+stored as snapshots. You can use them.
+
+ 
+
+Here's where to find them.
+
+ 
+
+The previous section in this chapter showed off making snapshots of your own
+data, then making volumes of those snapshots, attaching and mounting them. This
+section demos doing that with someone else's data.
+
+ 
+
+The Barr book shows how to create and mount a disk containing seven months of
+Wikipedia traffic statistics. The script public-data-sets contains all the
+steps, including capturing the DNSname of the instance you created and using
+that to ssh to the box.
+
+ 
+
+AWS charges you for storage and data transfers, so no, it's not free. Still,
+you don't have to generate and upload the data by hand. The Wikipedia traffic
+data is 320G. How long would it take you to grab that and upload it, if you
+could find it?
+
+ 
+
+After you're logged in, take a look at what you have.
+
+ 
+
+sudo mkdir /mnt/sdh
+
+sudo mount /dev/sdh /mnt/sdh
+
+ls /mnt/sdh
+
+ls /mnt/sdh/wikistats
+
+ls /mnt/sdh/wikistats/pagecounts | less
+
+zcat /mnt/sdh/wikistats/pagecounts/pagecounts-20090111-190000.gz | less
+
+sudo umount /mnt/sdh
+
+ 
+
+Once you've run the public-data-sets script, you're paying for the space, so if
+you run it just for fun, detach and delete the volume after you finish
+verifying the script has succeeded. I did.
 
  
 
