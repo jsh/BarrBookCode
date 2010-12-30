@@ -4,6 +4,10 @@ Chapter 10: Advanced AWS
 
  
 
+“Advanced AWS” means a hodge-podge of unrelated, interesting AWS topics.  As
+with other chapters, the code now works for me. If it doesn’t for you,
+contribute fixes.
+
 Accounting and Tracking
 
 The shell script accounting-and-tracking invokes the php scripts from the first
@@ -87,12 +91,16 @@ Data? We got yer data right here ….
 
  
 
-Amazon will host big, public data sets for free, so people donate them. They're
-stored as snapshots. You can use them.
+Amazon hosts interesting snapshots of big, public data sets for free, so people
+donate them. They're stored as snapshots. You can use them.
 
  
 
-Here's where to find them.
+Here's where to find them.  Pretty cool collections, I think.
+
+ 
+
+If you have an interesting collection to donate, please do so.
 
  
 
@@ -138,7 +146,149 @@ sudo umount /mnt/sdh
 
 Once you've run the public-data-sets script, you're paying for the space, so if
 you run it just for fun, detach and delete the volume after you finish
-verifying the script has succeeded. I did.
+verifying the script has succeeded. I know I did.
+
+ 
+
+EBS RAID
+
+ 
+
+You can RAID together AWS volumes. You can do object-0riented programming in
+the shell. You can bicycle to Alaska.
+
+ 
+
+Why?
+
+ 
+
+There are lots of good reasons to RAID together AWS volumes.
+
+ 
+
+First, because AWS already handles the redundancy part under the covers, the
+only thing that makes sense is RAID 0, which just stripes data across multiple
+volumes to provide better performance. You probably won’t need this, but it
+does give you a way to finally remember one of the dozens of different RAID
+types: zero.
+
+ 
+
+Second, you can only allocate EBS volumes of up to a terabyte. Whenever you
+need a petabyte of storage on a single disk, you can just create a thousand ,
+1TB volumes and RAID(0) them together.
+
+ 
+
+Third, if you’re studying for an RHCE exam and want to practice creating
+different kinds of RAID arrays, you can instantiate a CentOS AMI, attach some
+volumes, and RAID them together.
+
+ 
+
+Fourth, … oh, but why should I belabor the obvious? I’m sure you have many good
+reasons of your own and can insert them here.
+
+ 
+
+The Barr book gives clear instructions for creating a RAID array in the cloud,
+which consist of bringing up an instance, creating and attaching some volumes,
+logging into the box, and then using standard, Linux, software-RAID commands in
+standard, Linux, software-RAID ways. I tried them and they work fine. The
+instructions are followed by warnings that illustrate why RAID is also spelled
+“PITA.”
+
+ 
+
+Volumes are just block devices. You should assume that you can do anything you
+like that you’d normally be able to do with block devices in the distro on the
+AMI you’re running. You could make, I dunno, logical volumes, for example.  
+(Don’t stop this instance just yet, though. As long as it’s running, you can
+try out getting metadata from it, in the next section.)
+
+ 
+
+Good reasons for the other two -- object-oriented programming in the shell or
+bicycling to Alaska? No, I can’t think of any either.
+
+EC2 Instance Metadata
+
+ 
+
+Ever cat out /proc/cpuinfo or /proc/meminfo to get information about your
+machine? You understand why you’d want the same sort of thing for the AWS
+metadata about your instance.
+
+ 
+
+For example, you’d like to be able to get the ami-id of the box you’re on with
+something like this:
+
+ 
+
+cat /proc/ami-id
+
+ 
+
+No such luck.
+
+ 
+
+You can get the data, but you have to get it from a pretend URL instead of a
+pretend file. The analogue to /proc is http://169.254.169.254; the analogue of
+cat, wget.  For example, to get the ami-id, you say
+
+ 
+
+wget -O /dev/stdout -q http://169.254.169.254/latest/meta-data/ami-id
+
+ 
+
+The analogy with /proc will have made clear that you can only get this info
+from the machine you’re trying to get information about: the contents vary from
+machine to machine.
+
+ 
+
+The Barr book will tell you more.
+
+User-supplied metadata
+
+ 
+
+You can supply your very own metadata at launch time. Start the Console’s
+launch wizard. The second “Instance details” screen will have a big box
+labelled “User Data” where you can put it in.
+
+The data are available at http://169.254.169.254/latest/user-data.
+
+ 
+
+The Barr book illustrates this, and also shows how to get the data with a PHP
+script. One warning: the example has a string of key-value pairs separated by
+commas. On my Kindle, these look like periods. They’re commas. Honest.
+
+Dynamic Diagramming
+
+The final example in this big chapter, ec2_diagram.php, is very fancy. It
+generates a GIF diagram of your EC2 resources, stuffs it into an S3 bucket for
+your viewing pleasure, and hands you a URL where you can find it. You’ll need
+to have an S3 bucket around for the task, so if you’ve gotten rid of all yours,
+you can create a new one with create_bucket.php from Chapter 4.
+
+ 
+
+You’ll also need to tell it the name of your bucket on the command line:
+
+ 
+
+ec2_diagram.php <your-bucket-name-here>
+
+ 
+
+The code in the book assumes a bucket name; I’ve just modified it in the same
+way I did for the scripts in Chapter 4.
 
  
 
