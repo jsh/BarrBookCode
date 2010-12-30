@@ -152,10 +152,10 @@ function addCloudListItem($sdb, $s3, $city, $state, $date,
 
     if (!uploadObject($s3, CL_BUCKET,
           $imageKey, $imageOut,
-          S3_ACL_PUBLIC, "image/jpeg") ||
+          AmazonS3::ACL_PUBLIC, "image/jpeg") ||
   !uploadObject($s3, CL_BUCKET,
           $thumbKey, $thumbOut,
-          S3_ACL_PUBLIC, "image/jpeg"))
+          AmazonS3::ACL_PUBLIC, "image/jpeg"))
     {
       return false;
     }
@@ -174,7 +174,7 @@ function addCloudListItem($sdb, $s3, $city, $state, $date,
        CL_BUCKET,
        $key,
        $description,
-       S3_ACL_PUBLIC))
+       AmazonS3::ACL_PUBLIC))
   {
     $descriptionURL =
       $s3->get_object_url(CL_BUCKET, $key);
@@ -291,7 +291,7 @@ function thumbnailImage($imageBitsIn, $contentType)
  *  Return true on success, false on error.
  */
 function uploadObject($s3, $bucket, $key, $data,
-          $acl = S3_ACL_PRIVATE, $contentType = "text/plain")
+          $acl = AmazonS3::ACL_PRIVATE, $contentType = "text/plain")
 {
   $try = 1;
   $sleep = 1;
