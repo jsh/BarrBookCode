@@ -1,6 +1,6 @@
 bucket_usage_page.php: SUCCESS
 create_domain.php: SUCCESS
-delete_usage.php: FAIL
+delete_usage.php: SUCCESS
 ec2_diagram.php: SUCCESS
 ec2_user_data.php: SUCCESS
 import_usage.php: SUCCESS
