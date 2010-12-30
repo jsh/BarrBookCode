@@ -99,7 +99,7 @@ function uploadObject($s3, $bucket, $key, $data,
   {
   // Do the upload
     $res = $s3->create_object($bucket,
-	$key,
+        $key,
         array(
           'body'        => $data,
           'acl'         => $acl,
