@@ -4,18 +4,7 @@
 
 instance=${1:?"usage: $0 instance"}
 
-watch-volumes-while() {
-  # wait for completion of an event
-  condition=$1
-  shift
-  volumes="$*"
-
-  while true; do
-    ec2-describe-volumes $volumes | tee /dev/stderr |
-      grep -q $condition || break
-    sleep 30
-  done
-}
+source ./watchers.sh
 
 zone=us-east-1b
 unset volumes

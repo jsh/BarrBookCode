@@ -1,18 +1,7 @@
 #!/bin/bash -eux
 # illustrate using public data sets
 
-watch-volumes-while() {
-  # wait for completion of an event
-  condition=$1
-  shift
-  volumes="$*"
-
-  while true; do
-    ec2-describe-volumes $volumes | tee /dev/stderr |
-      grep -q $condition || break
-    sleep 30
-  done
-}
+source ./watchers.sh
 
 # create an instance
 zone=us-east-1b
@@ -23,12 +12,8 @@ echo token is $token
 ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-zone $zone --client-token $token | tee run.OUT
 instance=$( awk '/INSTANCE/{print $2}' run.OUT )
 
-while true; do
-  ec2-describe-instances $instance | tee /dev/stderr |
-    grep -q pending || break
-  sleep 30
-done
-
+# track progress
+watch-instance-while pending $instance
 
 snap=snap-753dfc1c  # 7 months of Wikipedia traffic statistics
 

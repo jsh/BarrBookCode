@@ -1,17 +1,6 @@
 #!/bin/bash -eux
 
-watch-volumes-while() {
-  # wait for completion of an event
-  condition=$1
-  shift
-  volumes="$*"
-
-  while true; do
-    ec2-describe-volumes $volumes | tee /dev/stderr |
-      grep -q $condition || break
-    sleep 30
-  done
-}
+source ./watchers.sh
 
 zone=us-east-1b
 
@@ -21,17 +10,14 @@ echo token is $token
 ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-zone $zone --client-token $token | tee run.OUT
 instance=$(awk '/INSTANCE/{print $2}' run.OUT)
 
-while true; do
-  ec2-describe-instances | tee /dev/stderr |
-    grep -q pending || break
-  sleep 30
-done
+# track progress
+watch-instances-while pending $instance
 
 # now create a volume and attach it to the instance
 ec2-create-volume -z $zone -s 50 | tee create-vol.OUT
 vol=$( awk '{print $2}' create-vol.OUT )
 
-# watch the progress
+# track progress
 watch-volumes-while creating $vol
 
 # attach it to the instance
@@ -44,12 +30,8 @@ watch-volumes-while attaching $vol
 ec2-create-snapshot $vol | tee create-snap.OUT
 snap=$( awk '{print $2}' create-snap.OUT )
 
-# watch the progress
-while true; do
-  ec2-describe-snapshots $snap | tee /dev/stderr |
-    grep -q creating || break
-  sleep 30
-done
+# track the progress
+watch-snapshots-while creating $snap
 
 # create a volume from the snapshot and watch its progress
 ec2-create-volume -z $zone -s 50 --snapshot $snap | tee create-vol.OUT
