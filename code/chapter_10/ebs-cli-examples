@@ -1,5 +1,18 @@
 #!/bin/bash -eux
 
+watch-volumes-while() {
+  # wait for completion of an event
+  condition=$1
+  shift
+  volumes="$*"
+
+  while true; do
+    ec2-describe-volumes $volumes | tee /dev/stderr |
+      grep -q $condition || break
+    sleep 30
+  done
+}
+
 zone=us-east-1b
 
 # create a micro ec2 instance here and put its id into $instance
@@ -19,22 +32,13 @@ ec2-create-volume -z $zone -s 50 | tee create-vol.OUT
 vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
-while true; do
-  ec2-describe-volumes $vol | tee /dev/stderr |
-    grep -q creating || break
-  sleep 30
-done
+watch-volumes-while creating $vol
 
 # attach it to the instance
 ec2-attach-volume $vol -i $instance -d /dev/sdf
 
 # watch the progress
-while true; do
-  ec2-describe-volumes $vol | tee /dev/stderr |
-    grep -q attaching || break
-  sleep 30
-done
-
+watch-volumes-while attaching $vol
 
 # snapshot the volume
 ec2-create-snapshot $vol | tee create-snap.OUT
@@ -52,21 +56,13 @@ ec2-create-volume -z $zone -s 50 --snapshot $snap | tee create-vol.OUT
 vol2=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
-while true; do
-  ec2-describe-volumes $vol2 | tee /dev/stderr |
-    grep -q creating || break
-  sleep 30
-done
+watch-volumes-while creating $vol2
 
 # attach it to the instance, too
 ec2-attach-volume $vol2 -i $instance -d /dev/sdg
 
 # watch the progress
-while true; do
-  ec2-describe-volumes $vol2 | tee /dev/stderr |
-    grep -q attaching || break
-  sleep 30
-done
+watch-volumes-while attaching $vol2
 
 # now, just for fun, let's snapshot that one
 snap_and_log.php "Important backup" $vol2

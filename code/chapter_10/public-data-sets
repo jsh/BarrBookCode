@@ -1,6 +1,19 @@
 #!/bin/bash -eux
 # illustrate using public data sets
 
+watch-volumes-while() {
+  # wait for completion of an event
+  condition=$1
+  shift
+  volumes="$*"
+
+  while true; do
+    ec2-describe-volumes $volumes | tee /dev/stderr |
+      grep -q $condition || break
+    sleep 30
+  done
+}
+
 # create an instance
 zone=us-east-1b
 
@@ -24,20 +37,12 @@ ec2-create-volume -z us-east-1b -s 320 --snapshot $snap | tee create-vol.OUT
 vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
-while true; do
-  ec2-describe-volumes $vol | tee /dev/stderr |
-    grep -q creating || break
-  sleep 30
-done
+watch-volumes-while creating $vol
 
 ec2-attach-volume $vol -i $instance -d /dev/sdh
 
 # watch the progress
-while true; do
-  ec2-describe-volumes $vol | tee /dev/stderr |
-    grep -q attaching || break
-  sleep 30
-done
+watch-volumes-while attaching $vol
 
 # now log in to the aws instance so you can mount the volume
 
