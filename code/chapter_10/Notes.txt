@@ -10,7 +10,7 @@ contribute fixes.
 
 Accounting and Tracking
 
-The shell script accounting-and-tracking invokes the php scripts from the first
+The shell script accounting-and-tracking invokes the PHP scripts from the first
 section of this chapter. Read the section and the script to see what's going
 on.
 
@@ -18,37 +18,43 @@ You'll have to download your own usage statistics as csv files to run most of
 these.  Do that here.
 
 The example assumes you'll download your own EC2 and S3 usage data and call
-them ec2_usage.csv and s3_usage.csv. The book suggests choosing "All Usage
-Types," with "Hours" as the granularity.
+them ec2_usage.csv and s3_usage.csv. The book suggests choosing All Usage
+Types, with Hours as the granularity.
 
 I've modified the queries so they're not tied to dates from when the text was
 being written.
 
 bucket_usage.phpbucket_usage_page.php, like the _page scripts in Chapter 4, is
-intended for the server's html/ directory, to be run by the web server.
-basic-examples cheats, invoking the script from the command-line and then
-invoking a browser to look at the output.  Without being run by the web server,
-the page isn't pretty, but the concept is clear.
+intended for the server's html/ directory, to be run by the web server. The
+basic-examples script cheats, invoking the PHP script from the command-line and
+then invoking a browser to look at the output.  Without being run by the web
+server, the page isn't pretty, but the concept is clear enough.
+
+(If you make a nicer script to have this display properly, please contribute
+it.)
 
 It displays a particular set of usage data for the last week.  When I ran it,
 hadn't done enough in that time period to be interesting, so I parameterized
 the number of days. If you, too, want to modify the number of days to search
 through, look for $ndays in the script.
 
+delete_usage.php
+
+I didn’t see a reference to this script in the chapter, but it came with the
+publisher’s code collection, so I made it work anyway. If you find it in the
+book, remove this paragraph.
+
 Elastic Block Storage
 
  
 
-The shell script ebs-cli-examples works exercises all the cli commands in the
-EBS section in this chapter. It’s really only there to give you a script that
-can run, to compare with when something you’re doing doesn’t work. I built it
-up for myself as I ported commands, to record what did and didn’t work, and to
-have a written record of how to invoke them all correctly.
+The shell script ebs-cli-examples exercises all the CLI commands in the EBS
+section in this chapter. It’s really only there to give you a script that can
+run, to compare with should your efforts fail. I built it up for myself as I
+tried the book’s commands, to record what did and didn’t work, and to have a
+written record of how to invoke them all correctly.
 
  
-
-It also creates a tiny instance, using the ec2 CLI tools, to mount volumes on,
-and illustrates the correct calling convention for ec2-run-instance.
 
  
 
@@ -57,9 +63,6 @@ examples in the book mount the volumes and make changes to them on the target
 instance.
 
  
-
-The script also illustrates how to monitor the progress of events initiated by
-ec2 CLI commands.
 
 These commands typically make requests and then return, but the requests then
 take time to complete.  The typical paradigm I use, in pseudo-code, is
@@ -83,6 +86,13 @@ to figure out when it’s done.
 
  
 
+Functions in the file watchers.sh encapsulate this paradigm.
+
+ 
+
+At one point, I made a utility, launch-tiny-instance, to record the details of
+the correct calling convention for ec2-run-instance. Turns out it’s also handy.
+
 Public Data Sets
 
  
@@ -96,7 +106,7 @@ donate them. They're stored as snapshots. You can use them.
 
  
 
-Here's where to find them.  Pretty cool collections, I think.
+Here's where to find them.  Some pretty cool collections, I think.
 
  
 
@@ -106,7 +116,7 @@ If you have an interesting collection to donate, please do so.
 
 The previous section in this chapter showed off making snapshots of your own
 data, then making volumes of those snapshots, attaching and mounting them. This
-section demos doing that with someone else's data.
+section of the chapter demos doing that with someone else's data.
 
  
 
@@ -119,8 +129,8 @@ that to ssh to the box.
 
 AWS charges you for storage and data transfers, so no, it's not free. Still,
 you don't have to generate and upload the data by hand. The Wikipedia traffic
-data is 320G. How long would it take you to grab that and upload it, if you
-could find it?
+data take up 320G. How long would it take you to grab that and upload it, if
+you could find it?
 
  
 
@@ -144,9 +154,9 @@ sudo umount /mnt/sdh
 
  
 
-Once you've run the public-data-sets script, you're paying for the space, so if
-you run it just for fun, detach and delete the volume after you finish
-verifying the script has succeeded. I know I did.
+As soon as you've run the public-data-sets script, you start paying for the
+space, so if you run it just for fun, detach and delete the volume after you
+finish verifying the script has succeeded. I know I did.
 
  
 
@@ -159,7 +169,7 @@ the shell. You can bicycle to Alaska.
 
  
 
-Why?
+But why would anyone do that?
 
  
 
@@ -168,7 +178,7 @@ There are lots of good reasons to RAID together AWS volumes.
  
 
 First, because AWS already handles the redundancy part under the covers, the
-only thing that makes sense is RAID 0, which just stripes data across multiple
+only flavor that makes sense is RAID 0, which just stripes data across multiple
 volumes to provide better performance. You probably won’t need this, but it
 does give you a way to finally remember one of the dozens of different RAID
 types: zero.
@@ -204,8 +214,12 @@ instructions are followed by warnings that illustrate why RAID is also spelled
 Volumes are just block devices. You should assume that you can do anything you
 like that you’d normally be able to do with block devices in the distro on the
 AMI you’re running. You could make, I dunno, logical volumes, for example.  
-(Don’t stop this instance just yet, though. As long as it’s running, you can
-try out getting metadata from it, in the next section.)
+
+ 
+
+(After you’ve had your fill of RAID, don’t stop this instance just yet. As long
+as it’s running, you can try out getting metadata from it, in the next
+section.)
 
  
 
@@ -217,7 +231,7 @@ EC2 Instance Metadata
  
 
 Ever cat out /proc/cpuinfo or /proc/meminfo to get information about your
-machine? You understand why you’d want the same sort of thing for the AWS
+machine? You can understand why you’d want the same sort of thing for the AWS
 metadata about your instance.
 
  
@@ -266,7 +280,7 @@ The data are available at http://169.254.169.254/latest/user-data.
  
 
 The Barr book illustrates this, and also shows how to get the data with a PHP
-script. One warning: the example has a string of key-value pairs separated by
+script. One warning: the example uses a string of key-value pairs separated by
 commas. On my Kindle, these look like periods. They’re commas. Honest.
 
 Dynamic Diagramming
@@ -288,7 +302,7 @@ ec2_diagram.php <your-bucket-name-here>
  
 
 The code in the book assumes a bucket name; I’ve just modified it in the same
-way I did for the scripts in Chapter 4.
+way I modified the scripts in Chapter 4.
 
  
 
