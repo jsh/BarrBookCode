@@ -11,17 +11,17 @@ ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-z
 instance=$( awk '/INSTANCE/{print $2}' run.OUT )
 
 while true; do
-  ec2-describe-instances | tee /dev/stderr |
+  ec2-describe-instances $instance | tee /dev/stderr |
     grep -q pending || break
   sleep 30
 done
 
 
-snap=snap753dfc1c  # the Wikipedia traffic statistics
+snap=snap-753dfc1c  # 7 months of Wikipedia traffic statistics
 
 # create a volume from the snapshot and watch its progress
-ec2-create-volume -z us-east-1b -s 50 --snapshot $snap | tee create-vol.OUT
-vol=$( awk '{print $2}' create.OUT )
+ec2-create-volume -z us-east-1b -s 320 --snapshot $snap | tee create-vol.OUT
+vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
 while true; do
@@ -38,3 +38,10 @@ while true; do
     grep -q attaching || break
   sleep 30
 done
+
+# now log in to the aws instance so you can mount the volume
+
+key=~/.ssh/testkey.pem	# or whatever yours is called
+dnsname=$(ec2-describe-instances $instance | awk '/INSTANCE/{print $4}')
+
+ssh -i $key ec2-user@$dnsname
