@@ -23,3 +23,6 @@ query_usage_cmd.php "Service='AmazonS3' and StartTime like '$this_month' and Usa
 php bucket_usage_page.php > usage.html
 w3m -dump file:///$PWD/usage.html
 rm usage.html
+
+# now get rid of the usage data
+delete_usage.php

@@ -52,7 +52,7 @@ do
       $attrs = array_keys(getItemAttributes($item));
 
       // Delete the attributes
-      $res2 = $sdb->delete_attributes(BOOK_AWS_USAGE_DOMAIN, $itemName, $attrs);
+      $res2 = $sdb->delete_attributes(BOOK_AWS_USAGE_DOMAIN, $itemName);
 
       if ($res2->isOK())
       {
