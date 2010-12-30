@@ -1,9 +1,21 @@
 #!/bin/bash -eux
 
-# create an ec2 instance here and put its id into $instance
+zone=us-east-1b
+
+# create a micro ec2 instance here and put its id into $instance
+token=${1:-$(date +%Y-%m-%d-%H-%M)}
+echo token is $token
+ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-zone $zone --client-token $token | tee run.OUT
+instance=$(awk '/INSTANCE/{print $2}')
+
+while true; do
+  ec2-describe-instances | tee describe.OUT
+  grep -q pending describe.OUT || break
+  sleep 30
+done
 
 # now create a volume and attach it to the instance
-ec2-create-volume -z us-east-1b -s 50 | tee create-vol.OUT
+ec2-create-volume -z $zone -s 50 | tee create-vol.OUT
 vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress
@@ -39,7 +51,7 @@ while true; do
 done
 
 # create a volume from the snapshot and watch its progress
-ec2-create-volume -z us-east-1b -s 50 --snapshot $snap | tee create-vol.OUT
+ec2-create-volume -z $zone -s 50 --snapshot $snap | tee create-vol.OUT
 vol=$( awk '{print $2}' create-vol.OUT )
 
 # watch the progress

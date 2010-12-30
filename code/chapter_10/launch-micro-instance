@@ -1,0 +1,13 @@
+#!/bin/bash -eu
+token=${1:-$(date +%Y-%m-%d-%H-%M)}
+echo token is $token
+ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-zone us-east-1b --client-token $token | tee run.OUT
+instance=$(awk '/INSTANCE/{print $2}')
+
+while true; do
+  ec2-describe-instances | tee describe.OUT
+  grep -q pending describe.OUT || break
+  sleep 30
+done
+
+instance is $instance
