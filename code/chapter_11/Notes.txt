@@ -4,7 +4,89 @@ Chapter 11: Putting It All Together: CloudList
 
  
 
-This is a placeholder to give the Makefile somewhere to point.
+The book title is Host Your Web Site in the Cloud.  Really, it could be called
+Amazon Web Services Step-by-Step, since it takes you from nothing to basic
+understanding of a big topic. Once you understand all the pieces, constructing
+the web site and putting it in the cloud’s pretty straightforward.
+
+ 
+
+Nevertheless, to cap off his book, Jeff Barr shows us how it’s done by creating
+a sample web site in the cloud.
+
+ 
+
+How straightforward is it?
+
+ 
+
+$ wc -l *.php
+
+  65 add_category.php
+  65 add_city.php
+  81 add_form.php
+  70 add_item.php
+  72 cloudlist.php
+  50 create_domain.php
+  62 delete_items.php
+  53 dump.php
+ 518 total
+
+Eight PHP scripts, none much more than a screen in length.
+
+Oh, okay, there are files in include/, too.
+
+ 
+
+$ wc -l include/*
+
+  69 include/addform.html.php
+  33 include/addthanks.html.php
+ 322 include/cloudfunctions.inc.php
+  62 include/cloudlist.html.php
+ 486 total
+
+The big one is filled with utility functions you’ve already seen in include/
+book.inc.php, from earlier chapters. The rest are web pages with embedded PHP.
+
+ 
+
+Running the Example Code
+
+ 
+
+The shell script test-cli-scripts verifies that the six CLI PHP scripts work
+and shows how to invoke them.
+
+ 
+
+To run the app, you need to
+
+ + start a LAMP instance to host your website,
+ 2. ssh into it to set up some AWS infrastructure (the things you went through
+    in the ‘Chapter 0’ notes)
+ 3. put some PHP scripts from this chapter where Apache can find them.
+
+ 
+
+The shell script desktop-steps shows how to do this on the desktop side.
+
+ 
+
+Once you’ve ssh’d into the LAMP instance, running the cloudlist-setup script,
+which (desktop-setup has already copied over) illustrates the remaining steps.
+The Barr book explains it all and walks you through the PHP.
+
+ 
+
+For some reason, I’m having permission problems with access to the jpegs. If
+you figure this out before I do, please provide the fix.
+
+ 
+
+Bye. It’s Been Fun.
+
+That’s all folks.
 
  
 
