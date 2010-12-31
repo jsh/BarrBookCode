@@ -14,6 +14,8 @@
  * OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the
  * License.
+ *
+ * Modified by Jeffrey S. Haemer <jeffrey.haemer@gmail.com>
  */
 
 // Domains
@@ -22,7 +24,8 @@ define('CL_CAT_DOMAIN', 'cl_categories');
 define('CL_ITEM_DOMAIN', 'cl_items');
 
 // S3 Bucket
-define('CL_BUCKET', 'atetlaw-sitepoint-book');
+//define('CL_BUCKET', 'atetlaw-sitepoint-book');
+define('CL_BUCKET', 'jsh-test');
 
 // Sizes and limits
 define('THUMB_SIZE', 200);
@@ -160,8 +163,8 @@ function addCloudListItem($sdb, $s3, $city, $state, $date,
       return false;
     }
 
-    $imageURL = $s3->get_object_url(CL_BUCKET, $imageKey);
-    $thumbURL = $s3->get_object_url(CL_BUCKET, $thumbKey);
+    $imageURL = $s3->get_object_url(CL_BUCKET, $imageKey, "60 seconds");
+    $thumbURL = $s3->get_object_url(CL_BUCKET, $thumbKey, "60 seconds");
   }
   else
   {
@@ -177,7 +180,7 @@ function addCloudListItem($sdb, $s3, $city, $state, $date,
        AmazonS3::ACL_PUBLIC))
   {
     $descriptionURL =
-      $s3->get_object_url(CL_BUCKET, $key);
+      $s3->get_object_url(CL_BUCKET, $key, "60 seconds");
   }
   else
   {
@@ -299,8 +302,8 @@ function uploadObject($s3, $bucket, $key, $data,
   {
   // Do the upload
     $res = $s3->create_object($bucket,
+        $key,
         array(
-          'filename'    => $key,
           'body'        => $data,
           'acl'         => $acl,
           'contentType' => $contentType

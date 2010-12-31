@@ -140,7 +140,7 @@ $imageKey     = 'ec2_diagram_' . date('Y_m_d_H_i_s') . '.gif';
 if (uploadObject($s3, $bucket, $imageKey, $imageOutBits,
      AmazonS3::ACL_PUBLIC, "image/gif"))
 {
-  $imageURL = $s3->get_object_url($bucket, $imageKey);
+  $imageURL = $s3->get_object_url($bucket, $imageKey, "60 seconds");
 
   print("EC2 diagram is at ${imageURL}\n");
 }
