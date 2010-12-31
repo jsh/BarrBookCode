@@ -1,0 +1,12 @@
+scp -i ~/.ssh/testkey.pem ~/.awssecret root@$dnsname:/home/webuser
+ssh in as root
+mkdir -p ~webuser/.ssh
+mv /tmp/.awssecret ~webuser
+yum install git php-pear php5-gd php5-curl
+cd ~webuser
+git clone git://github.com/jsh/BarrBookCode.git
+cd code/chapter_11
+cp ~
+ln ~/.aws/sdk/config.inc.php /usr/share/pear/AWSSDKforPHP
+cp -a include css cloudlist.php add_form.php ../../helloworld/htdocs
+
