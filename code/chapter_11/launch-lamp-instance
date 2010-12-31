@@ -6,14 +6,15 @@ source ../../bin/gripe.sh
 source ./watchers.sh
 
 ami=ami-2cb05345  # a lamp ami, not EBS-based
+outfile=$0.OUT
 
 token=${1:-$(date +%Y-%m-%d-%H-%M)}
 warn token is $token
-ec2-run-instances $ami -g default -k testkey -t m1.small -availability-zone us-east-1b --client-token $token | tee run.OUT
-instance=$(awk '/INSTANCE/{print $2}' run.OUT)
+ec2-run-instances $ami -g default -k testkey -t m1.small -availability-zone us-east-1b --client-token $token > $outfile
+instance=$(awk '/INSTANCE/{print $2}' $outfile)
 
 # track progress
 watch-instances-while pending $instance
 
-warn instance is
+echo instance is >&2
 echo $instance
