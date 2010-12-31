@@ -6,5 +6,5 @@ source ../../bin/gripe.sh
 instance=$(launch-lamp-instance)
 dnsname=$(ec2-describe-instances $instance | awk '/INSTANCE/{print $4}')
 key=~/.ssh/testkey.pem
-scp -i $key cloud-steps ~/.awssecret root@$dnsname:
+scp -i $key *-setup ~/.awssecret root@$dnsname:
 warn "ssh -i $key root@$dnsname"

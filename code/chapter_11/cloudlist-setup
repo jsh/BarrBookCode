@@ -1,0 +1,11 @@
+#!/bin/bash -eux
+# set up newly-installed cloud box to run cloudlist
+
+./lampserver-setup
+BBC=~/BarrBookCode
+
+# install php from the Barr book where the web server can serve it up
+ln ~/.aws/sdk/config.inc.php /usr/share/pear/AWSSDKforPHP
+cd $BBC/code/chapter_11
+cp -a include css cloudlist.php add_form.php ~webuser/helloworld/htdocs
+
