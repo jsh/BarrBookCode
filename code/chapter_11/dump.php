@@ -46,7 +46,8 @@ print_r($categories);
 // Dump items
 print("Items\n");
 print("=====\n");
-$items = getItems($sdb, "Bethesda", "MD");
+//$items = getItems($sdb, "Bethesda", "MD");
+$items = getItems($sdb, "Redmond", "WA");
 print_r($items);
 
 ?>
