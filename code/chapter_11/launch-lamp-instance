@@ -8,7 +8,7 @@ ami=ami-2cb05345
 
 token=${1:-$(date +%Y-%m-%d-%H-%M)}
 echo token is $token
-ec2-run-instances $ami -g default -k testkey -t t1.micro -availability-zone us-east-1b --client-token $token | tee run.OUT
+ec2-run-instances $ami -g default -k testkey -t m1.small -availability-zone us-east-1b --client-token $token | tee run.OUT
 instance=$(awk '/INSTANCE/{print $2}' run.OUT)
 
 # track progress
