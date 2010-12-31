@@ -10,6 +10,6 @@ ec2-run-instances ami-08728661 -g default -k testkey -t t1.micro -availability-z
 instance=$(awk '/INSTANCE/{print $2}' run.OUT)
 
 # track progress
-watch-instance-while pending $instance
+watch-instances-while pending $instance
 
 echo == instance is $instance

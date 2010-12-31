@@ -48,9 +48,6 @@ do
     {
       $itemName = $item->Name;
 
-      // Get list of attributes
-      $attrs = array_keys(getItemAttributes($item));
-
       // Delete the attributes
       $res2 = $sdb->delete_attributes(BOOK_AWS_USAGE_DOMAIN, $itemName);
 

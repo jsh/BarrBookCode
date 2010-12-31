@@ -1,0 +1,19 @@
+#!/bin/bash -eux
+
+# create all three databases
+create_domain.php
+
+# add cities and categories
+add_category.php Cars Furniture
+add_city.php Redmond WA
+
+# remove all entries that are already there
+delete_items.php
+
+# add data (calls add_item.php)
+insert_sample_data.sh
+
+# look at everything we've put in the database
+dump.php
+
+

@@ -1,0 +1,21 @@
+#!/bin/bash -eux
+# an illustration of how to invoke ec2-run-instances
+# to create a running instance from the command line.
+
+source ../../bin/gripe.sh
+source ./watchers.sh
+
+ami=ami-2cb05345  # a lamp ami, not EBS-based
+outfile=$0.OUT
+
+token=${1:-$(date +%Y-%m-%d-%H-%M)}
+warn token is $token
+ec2-run-instances $ami -g default -k testkey -t m1.small -availability-zone us-east-1b --client-token $token > $outfile
+instance=$(awk '/INSTANCE/{print $2}' $outfile)
+
+# track progress
+watch-instances-while pending $instance
+ec2-describe-instances $instance > $outfile # capture running state in case we need it down the road
+
+echo instance is >&2
+echo $instance

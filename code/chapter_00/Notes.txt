@@ -219,6 +219,10 @@ $ sudo apt-get install git php-pear php5-gd php5-curl
 
  
 
+(The last two fail on your distro? Try installing php-gd and php-curl instead.)
+
+ 
+
 Note that older systems call the first package git-core, not git, because git
 was already a package for some little-used GNU tools. At some point, this was
 deemed a nuisance, and package renaming ensued. Check to make sure you’re
@@ -311,9 +315,9 @@ intalled it. Why not?
 
  
 
-Php stopped running.  It would only complain that apc and xcache were
-incompatible and segfault.  I removed the package, with sudo apt-get remove
-php5-xcache , but even that wasn’t enough.  
+Php stopped running.  It would only segfault, complaining that apc and xcache
+were incompatible.  I removed the package, with sudo apt-get remove php5-xcache
+, but even that wasn’t enough.  
 
  
 

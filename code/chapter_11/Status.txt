@@ -1,0 +1,9 @@
+add_category.php: SUCCESS
+add_city.php: SUCCESS
+add_form.php: UNTESTED
+add_item.php: SUCCESS
+cloudlist.php: UNTESTED
+create_domain.php: SUCCESS
+delete_items.php: SUCCESS
+dump.php: SUCCESS
+insert_sample_data.sh: SUCCESS
