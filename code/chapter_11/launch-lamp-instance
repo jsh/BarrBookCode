@@ -15,6 +15,7 @@ instance=$(awk '/INSTANCE/{print $2}' $outfile)
 
 # track progress
 watch-instances-while pending $instance
+ec2-describe-instances $instance > $outfile # capture running state in case we need it down the road
 
 echo instance is >&2
 echo $instance
