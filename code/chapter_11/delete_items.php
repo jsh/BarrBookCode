@@ -26,6 +26,7 @@
 error_reporting(E_ALL);
 
 require_once('AWSSDKforPHP/sdk.class.php');
+require_once('include/cloudfunctions.inc.php');
 
 // Create the SimpleDB access object
 $sdb = new AmazonSDB();

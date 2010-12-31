@@ -7,6 +7,9 @@ create_domain.php
 add_category.php Cars Furniture
 add_city.php Redmond WA
 
+# remove all entries that are already there
+delete_items.php
+
 # add data (calls add_item.php)
 insert_sample_data.sh
 
