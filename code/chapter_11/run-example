@@ -1,0 +1,4 @@
+#!/bin/bash -eux
+
+create_domain.php
+insert_sample_data.sh
