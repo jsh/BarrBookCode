@@ -7,4 +7,5 @@ instance=$(launch-lamp-instance)
 dnsname=$(ec2-describe-instances $instance | awk '/INSTANCE/{print $4}')
 key=~/.ssh/testkey.pem
 scp -i $key *-setup ~/.awssecret root@$dnsname:
-warn "ssh -i $key root@$dnsname"
+echo -e "\nNow log in to the remote box as root and execute './cloudwatch-setup'\n"
+ssh -i $key root@$dnsname
