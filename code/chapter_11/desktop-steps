@@ -1,0 +1,10 @@
+#!/bin/bash -eux
+# steps to carry out on desktop to launch and set up cloud box
+
+source ../../bin/gripe.sh
+
+instance=$(launch-lamp-instance)
+dnsname=$(ec2-describe-instances $instance | awk '/INSTANCE/{print $4}')
+key=~/.ssh/testkey.pem
+scp -i $key cloud-steps ~/.awssecret root@$dnsname:
+warn "ssh -i $key root@$dnsname"

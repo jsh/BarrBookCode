@@ -1,0 +1,23 @@
+#!/bin/bash -eux
+
+yum install -y php-pear php-gd php-curl php-apc
+pear channel-discover pear.amazonwebservices.com
+pear install aws/sdk
+cd /usr/share/php/AWSSDKforPHP/_compatibility_test
+php sdk_compatibility_test_cli.php | grep 'Yes, you can!'
+
+# grab code from the Barr book 
+yum install -y git
+git clone git://github.com/jsh/BarrBookCode.git
+BBC=~/BarrBookCode
+
+# set up access keys
+chmod 600 .awssecret
+cd $BBC/bin
+./setup-AWS-config.pl
+
+# install php from the Barr book where the web server can serve it up
+ln ~/.aws/sdk/config.inc.php /usr/share/pear/AWSSDKforPHP
+cd $BBC/code/chapter_11
+cp -a include css cloudlist.php add_form.php ~webuser/helloworld/htdocs
+
