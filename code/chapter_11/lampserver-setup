@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 # set up newly-instantiated cloud lamp box to run AWS apps
 
-source ../../bin/gripe.sh
+die() { echo "$*" >&2; exit -1; }
 
 [ "$(whoami)" = "root" ] || die "Run as root. [ Now running as '$(whoami)' ]"
 
@@ -9,8 +9,11 @@ source ../../bin/gripe.sh
 yum install -y php-pear php-gd php-curl php-apc
 pear channel-discover pear.amazonwebservices.com
 pear install aws/sdk
-cd /usr/share/php/AWSSDKforPHP/_compatibility_test
+
+# make sure it's working
+cd /usr/share/pear/AWSSDKforPHP/_compatibility_test
 php sdk_compatibility_test_cli.php | grep -q 'Yes, you can!'
+cd ~-
 
 # grab code from the Barr book 
 yum install -y git
@@ -20,4 +23,6 @@ BBC=~/BarrBookCode
 # set up access keys
 chmod 600 .awssecret
 cd $BBC/bin
+# eeew.  This needs fixing.
+perl -i -pe 's(/usr/share/php/AWSSDKforPHP)(/usr/share/pear/AWSSDKforPHP)' *
 ./setup-AWS-config.pl
