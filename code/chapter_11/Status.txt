@@ -6,4 +6,4 @@ cloudlist.php: UNTESTED
 create_domain.php: SUCCESS
 delete_items.php: UNTESTED
 dump.php: UNTESTED
-insert_sample_data.sh: UNTESTED
+insert_sample_data.sh: SUCCESS
