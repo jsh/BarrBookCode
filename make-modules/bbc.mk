@@ -8,6 +8,9 @@ cleanfiles := Notes.{html,txt}
 clean:
 	rm -rf $(cleanfiles)
 
+distclean:
+	git -d -x clean
+
 doc:
 	curl $(docurl) > Notes.html 2>/dev/null
 	w3m -dump Notes.html | perl -pe 's/^(\s+)1\./\1+/' > Notes.txt

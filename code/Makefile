@@ -1,6 +1,6 @@
 default: doc
 
-clean doc::
+clean distclean doc::
 	for i in *; do if [ -d $$i ] && [ -f $$i/Makefile ]; then $(MAKE) -C $$i $(MAKE_TARGETS) $@; fi; done
 
 toc: doc
@@ -11,5 +11,5 @@ toc: doc
 clean::
 	git status -s &> /dev/null && { git status -s | awk '/^\?\?/{print "rm", $$2}' | bash; }
 
-.PHONY: clean doc toc
+.PHONY: clean distclean doc toc
 
