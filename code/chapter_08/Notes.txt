@@ -1,5 +1,7 @@
 Amazon SimpleDB
 
+Back: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
+
 Chapter 8: Amazon SimpleDB, A Cloud Database
 
  
@@ -80,6 +82,12 @@ because there are no such files.
 The script complex-sdb-example shows off the stuff at the end. There seem to be
 nondeterministic hiccups when you run it, but I haven’t investigated.  If you
 figure out how to make the examples run more smoothly, let me know.
+
+ 
+
+ 
+
+Next: Amazon Relational Database Service
 
  
 

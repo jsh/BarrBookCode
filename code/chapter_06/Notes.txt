@@ -1,5 +1,7 @@
 Building a Scalable Architecture with Amazon SQS
 
+Back: Web Hosting with Amazon EC2
+
 Chapter 6: Building a Scalable Architecture with Amazon SQS
 
  
@@ -163,6 +165,12 @@ steps to see the progress through the pipeline.
 When you’re done, go to the S3 bucket, and you’ll see images and a page that’s
 the final result. S3Fox will let you look at that page directly, without a
 download step!
+
+ 
+
+Next: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
+
+ 
 
 This work is licensed under the Creative Commons Attribution 3.0 Unported
 License. To view a copy of this license, visit http://creativecommons.org/
