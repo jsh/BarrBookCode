@@ -1,11 +1,5 @@
 # 
 
-SHELL := /bin/bash
-url   := https://docs.google.com/document/pub?id=1uVtPIPaxkfBbmx2NGlHMmiQm7_Tf1R5ZPA_0SzW4B_w
+include ../../make-modules/bbc.mk
 
-doc:
-	w3m -dump $(url) | perl -pe 's/^(\s+)1\./\1+/' > Notes.txt
-
-clean:
-
-.PHONY: clean doc
+docurl := https://docs.google.com/document/pub?id=1uVtPIPaxkfBbmx2NGlHMmiQm7_Tf1R5ZPA_0SzW4B_w

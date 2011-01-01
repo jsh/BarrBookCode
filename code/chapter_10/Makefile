@@ -1,11 +1,7 @@
 # 
-SHELL := /bin/bash 
-url   := https://docs.google.com/document/pub?id=1Wfi7xppjME96UWDyIXrkxFtml3CFFeaAdmrdvjS5fXE
 
-doc:
-	w3m -dump $(url) | perl -pe 's/^(\s+)1\./\1+/' > Notes.txt
+include ../../make-modules/bbc.mk
 
-clean:
-	rm -f *.OUT *_report.csv
+docurl := https://docs.google.com/document/pub?id=1Wfi7xppjME96UWDyIXrkxFtml3CFFeaAdmrdvjS5fXE
 
-.PHONY: clean doc
+cleanfiles += *.OUT *_report.csv
