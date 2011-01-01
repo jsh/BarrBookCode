@@ -1,5 +1,7 @@
 Amazon Relational Database Service
 
+Back: Amazon SimpleDB, A Cloud Database
+
 Chapter 9: Amazon Relational Database Service
 
  
@@ -112,6 +114,12 @@ If you can, please write examples and provide them to get us over the hump.
 
 A community is just the people in it; if no one shows up, there’s no community.
 Show up.
+
+ 
+
+ 
+
+Next: Advanced AWS
 
  
 

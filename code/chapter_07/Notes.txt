@@ -1,5 +1,7 @@
 EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
 
+Back: Building a Scalable Architecture with Amazon SQS
+
 Chapter 7: EC2 Monitoring, Auto Scaling, and Elastic Load Balancing
 
  
@@ -309,6 +311,12 @@ Look in AWSSDKforPHP/services and you'll see as.class.php . If it works, then
 we should be able to hack together an as-describe-scaling-activities ourselves.
 If you hack together an as-describe-scaling-activities that works, or some
 other example that exercises these apis, please contribute it.
+
+ 
+
+ 
+
+Next: Amazon SimpleDB, A Cloud Database
 
  
 

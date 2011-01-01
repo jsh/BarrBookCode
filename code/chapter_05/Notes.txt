@@ -1,5 +1,7 @@
 Web Hosting with Amazon EC2
 
+Back: Storing Data with Amazon S3
+
 Chapter 5: Web Hosting with Amazon EC2
 
  
@@ -456,6 +458,12 @@ place.
 
 Look at this and you start to get a glimmer of how much you can do with fancier
 code.
+
+ 
+
+ 
+
+Next: Building a Scalable Architecture with Amazon SQS
 
  
 

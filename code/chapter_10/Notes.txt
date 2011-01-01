@@ -1,5 +1,7 @@
 Advanced AWS
 
+Back: Amazon Relational Database Service
+
 Chapter 10: Advanced AWS
 
  
@@ -303,6 +305,12 @@ ec2_diagram.php <your-bucket-name-here>
 
 The code in the book assumes a bucket name; I’ve just modified it in the same
 way I modified the scripts in Chapter 4.
+
+ 
+
+ 
+
+Next: Putting It All Together: CloudList
 
  
 

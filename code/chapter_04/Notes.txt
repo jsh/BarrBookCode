@@ -1,5 +1,7 @@
 Storing Data with Amazon S3
 
+Back: Step-by-Step Amazon Web Services
+
 Chapter 4: Storing Data with Amazon S3
 
  
@@ -195,6 +197,12 @@ But both give you far more info than the PHP scripts, as they stand.
  
 
 It's all trade-offs.
+
+ 
+
+ 
+
+Next: Web Hosting with Amazon EC2
 
  
 
