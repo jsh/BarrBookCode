@@ -1,6 +1,6 @@
 default: doc
 
-clean distclean doc::
+clean distclean doc lint:
 	for i in *; do if [ -d $$i ] && [ -f $$i/Makefile ]; then $(MAKE) -C $$i $(MAKE_TARGETS) $@; fi; done
 
 toc: doc
@@ -8,8 +8,5 @@ toc: doc
 
 	perl -i -ne 'chomp; if (/Chapter/) {print "$$_ -- ";} else { s/url\s:=//; print $$_; print "\n"; }' TOC
 
-clean::
-	git status -s &> /dev/null && { git status -s | awk '/^\?\?/{print "rm", $$2}' | bash; }
-
-.PHONY: clean distclean doc toc
+.PHONY: clean distclean doc lint toc
 
