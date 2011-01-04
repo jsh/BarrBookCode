@@ -1,6 +1,10 @@
-# include this with
-# include ../../make-modules/bbc.mk
+# general rules for all the chapters:
+#		clean, distclean, doc, lint
+# 
+# include these with
+#   include ../../make-modules/bbc.mk
 
+# set all rules to use bash
 SHELL     := /bin/bash
 
 ## cleanliness is next to godliness
@@ -19,7 +23,7 @@ doc:
 	w3m -dump Notes.html | perl -pe 's/^(\s+)1\./\1+/' > Notes.txt
 
 
-## set up for linting
+## a rule to ease checking for syntax problems
 
 phpfiles  := $(wildcard *.php */*.php)
 lint_tgts := $(phpfiles:.php=.lint)
